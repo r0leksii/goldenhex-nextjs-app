@@ -51,32 +51,40 @@ const TrendingProductSlider = ({ trending_product_title }: any) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.BASE_URL}product/trending-products`)
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}product/trending-products`)
       .then((res) => {
-        setProducts(res.data);
+        setProducts(Array.isArray(res.data) ? res.data : []);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.error(e);
+        setProducts([]);
+      });
   }, []);
 
   useEffect(() => {
     async function fetchData() {
+      if (apiEndPoint.trim() === "") return;
+
       setLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.BASE_URL}product/${apiEndPoint}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
         );
-        setTabProduct(response.data);
+        setTabProduct(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error(error);
+        setTabProduct([]);
       } finally {
         setLoading(false);
       }
     }
 
     fetchData();
-  }, [apiEndPoint, setTabProduct]);
+  }, [apiEndPoint]);
 
   const handleCallApi = () => {
+    setTabProduct([]);
+    setapiEndPoint(" ");
     router.push("/shop");
   };
 

@@ -50,13 +50,16 @@ const BrowseProductSlider = () => {
   useEffect(() => {
     axios
       .get(
-        `${process.env.BASE_URL}product/all-products?page=${page}&limit=${limit}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}product/all-products?page=${page}&limit=${limit}`
       )
       .then((res) => {
-        setProducts(res.data.products);
+        setProducts(Array.isArray(res.data.products) ? res.data.products : []);
       })
-      .catch((e) => console.log(e));
-  }, [page, limit, setProducts]);
+      .catch((e) => {
+        console.error(e);
+        setProducts([]);
+      });
+  }, [page, limit]);
 
   const handleCallApi = () => {
     router.push("/shop");
@@ -64,21 +67,24 @@ const BrowseProductSlider = () => {
 
   useEffect(() => {
     async function fetchData() {
+      if (apiEndPoint.trim() === "") return;
+
       setLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.BASE_URL}product/${apiEndPoint}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
         );
-        setTabProduct(response.data);
+        setTabProduct(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error(error);
+        setTabProduct([]);
       } finally {
         setLoading(false);
       }
     }
 
     fetchData();
-  }, [apiEndPoint, setTabProduct]);
+  }, [apiEndPoint]);
 
   const handleAddToCart = (product: CartProductType) => {
     dispatch(cart_product(product));
@@ -473,7 +479,7 @@ const BrowseProductSlider = () => {
                                 </div>
                               </div>
                             </div>
-                          ); 
+                          );
                         })
                       ) : (
                         <>

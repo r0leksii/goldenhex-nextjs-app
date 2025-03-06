@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { Scrollbar, A11y, Autoplay } from "swiper";
+import { Scrollbar, A11y, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
 import axios from "axios";
@@ -13,10 +13,12 @@ const CategorySlider = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
   useEffect(() => {
-    axios.get(`${process.env.BASE_URL}setting/category`).then((res) => {
-      setCategories(res.data);
-    })
-    .catch(e=> console.log(e))
+    axios
+      .get(`${process.env.BASE_URL}setting/category`)
+      .then((res) => {
+        setCategories(res.data);
+      })
+      .catch((e) => console.log(e));
   }, []);
 
   return (
@@ -57,59 +59,56 @@ const CategorySlider = () => {
                       },
                     }}
                   >
-                    { categories?.length ? categories.map((item, num) => {
-                      return (
-                        <SwiperSlide key={num}>
-                          <div className="swiper-slides">
-                            <div className="bd-singel__category category_div_height text-center mb-30">
-                              <div className="bd-category__img">
-                                <Link href="/shop">
-                                  <Image
-                                    src={item.categoryThumb}
-                                    alt="cateegory-img"
-                                    width={80}
-                                    height={100}
-                                    style={{ width: "auto", height: "auto" }}
-                                  />
-                                </Link>
-                              </div>
-                              <div className="bd-category__text">
-                                <span className="bd-category__title">
-                                  <Link href="/shop">{item.categoryName}</Link>
-                                </span>
-                                
+                    {categories?.length ? (
+                      categories.map((item, num) => {
+                        return (
+                          <SwiperSlide key={num}>
+                            <div className="swiper-slides">
+                              <div className="bd-singel__category category_div_height text-center mb-30">
+                                <div className="bd-category__img">
+                                  <Link href="/shop">
+                                    <Image
+                                      src={item.categoryThumb}
+                                      alt="cateegory-img"
+                                      width={80}
+                                      height={100}
+                                      style={{ width: "auto", height: "auto" }}
+                                    />
+                                  </Link>
+                                </div>
+                                <div className="bd-category__text">
+                                  <span className="bd-category__title">
+                                    <Link href="/shop">
+                                      {item.categoryName}
+                                    </Link>
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </SwiperSlide>
-                      )
-                    }
-                   
-                    ):
-                    <>
-                    {
-                      productsPreloader.map((item,num)=>(
-                        <SwiperSlide key={num}>
-                        <div className="swiper-slides">
-                          <div className="bd-singel__category category_div_height text-center mb-30">
-                            <div className="bd-category__img og-custom-div">
-                                
+                          </SwiperSlide>
+                        );
+                      })
+                    ) : (
+                      <>
+                        {productsPreloader.map((item, num) => (
+                          <SwiperSlide key={num}>
+                            <div className="swiper-slides">
+                              <div className="bd-singel__category category_div_height text-center mb-30">
+                                <div className="bd-category__img og-custom-div"></div>
+                              </div>
                             </div>
-                            
-                          </div>
-                        </div>
-                      </SwiperSlide>
-                      ))
-                    }
-                    </>
-                    }
+                          </SwiperSlide>
+                        ))}
+                      </>
+                    )}
                   </Swiper>
                 </div>
               </div>
             </div>
           </div>
-        ):
-        <></>}
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

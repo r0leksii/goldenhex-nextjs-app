@@ -1,20 +1,18 @@
-
 import BlogDetailsMain from "@/components/blog-details/BlogDetailsMain";
-
 import Wrapper from "@/layout/DefaultWrapper";
 
-const BlogDetailsDynamic = ({ params }: { params: { id: number } }) => {
-    const id =  params.id
-    
-    return (
-        <>
-            <Wrapper>
-                <main>
-                    <BlogDetailsMain id={id}/>
-                </main>
-            </Wrapper>
-        </>
-    );
+interface PageProps {
+  params: { id: number };
 }
 
-export default BlogDetailsDynamic
+export default async function Page({ params }: PageProps) {
+  const { id } = params;
+
+  return (
+    <Wrapper>
+      <main>
+        <BlogDetailsMain id={id} />
+      </main>
+    </Wrapper>
+  );
+}

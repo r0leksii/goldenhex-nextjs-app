@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useMemo } from "react";
 import {
   AppContextType,
   IUser,
@@ -50,12 +50,15 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [totalProduct, settotalProduct] = useState<number>(0);
 
   const token = localStorage.getItem("accessToken");
-  const header = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const header = useMemo(
+    () => ({
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+    [token]
+  );
 
   useEffect(() => {
     if (token || loggedIn) {
@@ -85,7 +88,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       setLoading(false);
     }
-  }, [token, loggedIn, update]);
+  }, [token, loggedIn, update, header]);
 
   useEffect(() => {
     if (user?.email) {

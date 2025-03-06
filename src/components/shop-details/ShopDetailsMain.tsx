@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { FreeMode, Thumbs, Controller, Navigation } from "swiper";
+import { FreeMode, Thumbs, Controller, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
 import Breadcrumb from "../common/breadcrumb/Breadcrumb";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Autoplay, Navigation, Scrollbar } from "swiper";
+import { A11y, Autoplay, Navigation, Scrollbar } from "swiper/modules";
 import "swiper/css/bundle";
 import axios from "axios";
 import { ProductType } from "@/interFace/api-interFace";
@@ -267,8 +267,6 @@ const RelatedProduct = ({ category, productID }: any) => {
                     <h2>No Related Product Available</h2>
                   </>
                 )}
-              
-                
               </Swiper>
             </div>
           </div>
