@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import React from 'react'
+import Link from "next/link";
+import React from "react";
 
 const HeaderMiddleThree = () => {
   return (
@@ -10,7 +10,7 @@ const HeaderMiddleThree = () => {
             <div className="bd-topbar__contact">
               <ul>
                 <li>
-                  <Link href="tel:+(02)587-898-250">
+                  <Link href="tel:9199462649">
                     <i className="fa-regular fa-phone-flip"></i>(919) 946-2649
                   </Link>
                 </li>
@@ -47,7 +47,7 @@ const HeaderMiddleThree = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HeaderMiddleThree
+export default HeaderMiddleThree;

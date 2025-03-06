@@ -4,7 +4,7 @@ import useGlobalContext from "../../hooks/use-context";
 import HeaderMiddleThree from "./header-middle-three";
 import HeaderTopThree from "./header-top-three";
 import NavMenu from "./navmenu";
-import logo from "../../../public/assets/img/logo/logo_goldenhex.png";
+import logo from "../../../public/assets/img/logo/logo-h-goldenhex.png";
 import support from "../../../public/assets/img/icon/support.png";
 import Image from "next/image";
 import CartIcon from "@/sheardComponent/elements/icons/cart-icon";
@@ -58,14 +58,14 @@ const HeaderThree = () => {
 
   const handleInputChange = (e: any) => {
     setSearchValue(e.target.value);
-    if (pathName === "/blog") {
-      axios
-        .get(`${process.env.BASE_URL}blog/search-blog?search=${searchValue}`)
-        .then((res) => {
-          setBlog(res.data);
-        })
-        .catch((e) => console.log(e));
-    }
+    // if (pathName === "/blog") {
+    //   axios
+    //     .get(`${process.env.BASE_URL}blog/search-blog?search=${searchValue}`)
+    //     .then((res) => {
+    //       setBlog(res.data);
+    //     })
+    //     .catch((e) => console.log(e));
+    // }
     if (pathName === "/shop") {
       setProdcutLoadding(true);
       axios
@@ -276,7 +276,7 @@ const HeaderThree = () => {
                               Monday - Saturday: 10:00am - 8:00pm | Sunday:
                               10:00am - 5:00pm
                             </span>
-                            <Link href="tel:878-185-287">(919) 946-2649</Link>
+                            <Link href="tel:9199462649">(919) 946-2649</Link>
                           </div>
                         </div>
                       </div>

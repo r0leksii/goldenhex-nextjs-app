@@ -1,7 +1,10 @@
 import Link from "next/link";
 import React from "react";
-import footerlogo from "../../../public/assets/img/logo/footer-logo.png";
+import footerlogo from "../../../public/assets/img/logo/logo-goldenhex.png";
 import Image from "next/image";
+
+const year = new Date().getFullYear();
+
 const FooterThree = () => {
   return (
     <footer>
@@ -80,14 +83,7 @@ const FooterThree = () => {
               <div className="bd-footer__copyright text-center">
                 <ul>
                   <li>All Rights Reserved</li>
-                  <li>
-                    Copyrighted by ©2023{" "}
-                    <span>
-                      <Link href="https://themeforest.net/user/bdevs/portfolio">
-                        BDevs
-                      </Link>
-                    </span>
-                  </li>
+                  <li>Copyrighted by ©{year} GoldenHex</li>
                 </ul>
               </div>
             </div>

@@ -15,7 +15,7 @@ import NiceSelect from "../common/NiceSelect";
 import PaginationTwo from "../elements/product/PaginationTwo";
 const ShopSection = () => {
   const {
-    products, 
+    products,
     setProducts,
     setotalPages,
     totalPages,
@@ -58,7 +58,7 @@ const ShopSection = () => {
 
     axios
       .get(
-        `${process.env.BASE_URL}product/search-products?search=${searchValue}&page=${page}&limit=${limit}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}product/search-products?search=${searchValue}&page=${page}&limit=${limit}`
       )
       .then((res) => {
         setProducts(res.data.products);
@@ -73,7 +73,7 @@ const ShopSection = () => {
     setProdcutLoadding(true);
     axios
       .get(
-        `${process.env.BASE_URL}product/all-products?page=${page}&limit=${limit}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}product/all-products?page=${page}&limit=${limit}`
       )
       .then((res) => {
         setProducts(res.data.products);
@@ -96,7 +96,7 @@ const ShopSection = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `${process.env.BASE_URL}product/${apiEndPoint}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
         );
         setProducts(response.data);
         setProdcutLoadding(false);
@@ -229,7 +229,7 @@ const ShopSection = () => {
                     </div>
                   </div>
                 </div>
-              </div> 
+              </div>
 
               {products?.length >= limit ? (
                 <div className="row justify-content-center">
@@ -244,16 +244,16 @@ const ShopSection = () => {
                 </div>
               ) : (
                 <>
-                   <div className="row justify-content-center">
-                  <div className="col-xxl-12">
-                    <PaginationTwo
-                      totalPages={1}
-                      currentPage={1}
-                      setPage={setPage}
-                      Pagination_space="d-flex justify-content-center mt-40  mb-45"
-                    />
+                  <div className="row justify-content-center">
+                    <div className="col-xxl-12">
+                      <PaginationTwo
+                        totalPages={1}
+                        currentPage={1}
+                        setPage={setPage}
+                        Pagination_space="d-flex justify-content-center mt-40  mb-45"
+                      />
+                    </div>
                   </div>
-                </div>
                 </>
               )}
             </div>

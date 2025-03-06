@@ -13,7 +13,7 @@
   transform: translateY(15px);
   -webkit-transition: all 200ms linear;
   transition: all ease 0.5s;
-  background: #699c47;
+  background: #eb940d;
 }
 
 .progress-wrap:hover {

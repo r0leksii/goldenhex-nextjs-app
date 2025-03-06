@@ -1,3 +1,4 @@
+"use client";
 import GetRatting from "@/hooks/GetRatting";
 import useGlobalContext from "@/hooks/use-context";
 import { CartProductType } from "@/interFace/interFace";
@@ -8,13 +9,27 @@ import Link from "next/link";
 import React from "react";
 import { useDispatch } from "react-redux";
 
-const ListViewProduct = ({ products, limit }: any) => {
+interface ListViewProductProps {
+  products: CartProductType[];
+  limit?: number;
+}
+
+const ListViewProduct: React.FC<ListViewProductProps> = ({
+  products,
+  limit,
+}) => {
   const { openModal, setOpenModal, setModalId } = useGlobalContext();
   const dispatch = useDispatch();
+
+  // Ensure products is an array and handle slicing safely
+  const displayProducts = Array.isArray(products)
+    ? products.slice(0, limit || products.length)
+    : [];
 
   const handleAddToCart = (product: CartProductType) => {
     dispatch(cart_product(product));
   };
+
   const handleAddToWishlist = (product: CartProductType) => {
     dispatch(wishlist_product(product));
   };
@@ -25,11 +40,12 @@ const ListViewProduct = ({ products, limit }: any) => {
       setModalId(id);
     }
   };
+
   return (
     <>
-      {products?.length ? (
+      {displayProducts.length > 0 ? (
         <>
-          {products.slice(0, limit).map((item: any, index: number) => {
+          {displayProducts.map((item: CartProductType, index: number) => {
             const sum = item?.rettings?.reduce(
               (acc: number, currentValue: number) => acc + currentValue,
               0
@@ -75,28 +91,23 @@ const ListViewProduct = ({ products, limit }: any) => {
                                 }`}
                               </del>
                             </span>
-                          ) : (
-                            <></>
-                          )}
+                          ) : null}
 
-                          {item?.price % 1 === 0 ? (
-                            <span className="bd-product__new-price">
-                              ${`${item?.price}.00`}
-                            </span>
-                          ) : (
-                            <span className="bd-product__new-price">
-                              ${item?.price.toFixed(2)}
-                            </span>
-                          )}
+                          <span className="bd-product__new-price">
+                            $
+                            {item?.price % 1 === 0
+                              ? `${item?.price}.00`
+                              : item?.price.toFixed(2)}
+                          </span>
                         </div>
                         <div className="bd-product__icon">
                           <GetRatting averageRating={averageRating} />
                         </div>
                       </div>
                       <p className="mb-25">
-                        {item?.productDetails.slice(0, 220)}
+                        {item?.productDetails?.slice(0, 220)}
                       </p>
- 
+
                       {item?.productQuantity > 0 ? (
                         <>
                           <div className="bd-product__action-btn">
@@ -147,7 +158,9 @@ const ListViewProduct = ({ products, limit }: any) => {
                             >
                               <i className="fal fa-eye"></i>
                             </span>
-                            <span className="text-danger">This Product Is Out Of Stock</span>
+                            <span className="text-danger">
+                              This Product Is Out Of Stock
+                            </span>
                           </div>
                         </>
                       )}
@@ -159,9 +172,7 @@ const ListViewProduct = ({ products, limit }: any) => {
           })}
         </>
       ) : (
-        <>
-          <p>No Product</p>
-        </>
+        <p className="text-center">No Products Found</p>
       )}
     </>
   );

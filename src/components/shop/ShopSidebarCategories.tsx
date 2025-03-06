@@ -10,22 +10,34 @@ const ShopSidebarCategories = () => {
   const [loading, setLoading] = useState(false);
   const { setProducts, setotalPages, setcurrentPage, limit, setPage, page } =
     useGlobalContext();
+
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
+    const headers = {
+      Authorization: "Basic " + process.env.NEXT_PUBLIC_EPOS_TOKEN,
+      "Content-Type": "application/json",
+    };
+
     axios
-      .get(`${process.env.BASE_URL}setting/category`)
+      .get(`${process.env.NEXT_PUBLIC_EPOS_URL}/Category`, { headers })
       .then((res) => {
-        setCategories(res.data);
-        setLoading(false)
+        setCategories(Array.isArray(res.data) ? res.data : []);
+        setLoading(false);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.error("Error fetching categories:", e);
+        setCategories([]);
+        setLoading(false);
+      });
   }, []);
+
+  console.log(categories);
 
   useEffect(() => {
     if (searchValue) {
       axios
         .get(
-          `${process.env.BASE_URL}product/search-products?search=${searchValue}&page=${page}&limit=${limit}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}product/search-products?search=${searchValue}&page=${page}&limit=${limit}`
         )
         .then((res) => {
           setProducts(res.data.products);
@@ -33,7 +45,7 @@ const ShopSidebarCategories = () => {
           setcurrentPage(res.data.currentPage);
           setPage(1);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.error("Error searching products:", e));
     }
   }, [
     searchValue,
@@ -48,7 +60,7 @@ const ShopSidebarCategories = () => {
   const handleViewAll = () => {
     axios
       .get(
-        `${process.env.BASE_URL}product/all-products?page=${page}&limit=${limit}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}product/all-products?page=${page}&limit=${limit}`
       )
       .then((res) => {
         setProducts(res.data.products);
@@ -56,7 +68,7 @@ const ShopSidebarCategories = () => {
         setcurrentPage(res.data.currentPage);
         setPage(1);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.error("Error fetching all products:", e));
   };
 
   return (
@@ -99,19 +111,13 @@ const ShopSidebarCategories = () => {
             ))
           ) : (
             <>
-             {
-              loading ?
-              <>
-               <p className="text-center">No Category Found</p>
-              </>
-              :
-              <>
-              <ShopSidebarPreloader end={7}/>
-              </>
-             }
-          </>
+              {loading ? (
+                <ShopSidebarPreloader end={7} />
+              ) : (
+                <p className="text-center">No Category Found</p>
+              )}
+            </>
           )}
-         
         </div>
       </div>
     </>

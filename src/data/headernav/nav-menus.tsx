@@ -25,24 +25,24 @@ const nav_menus_list: NavMenuItem[] = [
       { link: "/checkout", title: "Checkout" },
     ],
   },
-  {
-    id: 3,
-    link: "/shop",
-    title: "Pages",
-    hasDropdown: true,
-    megamenu: false,
-    dropdownItems: [
-      { link: "/about", title: "About" },
-      { link: "/team", title: "Team" },
-      { link: "/register", title: "Register" },
-      { link: "/login", title: "Login" },
-      { link: "/faq", title: "FAQ" },
-      { link: "/privacy-policy", title: "Privacy Policy" },
-    ],
-  },
-  { id: 4, link: "/blog", title: "Blog" },
+  // {
+  //   id: 3,
+  //   link: "/shop",
+  //   title: "Pages",
+  //   hasDropdown: true,
+  //   megamenu: false,
+  //   dropdownItems: [
+  //     { link: "/about", title: "About" },
+  //     // { link: "/team", title: "Team" },
+  //     // { link: "/register", title: "Register" },
+  //     // { link: "/login", title: "Login" },
+  //     // { link: "/faq", title: "FAQ" },
+  //     // { link: "/privacy-policy", title: "Privacy Policy" },
+  //   ],
+  // },
+  // { id: 4, link: "/blog", title: "Blog" },
   { id: 5, link: "/contact", title: "Contact" },
-  { id: 5, link: "/track-order", title: "Track Order" },
+  // { id: 5, link: "/track-order", title: "Track Order" },
 ];
 
 export default nav_menus_list;

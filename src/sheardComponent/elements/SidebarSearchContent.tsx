@@ -1,5 +1,6 @@
 "use client";
 import useGlobalContext from "@/hooks/use-context";
+import { CartProductType } from "@/interFace/interFace";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,13 +11,21 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 const SidebarSearchContent = () => {
   const [openSearchBox, setOpenSearchBox] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const { products, setProducts, setProdcutLoadding,setShowSidebar } = useGlobalContext();
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchProducts, setSearchProducts] = useState<CartProductType[]>([]);
+
+  const { setProdcutLoadding, setShowSidebar } = useGlobalContext();
   const searchRef = useRef(null);
   const safeSetShowSidebar = setShowSidebar || (() => {});
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const currentRef = searchRef.current as HTMLElement | null;
@@ -36,24 +45,32 @@ const SidebarSearchContent = () => {
   }, []);
 
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setProducts([]);
+    setSearchProducts([]);
     setSearchQuery(event.target.value);
     setOpenSearchBox(true);
     if (event.target.value === "") {
-      setProducts([]);
+      setSearchProducts([]);
       setOpenSearchBox(false);
       setProdcutLoadding(false);
     } else {
       setProdcutLoadding(true);
       axios
         .get(
-          `${process.env.BASE_URL}product/search-products-admin?search=${searchQuery}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}product/search-products?search=${event.target.value}&page=${page}&limit=${limit}`
         )
         .then((res) => {
-          setProducts(res.data);
+          setSearchProducts(
+            Array.isArray(res.data.products) ? res.data.products : []
+          );
+          setTotalPages(res.data.totalPages);
+          setCurrentPage(res.data.currentPage);
           setProdcutLoadding(false);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          setSearchProducts([]);
+          setProdcutLoadding(false);
+        });
     }
   };
 
@@ -63,7 +80,12 @@ const SidebarSearchContent = () => {
 
   return (
     <>
-      <form ref={searchRef} action="#" className="p-relative">
+      <form
+        ref={searchRef}
+        action="#"
+        className="p-relative"
+        onSubmit={handleSearchSubmit}
+      >
         <input
           type="text"
           placeholder="What are you searching for?"
@@ -82,33 +104,34 @@ const SidebarSearchContent = () => {
           }`}
         >
           <div className="search-result-2">
-            {products?.length ? (
+            {searchProducts?.length ? (
               <>
-                {products?.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="search_product header_search_one search_two"
-                    >
-                      <div className="product_wrapper">
-                        <div className="preview_img">
-                          <Image
-                            src={item?.img}
-                            alt="product-img"
-                            width={50}
-                            height={50}
-                            style={{ width: "auto", height: "auto" }}
-                          />
-                        </div>
-                        <div className="single_product">
-                          <Link onClick={() => safeSetShowSidebar(false)} href={`/shop-details/${item._id}`}>
-                            {item.productName}
-                          </Link>
-                        </div>
+                {searchProducts.map((item, index) => (
+                  <div
+                    key={index}
+                    className="search_product header_search_one search_two"
+                  >
+                    <div className="product_wrapper">
+                      <div className="preview_img">
+                        <Image
+                          src={item?.img}
+                          alt="product-img"
+                          width={50}
+                          height={50}
+                          style={{ width: "auto", height: "auto" }}
+                        />
+                      </div>
+                      <div className="single_product">
+                        <Link
+                          onClick={() => safeSetShowSidebar(false)}
+                          href={`/shop-details/${item._id}`}
+                        >
+                          {item.productName}
+                        </Link>
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </>
             ) : (
               <></>

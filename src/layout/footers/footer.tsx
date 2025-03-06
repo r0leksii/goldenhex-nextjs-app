@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import footerLogo from "../../../public/assets/img/logo/footer-logo.png";
+import footerLogo from "../../../public/assets/img/logo/logo-goldenhex.png";
 import support from "../../../public/assets/img/icon/support.png";
 import discover from "../../../public/assets/img/icon/discover.png";
 import masterCard from "../../../public/assets/img/icon/mastercard.png";

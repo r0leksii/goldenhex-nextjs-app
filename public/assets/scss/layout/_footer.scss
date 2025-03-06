@@ -210,16 +210,16 @@
 						display: none;
 					}
 				}
-				&::before {
-					position: absolute;
-					content: "";
-					height: 15px;
-					width: 1px;
-					background: var(--clr-common-body-text);
-					top: 50%;
-					transform: translateY(-50%);
-					right: -8px;
-				}
+				// &::before {
+				// 	position: absolute;
+				// 	content: "";
+				// 	height: 15px;
+				// 	width: 1px;
+				// 	background: var(--clr-common-body-text);
+				// 	top: 50%;
+				// 	transform: translateY(-50%);
+				// 	right: -8px;
+				// }
 			}
 			span {
 				a {
