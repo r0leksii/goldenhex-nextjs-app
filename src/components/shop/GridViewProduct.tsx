@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { cart_product } from "@/redux/slices/cartSlice";
 import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import { ProductType } from "./ShopSection";
+import { CartProductType } from "@/interFace/interFace";
 
 interface GridViewProductProps {
   products: ProductType[];
@@ -30,11 +31,11 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
     setModalId(id);
   };
 
-  const handleAddToCart = (product: ProductType) => {
+  const handleAddToCart = (product: any) => {
     dispatch(cart_product(product));
   };
 
-  const handleAddToWishlist = (product: ProductType) => {
+  const handleAddToWishlist = (product: any) => {
     dispatch(wishlist_product(product));
   };
 
@@ -53,20 +54,6 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
     return product.description || "";
   };
 
-  // Helper function to calculate discount percentage
-  const calculateDiscount = (
-    oldPrice: number,
-    currentPrice: number
-  ): number => {
-    if (!oldPrice || !currentPrice || oldPrice <= currentPrice) {
-      return 0;
-    }
-
-    const discountAmount = oldPrice - currentPrice;
-    const discountPercentage = (discountAmount / oldPrice) * 100;
-    return Math.round(discountPercentage);
-  };
-
   // Helper function to safely get price
   const getPrice = (product: any): number => {
     // Just use the price property since it contains the SalePrice value from the API
@@ -74,24 +61,6 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
       return product.price;
     }
     return 0;
-  };
-
-  // Helper function to safely get old price
-  const getOldPrice = (product: any): number => {
-    // Just use the oldPrice property since it contains the RrPrice value from the API
-    if (product.oldPrice !== undefined && product.oldPrice !== null) {
-      return product.oldPrice;
-    }
-    return 0;
-  };
-
-  // Debug function to see what properties are available
-  const debugProduct = (product: any) => {
-    console.log("Product properties:", Object.keys(product));
-    console.log("SalePrice:", product.SalePrice);
-    console.log("price:", product.price);
-    console.log("RrPrice:", product.RrPrice);
-    console.log("oldPrice:", product.oldPrice);
   };
 
   return (
@@ -103,14 +72,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
           {displayProducts.length > 0 ? (
             displayProducts.map((item, index) => {
               // Debug the first item to see what's available
-              if (index === 0) {
-                debugProduct(item);
-              }
-
               const price = getPrice(item);
-              const oldPrice = getOldPrice(item);
-              const discount = calculateDiscount(oldPrice, price);
-
               return (
                 <div
                   className="col-xxl-3 col-xl-4 col-lg-6 col-md-6 col-sm-6"
@@ -165,22 +127,10 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                         </Link>
                       </h4>
                       <div className="bd-product__price">
-                        {discount > 0 && (
-                          <span className="bd-product__old-price">
-                            ${oldPrice.toFixed(2)}
-                          </span>
-                        )}
                         <span className="bd-product__new-price">
                           ${price.toFixed(2)}
                         </span>
                       </div>
-                      {discount > 0 && (
-                        <div className="bd-product__discount">
-                          <span className="bd-product__discount-tag">
-                            {discount}% OFF
-                          </span>
-                        </div>
-                      )}
                       {getDescription(item) && (
                         <div className="bd-product__description">
                           <p>

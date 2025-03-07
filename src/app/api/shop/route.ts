@@ -16,7 +16,6 @@ interface SanitizedProduct {
   img: string;
   title: string;
   quantity: number;
-  // discount: number;
   tags: string[];
   imageURLs: string[];
   description?: string;
@@ -144,8 +143,6 @@ export async function GET(
           };
         }
       );
-
-      console.log(sanitizedProducts);
 
       return NextResponse.json({
         products: sanitizedProducts,

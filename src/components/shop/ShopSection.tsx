@@ -218,7 +218,7 @@ const ShopSection = () => {
                           <div className="bd-trending__item-wrapper">
                             <div className="row">
                               <GridViewProduct
-                                products={products}
+                                products={products as any}
                                 limit={limit}
                               />
                             </div>

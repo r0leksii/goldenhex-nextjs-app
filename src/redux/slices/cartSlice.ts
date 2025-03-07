@@ -1,6 +1,7 @@
 "use client";
 
 import { CartProductType } from "@/interFace/interFace";
+import { ProductType } from "@/components/shop/ShopSection";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import moment from "moment";

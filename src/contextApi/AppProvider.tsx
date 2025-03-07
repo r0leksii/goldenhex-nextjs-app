@@ -57,7 +57,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
         "Content-Type": "application/json",
       },
     }),
-    [token]
+    []
   );
 
   useEffect(() => {

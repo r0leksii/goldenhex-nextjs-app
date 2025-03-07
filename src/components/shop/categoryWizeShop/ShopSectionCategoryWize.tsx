@@ -1,6 +1,3 @@
- 
- 
-
 "use client";
 import React, { useState, useEffect } from "react";
 import GridIcon from "@/svg/GridIcon";
@@ -16,10 +13,10 @@ import ListViewProduct from "../ListViewProduct";
 import Pagination from "@/components/elements/product/Pagination";
 import PaginationTwo from "@/components/elements/product/PaginationTwo";
 import ProductModal from "../ProductModal";
-interface propsType{
-    category:string
+interface propsType {
+  category: string;
 }
-const ShopSectionCategoryWize = ({category}:propsType) => {
+const ShopSectionCategoryWize = ({ category }: propsType) => {
   const {
     products,
     setProducts,
@@ -34,7 +31,6 @@ const ShopSectionCategoryWize = ({category}:propsType) => {
   } = useGlobalContext();
   const [searchValue, setSearchValue] = useState("");
   const [apiEndPoint, setapiEndPoint] = useState<string>("");
-  
 
   const menuData = [
     {
@@ -99,7 +95,7 @@ const ShopSectionCategoryWize = ({category}:propsType) => {
     limit,
     setPage,
   ]);
- 
+
   useEffect(() => {
     setProdcutLoadding(true);
     async function fetchData() {
@@ -120,8 +116,6 @@ const ShopSectionCategoryWize = ({category}:propsType) => {
   }, [apiEndPoint, setProducts, setProdcutLoadding]);
 
   const selectHandler = () => {};
-
-  console.log(products)
 
   return (
     <>
@@ -216,7 +210,7 @@ const ShopSectionCategoryWize = ({category}:propsType) => {
                         <div className="bd-trending__item-wrapper">
                           <div className="row">
                             <GridViewProduct
-                              products={products}
+                              products={products as any}
                               limit={limit}
                             />
                           </div>
@@ -229,12 +223,12 @@ const ShopSectionCategoryWize = ({category}:propsType) => {
                         aria-labelledby="shop-filter-bar"
                       >
                         <div className="row">
-                          <div className="col-xxl-12">
+                          {/* <div className="col-xxl-12">
                             <ListViewProduct
                               products={products}
                               limit={limit}
                             />
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
