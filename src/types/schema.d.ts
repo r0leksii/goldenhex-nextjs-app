@@ -30,9 +30,7 @@ export interface paths {
   "/api/v4/Product/WebProducts/Count": WebProductsCount;
   "/api/v4/Product/{id}": ProductId;
   "/api/v4/Product/name": ProductName;
-
   "/api/v4/ProductImage": ProductImage;
-
   "/api/v4/ProductImage/{id}": ProductImageId;
   "/api/v4/ProductImage/Url": ProductImageUrl;
 }

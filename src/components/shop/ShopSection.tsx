@@ -13,6 +13,7 @@ import ShopSidebarRetting from "./ShopSidebarRetting";
 import ProductModal from "./ProductModal";
 import NiceSelect from "../common/NiceSelect";
 import PaginationTwo from "../elements/product/PaginationTwo";
+
 const ShopSection = () => {
   const {
     products,
@@ -52,63 +53,66 @@ const ShopSection = () => {
     },
   ];
 
-  const handleInputChange = (e: any) => {
-    setProdcutLoadding(true);
-    setSearchValue(e.target.value);
+  // const handleInputChange = (e: any) => {
+  //   setProdcutLoadding(true);
+  //   setSearchValue(e.target.value);
 
-    axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}product/search-products?search=${searchValue}&page=${page}&limit=${limit}`
-      )
-      .then((res) => {
-        setProducts(res.data.products);
-        setotalPages(res.data.totalPages);
-        setcurrentPage(res.data.currentPage);
-        setProdcutLoadding(false);
-      })
-      .catch((e) => console.log(e));
-  };
-
-  useEffect(() => {
-    setProdcutLoadding(true);
-    axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}product/all-products?page=${page}&limit=${limit}`
-      )
-      .then((res) => {
-        setProducts(res.data.products);
-        setotalPages(res.data.totalPages);
-        setcurrentPage(res.data.currentPage);
-        setProdcutLoadding(false);
-      })
-      .catch((e) => console.log(e));
-  }, [
-    page,
-    limit,
-    setProducts,
-    setotalPages,
-    setcurrentPage,
-    setProdcutLoadding,
-  ]);
+  //   axios
+  //     .get(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}product/search-products?search=${searchValue}&page=${page}&limit=${limit}`
+  //     )
+  //     .then((res) => {
+  //       setProducts(res.data.products);
+  //       setotalPages(res.data.totalPages);
+  //       setcurrentPage(res.data.currentPage);
+  //       setProdcutLoadding(false);
+  //     })
+  //     .catch((e) => console.log(e));
+  // };
 
   useEffect(() => {
     setProdcutLoadding(true);
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
-        );
-        setProducts(response.data);
-        setProdcutLoadding(false);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setProdcutLoadding(false);
-      }
-    }
+    const headers = {
+      Authorization: "Basic " + process.env.NEXT_PUBLIC_EPOS_TOKEN,
+      "Content-Type": "application/json",
+    };
 
-    fetchData();
-  }, [apiEndPoint, setProducts, setProdcutLoadding]);
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_EPOS_URL}/Product/WebProducts/Count?page=${page}`,
+        { headers }
+      )
+      .then((res) => {
+        setProducts(Array.isArray(res.data) ? res.data : []);
+        setotalPages(1);
+        setcurrentPage(1);
+        setProdcutLoadding(false);
+      })
+      .catch((e) => {
+        console.error("Error fetching web products:", e);
+        setProducts([]);
+        setProdcutLoadding(false);
+      });
+  }, [page, setProducts, setotalPages, setcurrentPage, setProdcutLoadding]);
+
+  // useEffect(() => {
+  //   setProdcutLoadding(true);
+  //   async function fetchData() {
+  //     try {
+  //       const response = await axios.get(
+  //         `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
+  //       );
+  //       setProducts(response.data);
+  //       setProdcutLoadding(false);
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //       setProdcutLoadding(false);
+  //     }
+  //   }
+
+  //   fetchData();
+  // }, [apiEndPoint, setProducts, setProdcutLoadding]);
 
   const selectHandler = () => {};
 
@@ -129,7 +133,7 @@ const ShopSection = () => {
             <div className="col-xxl-9 col-xl-8 col-lg-8">
               <div className="row">
                 <div className="col-xl-4">
-                  <div className="bd-top__filter-search p-relative mb-30">
+                  {/* <div className="bd-top__filter-search p-relative mb-30">
                     <form className="bd-top__filter-input" action="#">
                       <input
                         type="text"
@@ -141,7 +145,7 @@ const ShopSection = () => {
                         <i className="fa-regular fa-magnifying-glass"></i>
                       </button>
                     </form>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="col-xl-8">
                   <div className="bd-filter__tab-inner mb-30">
@@ -218,12 +222,12 @@ const ShopSection = () => {
                         aria-labelledby="shop-filter-bar"
                       >
                         <div className="row">
-                          <div className="col-xxl-12">
+                          {/* <div className="col-xxl-12">
                             <ListViewProduct
                               products={products}
                               limit={limit}
                             />
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>

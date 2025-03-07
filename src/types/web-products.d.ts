@@ -1,3 +1,5 @@
+import { components } from "./schema.type";
+
 export interface WebProducts {
   parameters: {
     query?: never;

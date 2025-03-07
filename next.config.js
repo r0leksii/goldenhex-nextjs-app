@@ -1,7 +1,6 @@
-
 module.exports = {
     images: {
-      domains: ['i.ibb.co'],
+      domains: ['i.ibb.co', 's3-eu-west-1.amazonaws.com'],
     },
    
   env: {
