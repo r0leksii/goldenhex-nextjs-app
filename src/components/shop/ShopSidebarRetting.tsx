@@ -12,15 +12,15 @@ interface ProductReview {
 
 const ShopSidebarRetting = () => {
   const [rattings, setRattings] = useState<ProductReview[]>([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     axios
       .get(`${process.env.BASE_URL}product/rattings`)
       .then((res) => {
-        setRattings(res.data);
-        setLoading(false)
+        setRattings(Array.isArray(res.data) ? res.data : []);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -30,7 +30,7 @@ const ShopSidebarRetting = () => {
       <div className="bd-filter__widget child-content-hidden">
         <h4 className="bd-filter__widget-title drop-btn">Ratings</h4>
         <div className="bd-filter__content">
-          {rattings?.length ?
+          {rattings?.length ? (
             rattings.map((item, index) => (
               <div key={index} className="bd-singel__rating">
                 <input
@@ -46,19 +46,20 @@ const ShopSidebarRetting = () => {
                   </div>
                 </label>
               </div>
-            )):
+            ))
+          ) : (
             <>
-              {
-                loading ?
+              {loading ? (
                 <>
-                 <p className="text-center">No Rating Found</p>
+                  <p className="text-center">No Rating Found</p>
                 </>
-                :
+              ) : (
                 <>
-                <ShopSidebarPreloader end={5}/>
+                  <ShopSidebarPreloader end={5} />
                 </>
-              }
-            </>}
+              )}
+            </>
+          )}
         </div>
       </div>
     </>

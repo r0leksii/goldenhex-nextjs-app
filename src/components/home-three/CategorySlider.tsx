@@ -16,7 +16,7 @@ const CategorySlider = () => {
     axios
       .get(`${process.env.BASE_URL}setting/category`)
       .then((res) => {
-        setCategories(res.data);
+        setCategories(Array.isArray(res.data) ? res.data : []);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -24,7 +24,7 @@ const CategorySlider = () => {
   return (
     <div className="bd-catergory__area pb-40">
       <div className="container">
-        {categories.length ? (
+        {Array.isArray(categories) && categories.length > 0 ? (
           <div className="row">
             <div className="col-12">
               <div className="bd-category-active swiper-container">
@@ -59,7 +59,7 @@ const CategorySlider = () => {
                       },
                     }}
                   >
-                    {categories?.length ? (
+                    {Array.isArray(categories) && categories.length > 0 ? (
                       categories.map((item, num) => {
                         return (
                           <SwiperSlide key={num}>

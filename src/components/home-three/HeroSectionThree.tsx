@@ -10,10 +10,9 @@ const HeroSectionThree = () => {
   const [product, setproduct] = useState<offerProductType[]>([]);
   useEffect(() => {
     axios
-      .get(`${process.env.BASE_URL}product/offer-products-banner`) 
+      .get(`${process.env.BASE_URL}product/offer-products-banner`)
       .then((res) => {
-
-        setproduct(res.data);
+        setproduct(Array.isArray(res.data) ? res.data : []);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -24,7 +23,7 @@ const HeroSectionThree = () => {
           <div className="row">
             <div className="col-xl-4">
               <div className="row">
-                {product.length ?
+                {Array.isArray(product) && product.length > 0 ? (
                   product.slice(0, 2).map((item, index) => (
                     <div className="col-xl-12 col-md-6" key={index}>
                       <div
@@ -56,10 +55,12 @@ const HeroSectionThree = () => {
                         </div>
                       </div>
                     </div>
-                  )):
+                  ))
+                ) : (
                   <>
-                  <BannerPreloader/>
-                  </>}
+                    <BannerPreloader />
+                  </>
+                )}
               </div>
             </div>
             <div className="col-xl-8">
