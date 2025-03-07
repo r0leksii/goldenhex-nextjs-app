@@ -1,20 +1,18 @@
-import React from 'react';
-import HeroSectionThree from './HeroSectionThree';
-import CategorySlider from './CategorySlider';
-import TrendingProducts from './TrendingProducts';
-import NewsletterSection from './NewsletterSection';
-import BlogSection from './BlogSection';
+import React from "react";
+import HeroSectionThree from "./HeroSectionThree";
+import CategorySlider from "./CategorySlider";
+import TrendingProducts from "./TrendingProducts";
+import NewsletterSection from "./NewsletterSection";
 
 const HomeThreeMain = () => {
-    return (
-        <>
-            <HeroSectionThree/>
-            <CategorySlider/>
-            <TrendingProducts/>
-            <NewsletterSection/>
-            <BlogSection/>
-        </>
-    );
+  return (
+    <>
+      <HeroSectionThree />
+      <CategorySlider />
+      <TrendingProducts />
+      <NewsletterSection />
+    </>
+  );
 };
 
 export default HomeThreeMain;
