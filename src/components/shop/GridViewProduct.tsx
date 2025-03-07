@@ -1,6 +1,5 @@
 "use client";
 import useGlobalContext from "@/hooks/use-context";
-import { components } from "@/types/schema.type";
 import ShopPreloader from "@/preloaders/ShopPreloader";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,12 +7,10 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { cart_product } from "@/redux/slices/cartSlice";
 import { wishlist_product } from "@/redux/slices/wishlistSlice";
-
-// Define CartProductType based on WebProduct schema
-type CartProductType = components["schemas"]["WebProduct"];
+import { ProductType } from "./ShopSection";
 
 interface GridViewProductProps {
-  products: CartProductType[];
+  products: ProductType[];
   limit?: number;
 }
 
@@ -25,22 +22,76 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
     useGlobalContext();
   const dispatch = useDispatch();
 
-  // Ensure products is an array and handle slicing safely
-  const displayProducts = Array.isArray(products)
-    ? products.slice(0, limit || products.length)
-    : [];
+  // No need to slice products here as pagination is handled by the API
+  const displayProducts = Array.isArray(products) ? products : [];
 
   const handleMoldalData = (id: string) => {
     setOpenModal(!openModal);
     setModalId(id);
   };
 
-  const handleAddToCart = (product: CartProductType) => {
+  const handleAddToCart = (product: ProductType) => {
     dispatch(cart_product(product));
   };
 
-  const handleAddToWishlist = (product: CartProductType) => {
+  const handleAddToWishlist = (product: ProductType) => {
     dispatch(wishlist_product(product));
+  };
+
+  // Helper function to get image URL safely
+  const getImageUrl = (product: ProductType): string => {
+    if (product.img) {
+      return product.img;
+    } else if (product.imageURLs && product.imageURLs.length > 0) {
+      return product.imageURLs[0];
+    }
+    return "/assets/img/icon/image-x-generic.svg";
+  };
+
+  // Helper function to get product description
+  const getDescription = (product: ProductType): string => {
+    return product.description || "";
+  };
+
+  // Helper function to calculate discount percentage
+  const calculateDiscount = (
+    oldPrice: number,
+    currentPrice: number
+  ): number => {
+    if (!oldPrice || !currentPrice || oldPrice <= currentPrice) {
+      return 0;
+    }
+
+    const discountAmount = oldPrice - currentPrice;
+    const discountPercentage = (discountAmount / oldPrice) * 100;
+    return Math.round(discountPercentage);
+  };
+
+  // Helper function to safely get price
+  const getPrice = (product: any): number => {
+    // Just use the price property since it contains the SalePrice value from the API
+    if (product.price !== undefined && product.price !== null) {
+      return product.price;
+    }
+    return 0;
+  };
+
+  // Helper function to safely get old price
+  const getOldPrice = (product: any): number => {
+    // Just use the oldPrice property since it contains the RrPrice value from the API
+    if (product.oldPrice !== undefined && product.oldPrice !== null) {
+      return product.oldPrice;
+    }
+    return 0;
+  };
+
+  // Debug function to see what properties are available
+  const debugProduct = (product: any) => {
+    console.log("Product properties:", Object.keys(product));
+    console.log("SalePrice:", product.SalePrice);
+    console.log("price:", product.price);
+    console.log("RrPrice:", product.RrPrice);
+    console.log("oldPrice:", product.oldPrice);
   };
 
   return (
@@ -51,6 +102,15 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
         <div className="row">
           {displayProducts.length > 0 ? (
             displayProducts.map((item, index) => {
+              // Debug the first item to see what's available
+              if (index === 0) {
+                debugProduct(item);
+              }
+
+              const price = getPrice(item);
+              const oldPrice = getOldPrice(item);
+              const discount = calculateDiscount(oldPrice, price);
+
               return (
                 <div
                   className="col-xxl-3 col-xl-4 col-lg-6 col-md-6 col-sm-6"
@@ -58,13 +118,10 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                 >
                   <div className="bd-trending__item text-center mb-30 position-relative">
                     <div className="bd-trending__product-thumb border-5">
-                      <Link href={`/shop-details/${item?.Id}`}>
+                      <Link href={`/shop-details/${item?._id}`}>
                         <Image
-                          src={
-                            item?.ProductImages?.[0]?.ImageUrl ||
-                            "/images/placeholder.jpg"
-                          }
-                          alt="product-img"
+                          src={getImageUrl(item)}
+                          alt={item?.title || "Product image"}
                           width={500}
                           height={500}
                           style={{ width: "100%", height: "auto" }}
@@ -86,7 +143,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                           title="Quick View"
                           data-bs-toggle="modal"
                           data-bs-target="#productmodal"
-                          onClick={() => handleMoldalData(item.Id!.toString())}
+                          onClick={() => handleMoldalData(item._id)}
                         >
                           <i className="fal fa-eye"></i>
                         </span>
@@ -103,32 +160,44 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                     </div>
                     <div className="bd-teanding__content">
                       <h4 className="bd-product__title">
-                        <Link href={`/shop-details/${item?.Id}`}>
-                          {item?.Name}
+                        <Link href={`/shop-details/${item?._id}`}>
+                          {item?.title || "Unnamed Product"}
                         </Link>
                       </h4>
                       <div className="bd-product__price">
+                        {discount > 0 && (
+                          <span className="bd-product__old-price">
+                            ${oldPrice.toFixed(2)}
+                          </span>
+                        )}
                         <span className="bd-product__new-price">
-                          $
-                          {item?.SalePrice != null
-                            ? item.SalePrice % 1 === 0
-                              ? `${item.SalePrice}.00`
-                              : item.SalePrice.toFixed(2)
-                            : "0.00"}
+                          ${price.toFixed(2)}
                         </span>
                       </div>
+                      {discount > 0 && (
+                        <div className="bd-product__discount">
+                          <span className="bd-product__discount-tag">
+                            {discount}% OFF
+                          </span>
+                        </div>
+                      )}
+                      {getDescription(item) && (
+                        <div className="bd-product__description">
+                          <p>
+                            {getDescription(item).substring(0, 60)}
+                            {getDescription(item).length > 60 ? "..." : ""}
+                          </p>
+                        </div>
+                      )}
+                      {!item.isAvailable && (
+                        <div className="bd-product__availability">
+                          <span className="out-of-stock">Out of Stock</span>
+                        </div>
+                      )}
                       <div className="bd-product__icon">
                         {/* Rating component can be added here if needed */}
                       </div>
                     </div>
-                    {/* <div className="bd-product__tag">
-                      {item?.StockSummary?.CurrentStock &&
-                      item.StockSummary.CurrentStock > 0 ? (
-                        <span className="tag-text theme-bg">In Stock</span>
-                      ) : (
-                        <span className="tag-text wraning-bg">Stock Out</span>
-                      )}
-                    </div> */}
                   </div>
                 </div>
               );

@@ -1,3 +1,5 @@
+import type { components } from "./schema.type";
+
 export interface CatalogueProducts {
   parameters: {
     query?: never;

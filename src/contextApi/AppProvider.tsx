@@ -53,8 +53,8 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const header = useMemo(
     () => ({
       headers: {
+        Authorization: "Basic " + process.env.NEXT_PUBLIC_EPOS_TOKEN,
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     }),
     [token]
