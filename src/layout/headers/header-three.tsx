@@ -203,91 +203,80 @@ const HeaderThree = () => {
             </div>
           </div>
 
-          {pathName === "/shop" || pathName === "/blog" ? (
-            <>
-              <div className="bd-header__buttom d-none d-sm-block">
-                <div className="container">
-                  <div className="row align-items-center">
-                    <div className="col-xxl-8 col-xl-8 col-md-8 col-sm-6">
-                      <div className="bd-header__butttom-left">
-                        <div className="bd-header__category-nav p-relative">
-                          <div
-                            className={
-                              catMenuOpen
-                                ? "bd-category__click items-open"
-                                : "bd-category__click"
-                            }
-                            onClick={() => {
-                              setCatMenuOpen(!catMenuOpen);
-                            }}
-                          >
-                            <div className="bd-bar__icon">
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                            </div>
-                            <span>All Categories</span>
-                          </div>
-                          <div
-                            className={
-                              catMenuOpen
-                                ? "category__items d-block"
-                                : "category__items"
-                            }
-                          >
-                            <div className="category-item">
-                              <CategoryItem />
-                            </div>
-                          </div>
+          <div className="bd-header__buttom d-none d-sm-block">
+            <div className="container">
+              <div className="row align-items-center">
+                <div className="col-xxl-8 col-xl-8 col-md-8 col-sm-6">
+                  <div className="bd-header__butttom-left">
+                    <div className="bd-header__category-nav p-relative">
+                      <div
+                        className={
+                          catMenuOpen
+                            ? "bd-category__click items-open"
+                            : "bd-category__click"
+                        }
+                        onClick={() => {
+                          setCatMenuOpen(!catMenuOpen);
+                        }}
+                      >
+                        <div className="bd-bar__icon">
+                          <span></span>
+                          <span></span>
+                          <span></span>
                         </div>
-                        <div className="bd-header__filterbar d-none d-md-block">
-                          {pathName === "/shop" || pathName === "/blog" ? (
-                            <>
-                              <form className="bd-filter__input" action="#">
-                                <input
-                                  type="text"
-                                  placeholder={
-                                    pathName === "/shop"
-                                      ? "Search products..."
-                                      : "Search Blogs..."
-                                  }
-                                  value={searchValue}
-                                  onChange={handleInputChange}
-                                />
-                                <button>
-                                  <i className="flaticon-magnifiying-glass"></i>
-                                </button>
-                              </form>
-                            </>
-                          ) : (
-                            <></>
-                          )}
+                        <span>All Categories</span>
+                      </div>
+                      <div
+                        className={
+                          catMenuOpen
+                            ? "category__items d-block"
+                            : "category__items"
+                        }
+                      >
+                        <div className="category-item">
+                          <CategoryItem />
                         </div>
                       </div>
                     </div>
-                    <div className="col-xxl-4 col-xl-4 col-md-4 col-sm-6">
-                      <div className="bd-action__support d-flex justify-content-end">
-                        <div className="bd-support__inner">
-                          <div className="bd-support__icon">
-                            <Image src={support} alt="support-icon" />
-                          </div>
-                          <div className="bd-support__text">
-                            <span>
-                              Monday - Saturday: 10:00am - 8:00pm | Sunday:
-                              10:00am - 5:00pm
-                            </span>
-                            <Link href="tel:9199462649">(919) 946-2649</Link>
-                          </div>
-                        </div>
+                    <div className="bd-header__filterbar d-none d-md-block">
+                      <form className="bd-filter__input" action="#">
+                        <input
+                          type="text"
+                          placeholder={
+                            pathName === "/shop"
+                              ? "Search products..."
+                              : "Search Blogs..."
+                          }
+                          value={searchValue}
+                          onChange={handleInputChange}
+                        />
+                        <button>
+                          <i className="flaticon-magnifiying-glass"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xxl-4 col-xl-4 col-md-4 col-sm-6">
+                  <div className="bd-action__support d-flex justify-content-end">
+                    <div className="bd-support__inner">
+                      <div className="bd-support__icon">
+                        <Image src={support} alt="support-icon" />
+                      </div>
+                      <div className="bd-support__text">
+                        <span>
+                          Monday - Saturday: 10:00am - 8:00pm
+                          <br />
+                          Sunday: 10:00am - 5:00pm
+                        </span>
+                        <Link href="tel:9199462649">(919) 946-2649</Link>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </>
-          ) : (
-            <></>
-          )}
+            </div>
+          </div>
         </div>
       </header>
 

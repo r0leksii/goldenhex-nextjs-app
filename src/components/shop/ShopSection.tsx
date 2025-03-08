@@ -101,14 +101,7 @@ const ShopSection = () => {
       <section className="bd-shop__area pt-45 pb-85">
         <div className="container">
           <div className="row">
-            <div className="col-xxl-3 col-xl-4 col-lg-4">
-              <div className="bd-sidebar__widget-warpper mb-60">
-                <div className="bd-product__filters">
-                  <ShopSidebarCategories />
-                </div>
-              </div>
-            </div>
-            <div className="col-xxl-9 col-xl-8 col-lg-8">
+            <div className="col-xxl-12 col-xl-8 col-lg-8">
               <div className="row">
                 <div className="col-xl-12">
                   <div className="bd-shop__wrapper">

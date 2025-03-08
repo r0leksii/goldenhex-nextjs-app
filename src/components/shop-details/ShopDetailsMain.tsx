@@ -81,38 +81,115 @@ const ShopDetailsMain = ({ id }: any) => {
                         <ul>
                           <li>Share:</li>
                           <li>
-                            <Link
-                              href="https://www.facebook.com/"
+                            <a
+                              href={`https://www.facebook.com/share.php?u=${encodeURIComponent(
+                                window.location.href
+                              )}`}
                               target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                window.open(
+                                  `https://www.facebook.com/share.php?u=${encodeURIComponent(
+                                    window.location.href
+                                  )}`,
+                                  "facebook-share",
+                                  "width=580,height=296"
+                                );
+                              }}
                             >
                               <i className="fab fa-facebook-f"></i>
-                            </Link>
+                            </a>
                           </li>
                           <li>
-                            <Link
-                              href="https://twitter.com/?lang=en"
-                              title="Twitter"
+                            <a
+                              href={`https://twitter.com/share?url=${encodeURIComponent(
+                                window.location.href
+                              )}&text=${encodeURIComponent(
+                                myProduct?.title || ""
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                window.open(
+                                  `https://twitter.com/share?url=${encodeURIComponent(
+                                    window.location.href
+                                  )}&text=${encodeURIComponent(
+                                    myProduct?.title || ""
+                                  )}`,
+                                  "twitter-share",
+                                  "width=550,height=235"
+                                );
+                              }}
                             >
                               <i className="fab fa-twitter"></i>
-                            </Link>
+                            </a>
                           </li>
                           <li>
-                            <Link
-                              href="https://www.linkedin.com/"
-                              title="Linkedin"
-                              target="_blank"
-                            >
-                              <i className="fab fa-linkedin"></i>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="https://www.instagram.com/"
-                              target="_blank"
-                              title="Instagram"
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                // For mobile devices, try deep linking to Instagram
+                                if (
+                                  /Android|iPhone|iPad|iPod/i.test(
+                                    navigator.userAgent
+                                  )
+                                ) {
+                                  // Try to open Instagram app with the image
+                                  window.location.href = `instagram://library?AssetPath=${encodeURIComponent(
+                                    myProduct?.imageURLs?.[0] || ""
+                                  )}`;
+
+                                  // Set a timeout to fallback to web if app doesn't open
+                                  setTimeout(() => {
+                                    window.location.href =
+                                      "https://www.instagram.com/";
+                                  }, 2000);
+                                } else {
+                                  // For desktop, open Instagram website with alert
+                                  window.open(
+                                    "https://www.instagram.com/",
+                                    "_blank"
+                                  );
+                                  alert(
+                                    "Instagram sharing is optimized for mobile devices. Please save the image and upload it manually through the Instagram app."
+                                  );
+                                }
+                              }}
                             >
                               <i className="fab fa-instagram"></i>
-                            </Link>
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
+                                window.location.href
+                              )}&media=${encodeURIComponent(
+                                myProduct?.imageURLs?.[0] || ""
+                              )}&description=${encodeURIComponent(
+                                myProduct?.title || ""
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                window.open(
+                                  `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
+                                    window.location.href
+                                  )}&media=${encodeURIComponent(
+                                    myProduct?.imageURLs?.[0] || ""
+                                  )}&description=${encodeURIComponent(
+                                    myProduct?.title || ""
+                                  )}`,
+                                  "pinterest-share",
+                                  "width=750,height=550"
+                                );
+                              }}
+                            >
+                              <i className="fab fa-pinterest"></i>
+                            </a>
                           </li>
                         </ul>
                       </div>

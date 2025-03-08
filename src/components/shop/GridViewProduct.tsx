@@ -70,14 +70,14 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
       {prodcutLoadding ? (
         <ShopPreloader end={8} />
       ) : (
-        <div className="row">
+        <>
           {displayProducts.length > 0 ? (
             displayProducts.map((item, index) => {
               // Debug the first item to see what's available
               const price = getPrice(item);
               return (
                 <div
-                  className="col-xxl-3 col-xl-4 col-lg-6 col-md-6 col-sm-6"
+                  className="col-xxl-2 col-xl-4 col-lg-6 col-md-6 col-sm-6"
                   key={index}
                 >
                   <div className="bd-trending__item text-center mb-30 position-relative">
@@ -155,7 +155,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
               <p className="text-center">No Products Found</p>
             </div>
           )}
-        </div>
+        </>
       )}
     </>
   );
