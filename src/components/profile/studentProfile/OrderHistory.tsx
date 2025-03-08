@@ -13,59 +13,59 @@ const OrderHistory = () => {
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.BASE_URL}success/payment-info?email=${user?.email}`,
-        header
-      )
-      .then((res) => {
-        if (res.data.message === "success") {
-          setPaymentInfo(res.data.data);
-        }
-      })
-      .catch((e) => {});
-  }, [user?.email, header, loading]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${process.env.BASE_URL}success/payment-info?email=${user?.email}`,
+  //       header
+  //     )
+  //     .then((res) => {
+  //       if (res.data.message === "success") {
+  //         setPaymentInfo(res.data.data);
+  //       }
+  //     })
+  //     .catch((e) => {});
+  // }, [user?.email, header, loading]);
 
-  const handleCancelOrder = (item: PaymentInfoType, itm: any) => {
-    setLoading(false)
-    const now = moment();
-    const date = now.format("MM/DD/YY hh:mm a");
-    const orderCancelInfo = {
-      id: item?._id,
-      buyerEmail: user?.email,
-      EmailAddress: item?.EmailAddress,
-      orderProduct: itm,
-      date: date,
-      paymentId: item?.paymentId,
-      orderId: item?.orderId,
-      Phone: item?.Phone,
-    };
-    axios
-      .put(
-        `${process.env.BASE_URL}success/client-order-cencel?email=${user?.email}`,
-        orderCancelInfo,
-        header
-      )
-      .then((res) => {
-        if (res.data.message === "Order Canceled") {
-          setLoading(true);
-          toast.success("Order Canceled Wait For Admin Response")
-        }
-        setLoading(true);
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          console.error("Unauthorized access");
-          setLoading(true);
-        } else {
-          console.error("Unauthorized access");
-          setLoading(true);
-        }
-      });
+  // const handleCancelOrder = (item: PaymentInfoType, itm: any) => {
+  //   setLoading(false)
+  //   const now = moment();
+  //   const date = now.format("MM/DD/YY hh:mm a");
+  //   const orderCancelInfo = {
+  //     id: item?._id,
+  //     buyerEmail: user?.email,
+  //     EmailAddress: item?.EmailAddress,
+  //     orderProduct: itm,
+  //     date: date,
+  //     paymentId: item?.paymentId,
+  //     orderId: item?.orderId,
+  //     Phone: item?.Phone,
+  //   };
+  //   axios
+  //     .put(
+  //       `${process.env.BASE_URL}success/client-order-cencel?email=${user?.email}`,
+  //       orderCancelInfo,
+  //       header
+  //     )
+  //     .then((res) => {
+  //       if (res.data.message === "Order Canceled") {
+  //         setLoading(true);
+  //         toast.success("Order Canceled Wait For Admin Response")
+  //       }
+  //       setLoading(true);
+  //     })
+  //     .catch((error) => {
+  //       if (error.response.status === 403) {
+  //         console.error("Unauthorized access");
+  //         setLoading(true);
+  //       } else {
+  //         console.error("Unauthorized access");
+  //         setLoading(true);
+  //       }
+  //     });
 
-    //
-  };
+  //   //
+  // };
 
   let totalCardSum = 0;
   return (
@@ -78,25 +78,27 @@ const OrderHistory = () => {
                 {item?.orderProducts.length ? (
                   <>
                     <div key={item?._id}>
-                      <p> <strong>Order Id</strong> : {item?.orderId}</p>
+                      <p>
+                        {" "}
+                        <strong>Order Id</strong> : {item?.orderId}
+                      </p>
                       <p>
                         <strong>Order Date</strong> :{" "}
                         <CustomDateFormatter inputDate={item?.date as string} />{" "}
                       </p>
-                      
-                      {
-                        item?.shipmentStatus === "Delivered" ?
+
+                      {item?.shipmentStatus === "Delivered" ? (
                         <>
-                        <p>
-                        <strong>Delivere Date</strong> :{" "}
-                        <CustomDateFormatter inputDate={item?.orderStatusDate as string} />{" "}
-                      </p>
+                          <p>
+                            <strong>Delivere Date</strong> :{" "}
+                            <CustomDateFormatter
+                              inputDate={item?.orderStatusDate as string}
+                            />{" "}
+                          </p>
                         </>
-                        :
-                        <>
-                           
-                        </>
-                      }
+                      ) : (
+                        <></>
+                      )}
 
                       <section className="cart-area pt-10 pb-10">
                         <div className="container small-container">
@@ -183,7 +185,7 @@ const OrderHistory = () => {
                                                 <td className="product-subtotal">
                                                   <span className="amount">
                                                     <div className="bd-banner__btn">
-                                                      <button
+                                                      {/* <button
                                                         onClick={() =>
                                                           handleCancelOrder(
                                                             item,
@@ -193,7 +195,7 @@ const OrderHistory = () => {
                                                         className="bd-bn__btn-2"
                                                       >
                                                         Cancel Order
-                                                      </button>
+                                                      </button> */}
                                                     </div>
                                                   </span>
                                                 </td>

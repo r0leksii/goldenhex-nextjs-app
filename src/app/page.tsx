@@ -2,12 +2,14 @@
 
 import HomeThreeMain from "@/components/home-three/HomeThreeMain";
 import Wrapper from "@/layout/DefaultWrapper";
+import ShopMain from "@/components/shop/ShopMain";
 const Home = () => {
   return (
     <>
       <Wrapper>
         <main>
-          <HomeThreeMain />
+          {/* <HomeThreeMain /> */}
+          <ShopMain />
         </main>
       </Wrapper>
     </>

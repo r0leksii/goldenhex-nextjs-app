@@ -15,18 +15,18 @@ interface FormData {
 const AddReview = ({ product, setnewReview, newReview }: any) => {
   const [purchase, setPurchase] = useState([]);
   const [retting, setRetting] = useState<number>(0);
-  const { user,header } = useGlobalContext();
+  const { user, header } = useGlobalContext();
 
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.BASE_URL}success/percess-client-info?email=${user?.email}`
-      )
-      .then((res) => {
-        setPurchase(res.data.clients);
-      })
-      .catch((e) => console.log(e));
-  }, [user?.email]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${process.env.BASE_URL}success/percess-client-info?email=${user?.email}`
+  //     )
+  //     .then((res) => {
+  //       setPurchase(res.data.clients);
+  //     })
+  //     .catch((e) => console.log(e));
+  // }, [user?.email]);
 
   const reviewAccess: any = purchase.find(
     (item: any) => item?._id === product?._id
@@ -61,7 +61,7 @@ const AddReview = ({ product, setnewReview, newReview }: any) => {
   const onSubmit: SubmitHandler<FormData> = (data) => {
     const review = data.review;
     const reviewInfoWithUser = {
-      productName:product?.productName,
+      productName: product?.productName,
       review,
       name: user?.name,
       email: user?.email,
@@ -69,11 +69,15 @@ const AddReview = ({ product, setnewReview, newReview }: any) => {
       productId: product?._id,
       categoryName: product?.categoryName,
       retting,
-      img:user?.photo
+      img: user?.photo,
     };
 
     axios
-      .post(`${process.env.BASE_URL}user-input/add-review?email=${user?.email}`, reviewInfoWithUser, header)
+      .post(
+        `${process.env.BASE_URL}user-input/add-review?email=${user?.email}`,
+        reviewInfoWithUser,
+        header
+      )
       .then((res) => {
         if (res.data.message === "success") {
           toast.success(`Review Added`);
@@ -85,15 +89,13 @@ const AddReview = ({ product, setnewReview, newReview }: any) => {
           toast.error(`Something Is Wrong`);
         }
       })
-      .catch((error)=>{
+      .catch((error) => {
         if (error.response.status === 403) {
-          console.error(
-            "Unauthorized access"
-          );
+          console.error("Unauthorized access");
         } else {
           console.error("Unauthorized access");
         }
-      })
+      });
   };
 
   return (

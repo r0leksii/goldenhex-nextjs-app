@@ -91,7 +91,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                           style={{ width: "100%", height: "auto" }}
                         />
                       </Link>
-                      <div className="bd-product__action">
+                      {/* <div className="bd-product__action">
                         <span
                           className="cart-btn"
                           data-toggle="tooltip"
@@ -119,7 +119,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                         >
                           <i className="fal fa-heart"></i>
                         </span>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="bd-teanding__content">
                       <h4 className="bd-product__title">
@@ -145,9 +145,6 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                           <span className="out-of-stock">Out of Stock</span>
                         </div>
                       )}
-                      <div className="bd-product__icon">
-                        {/* Rating component can be added here if needed */}
-                      </div>
                     </div>
                   </div>
                 </div>

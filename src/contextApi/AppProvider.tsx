@@ -90,26 +90,26 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [token, loggedIn, update, header]);
 
-  useEffect(() => {
-    if (user?.email) {
-      setProdcutLoadding(true);
-      axios
-        .get(
-          `${process.env.BASE_URL}success/client-order-info?email=${user?.email}&page=${page}&limit=${limit}`
-        )
-        .then((res) => {
-          setMyProducts(res.data.orderProduct);
-          setotalPages(res.data.totalPages);
-          setcurrentPage(res.data.currentPage);
-          setProdcutLoadding(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [user?.email, paymentSuccess, page, limit]);
+  // useEffect(() => {
+  //   if (user?.email) {
+  //     setProdcutLoadding(true);
+  //     axios
+  //       .get(
+  //         `${process.env.BASE_URL}success/client-order-info?email=${user?.email}&page=${page}&limit=${limit}`
+  //       )
+  //       .then((res) => {
+  //         setMyProducts(res.data.orderProduct);
+  //         setotalPages(res.data.totalPages);
+  //         setcurrentPage(res.data.currentPage);
+  //         setProdcutLoadding(false);
+  //       })
+  //       .catch((e) => {
+  //         setLoading(false);
+  //       });
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // }, [user?.email, paymentSuccess, page, limit]);
 
   const logout = () => {
     localStorage.removeItem("accessToken");

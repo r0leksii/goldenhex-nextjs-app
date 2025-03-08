@@ -6,70 +6,70 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import moment from "moment"; 
+import moment from "moment";
 import { toast } from "react-toastify";
 const DefaultDashboard = () => {
   const { user, header, setDynamicId, settotalProduct } = useGlobalContext();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.BASE_URL}success/payment-info?email=${user?.email}`,
-        header
-      )
-      .then((res) => {
-        if (res.data.message === "success") {
-          setPaymentInfo(res.data.data);
-          settotalProduct(res.data.data.length)
-        }
-      })
-      .catch((e) => {});
-  }, [user?.email, header, loading,settotalProduct]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${process.env.BASE_URL}success/payment-info?email=${user?.email}`,
+  //       header
+  //     )
+  //     .then((res) => {
+  //       if (res.data.message === "success") {
+  //         setPaymentInfo(res.data.data);
+  //         settotalProduct(res.data.data.length)
+  //       }
+  //     })
+  //     .catch((e) => {});
+  // }, [user?.email, header, loading,settotalProduct]);
 
-  const handleCancelOrder = (item: PaymentInfoType, itm: any) => {
-    // setLoading(false)
-    const now = moment();
-    const date = now.format("MM/DD/YY hh:mm a");
-    const orderCancelInfo = {
-      id: item?._id,
-      buyerEmail: user?.email,
-      EmailAddress: item?.EmailAddress,
-      orderProduct: itm,
-      date: date,
-      paymentId: item?.paymentId,
-      orderId: item?.orderId,
-      Phone: item?.Phone,
-    };
-    axios
-      .put(
-        `${process.env.BASE_URL}success/client-order-cencel?email=${user?.email}`,
-        orderCancelInfo,
-        header
-      )
-      .then((res) => {
-        if (res.data.message === "Order Canceled") {
-          setLoading(true);
-          toast.success("Order Canceled Wait For Admin Response");
-        }
-        setLoading(true);
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          console.error("Unauthorized access");
-          setLoading(true);
-        } else {
-          console.error("Unauthorized access");
-          setLoading(true);
-        }
-      });
+  // const handleCancelOrder = (item: PaymentInfoType, itm: any) => {
+  //   // setLoading(false)
+  //   const now = moment();
+  //   const date = now.format("MM/DD/YY hh:mm a");
+  //   const orderCancelInfo = {
+  //     id: item?._id,
+  //     buyerEmail: user?.email,
+  //     EmailAddress: item?.EmailAddress,
+  //     orderProduct: itm,
+  //     date: date,
+  //     paymentId: item?.paymentId,
+  //     orderId: item?.orderId,
+  //     Phone: item?.Phone,
+  //   };
+  //   axios
+  //     .put(
+  //       `${process.env.BASE_URL}success/client-order-cencel?email=${user?.email}`,
+  //       orderCancelInfo,
+  //       header
+  //     )
+  //     .then((res) => {
+  //       if (res.data.message === "Order Canceled") {
+  //         setLoading(true);
+  //         toast.success("Order Canceled Wait For Admin Response");
+  //       }
+  //       setLoading(true);
+  //     })
+  //     .catch((error) => {
+  //       if (error.response.status === 403) {
+  //         console.error("Unauthorized access");
+  //         setLoading(true);
+  //       } else {
+  //         console.error("Unauthorized access");
+  //         setLoading(true);
+  //       }
+  //     });
 
-    //
-  };
+  //   //
+  // };
 
   let totalCardSum = 0;
- 
+
   return (
     <>
       {paymentInfo?.length ? (
@@ -187,7 +187,7 @@ const DefaultDashboard = () => {
                                                 <td className="product-subtotal">
                                                   <span className="amount">
                                                     <div className="bd-banner__btn">
-                                                      <button
+                                                      {/* <button
                                                         onClick={() =>
                                                           handleCancelOrder(
                                                             item,
@@ -197,7 +197,7 @@ const DefaultDashboard = () => {
                                                         className="bd-bn__btn-2"
                                                       >
                                                         Cancel Order
-                                                      </button>
+                                                      </button> */}
                                                     </div>
                                                   </span>
                                                 </td>

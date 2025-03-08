@@ -7,17 +7,17 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 const OrderTrackModal = () => {
-  const {dynamicId } = useGlobalContext();
+  const { dynamicId } = useGlobalContext();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfoType[]>([]);
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.BASE_URL}success/client-order-track/${dynamicId}`,)
-      .then((res) => {
-        setPaymentInfo(res.data.products);
-      })
-      .catch((e) => {});
-  }, [dynamicId]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${process.env.BASE_URL}success/client-order-track/${dynamicId}`,)
+  //     .then((res) => {
+  //       setPaymentInfo(res.data.products);
+  //     })
+  //     .catch((e) => {});
+  // }, [dynamicId]);
   return (
     <>
       <div
@@ -96,10 +96,8 @@ const OrderTrackModal = () => {
                             })}
                           </div>
                         </div>
-                        
                       </>
                     ))}
-                    
                   </div>
                 </div>
               </div>

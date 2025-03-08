@@ -9,14 +9,14 @@ import userIcon from "../../../public/assets/img/icon/user-icon.png";
 import Link from "next/link";
 const ShopDetailsReview = ({ product, newReview, setnewReview }: any) => {
   const [reviews, setReviews] = useState<UserReviewType[]>([]);
-  useEffect(() => {
-    axios
-      .get(`${process.env.BASE_URL}user-input/reviews?id=${product?._id}`)
-      .then((res) => {
-        setReviews(res.data);
-      })
-      .catch((e) => console.log(e));
-  }, [product?._id, newReview]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.BASE_URL}user-input/reviews?id=${product?._id}`)
+  //     .then((res) => {
+  //       setReviews(res.data);
+  //     })
+  //     .catch((e) => console.log(e));
+  // }, [product?._id, newReview]);
 
   return (
     <>
@@ -61,7 +61,11 @@ const ShopDetailsReview = ({ product, newReview, setnewReview }: any) => {
             id="nav-seller"
             role="tabpanel"
           >
-            <div className={`tabs-wrapper mt-35 mb-50 ${reviews.length> 4 ? "scrollbox" : ""}`}>
+            <div
+              className={`tabs-wrapper mt-35 mb-50 ${
+                reviews.length > 4 ? "scrollbox" : ""
+              }`}
+            >
               {reviews.length ? (
                 <div className="scrollbox">
                   {reviews.map((item) => (

@@ -30,22 +30,22 @@ const RelatedProduct = ({ category, productID }: any) => {
       setModalId(id);
     }
   };
-  useEffect(() => {
-    if (category) {
-      axios
-        .get(
-          `${process.env.BASE_URL}product/search-products?search=${category}`
-        )
-        .then((res) => {
-          let products = res.data.products;
-          let relatedProducts = products.filter(
-            (item: any) => item?._id !== productID
-          );
-          setProducts(relatedProducts);
-        })
-        .catch((e) => console.log(e));
-    }
-  }, [category, setProducts, productID]);
+  // useEffect(() => {
+  //   if (category) {
+  //     axios
+  //       .get(
+  //         `${process.env.BASE_URL}product/search-products?search=${category}`
+  //       )
+  //       .then((res) => {
+  //         let products = res.data.products;
+  //         let relatedProducts = products.filter(
+  //           (item: any) => item?._id !== productID
+  //         );
+  //         setProducts(relatedProducts);
+  //       })
+  //       .catch((e) => console.log(e));
+  //   }
+  // }, [category, setProducts, productID]);
   return (
     <>
       <div className="row">
