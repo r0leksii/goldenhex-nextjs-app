@@ -12,36 +12,79 @@ import { cart_product, decrease_quantity } from "@/redux/slices/cartSlice";
 import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import { CartProductType } from "@/interFace/interFace";
 import axios from "axios";
-import discover from "../../../public/assets/img/icon/discover.png";
 import masterCard from "../../../public/assets/img/icon/mastercard.png";
 import papyle from "../../../public/assets/img/icon/paypal.png";
 import visa from "../../../public/assets/img/icon/visa.png";
-import GetRatting from "@/hooks/GetRatting";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { ProductType } from "./ShopSection";
+import { Modal } from "bootstrap";
+
 const ProductModal = () => {
-  const { modalId } = useGlobalContext();
+  const { modalId, openModal } = useGlobalContext();
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-  const [product, setProduct] = useState<CartProductType[]>([]);
-  const [retting, setRetting] = useState<any>({});
-  const myProduct: CartProductType = product[0];
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [modal, setModal] = useState<Modal | null>(null);
+
+  const dispatch = useDispatch();
+
   const cartProducts = useSelector(
     (state: RootState) => state.cart.cartProducts
   );
-  const quantity = cartProducts.find((item) => item?._id === myProduct?._id);
-  const totalCart = quantity?.totalCard;
+  const quantity = product
+    ? cartProducts.find((item) => item?._id === product?._id)
+    : undefined;
+  const totalCart = quantity?.totalCard || 0;
 
+  // First: Fetch product data when modalId changes
   useEffect(() => {
-    if (modalId !== "") {
-      axios
-        .get(`${process.env.BASE_URL}product/single-products/${modalId}`)
-        .then((res) => {
-          setRetting(res.data.rettingsData);
-          setProduct(res.data.data);
-        })
-        .catch((e) => console.log(e));
-    }
+    const fetchProduct = async () => {
+      if (!modalId) return;
+
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/shop?id=${modalId}`);
+        if (!response.ok) throw new Error("Failed to fetch product");
+
+        const data = await response.json();
+        if (data.products && data.products[0]) {
+          setProduct(data.products[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProduct();
   }, [modalId]);
+
+  // Second: Initialize the modal after product is loaded
+  useEffect(() => {
+    if (!product) return; // Only initialize modal after product is loaded
+
+    const modalElement = document.getElementById("productmodal");
+    if (modalElement) {
+      const bootstrapModal = new Modal(modalElement, {
+        backdrop: true,
+        keyboard: true,
+      });
+      setModal(bootstrapModal);
+
+      // Show modal if we have both product and openModal is true
+      if (openModal) {
+        bootstrapModal.show();
+      }
+    }
+
+    return () => {
+      if (modal) {
+        modal.dispose();
+      }
+    };
+  }, [product, openModal]); // Dependencies include product and openModal
 
   const handleAddToCart = (product: CartProductType) => {
     dispatch(cart_product(product));
@@ -51,16 +94,32 @@ const ProductModal = () => {
     dispatch(decrease_quantity(product));
   };
   const handleChange = (e: any) => {};
-  const dispatch = useDispatch();
+
+  if (isLoading) {
+    return (
+      <div className="product__modal-sm modal fade" id="productmodal">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="text-center p-4">Loading...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return null;
+  }
+
   return (
     <div
       className="product__modal-sm modal fade"
       id="productmodal"
-      //   tabIndex="-1"
       role="dialog"
       aria-hidden="true"
+      tabIndex={-1}
     >
-      <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-dialog modal-dialog-centered " role="document">
         <div className="modal-content">
           <div className="product__modal">
             <div className="product__modal-wrapper p-relative">
@@ -98,34 +157,33 @@ const ProductModal = () => {
                                   prevEl: ".product-details__button-prev",
                                 }}
                               >
-                                {myProduct &&
-                                  myProduct?.productImages?.map(
-                                    (item: any, index: any) => {
-                                      return (
-                                        <SwiperSlide key={index}>
-                                          <div className="swiper-slides">
-                                            <div className="bd-product__details-large-img w-img">
-                                              <Image
-                                                src={item}
-                                                alt="product-details-img"
-                                                width={450}
-                                                height={450}
-                                                style={{
-                                                  width: "100%",
-                                                  height: "auto",
-                                                }}
-                                              />
-                                            </div>
+                                {product.imageURLs.map(
+                                  (item: any, index: any) => {
+                                    return (
+                                      <SwiperSlide key={index}>
+                                        <div className="swiper-slides">
+                                          <div className="bd-product__details-large-img w-img">
+                                            <Image
+                                              src={item}
+                                              alt="product-details-img"
+                                              width={450}
+                                              height={450}
+                                              style={{
+                                                width: "100%",
+                                                height: "auto",
+                                              }}
+                                            />
                                           </div>
-                                        </SwiperSlide>
-                                      );
-                                    }
-                                  )}
+                                        </div>
+                                      </SwiperSlide>
+                                    );
+                                  }
+                                )}
                               </Swiper>
                             </div>
                           </div>
                         </div>
-                        <div className="bd-product__details-small-img">
+                        {/* <div className="bd-product__details-small-img">
                           <div className="swiper-container product-details-nav">
                             <div className="swiper-wrappers">
                               <Swiper
@@ -136,99 +194,67 @@ const ProductModal = () => {
                                 modules={[Controller, FreeMode, Thumbs]}
                                 watchSlidesProgress={false}
                               >
-                                {myProduct &&
-                                  myProduct?.productImages?.map(
-                                    (item: any, index: any) => (
-                                      <SwiperSlide key={index}>
-                                        <div className="swiper-slides m-img">
-                                          <div className={`product-small__img`}>
-                                            <Image
-                                              src={item}
-                                              alt="product-details-img"
-                                              width={70}
-                                              height={70}
-                                              style={{
-                                                width: "100%",
-                                                height: "auto",
-                                              }}
-                                            />
-                                          </div>
+                                {product.imageURLs.map(
+                                  (item: any, index: any) => (
+                                    <SwiperSlide key={index}>
+                                      <div className="swiper-slides m-img">
+                                        <div className={`product-small__img`}>
+                                          <Image
+                                            src={item}
+                                            alt="product-details-img"
+                                            width={70}
+                                            height={70}
+                                            style={{
+                                              width: "100%",
+                                              height: "auto",
+                                            }}
+                                          />
                                         </div>
-                                      </SwiperSlide>
-                                    )
-                                  )}
+                                      </div>
+                                    </SwiperSlide>
+                                  )
+                                )}
                               </Swiper>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="modal-product-info modal-product__details-content">
-                        <div className="product-ratting">
-                          <ul>
-                            <li>
-                              <a href="#">
-                                <GetRatting
-                                  averageRating={retting.averageRating}
-                                />
-                              </a>
-                            </li>
-
-                            <li className="review-total">
-                              {" "}
-                              <a href="#">
-                                {" "}
-                                ({" "}
-                                {`${retting.rettings} ${
-                                  retting.rettings <= 1 ? "Rating" : "Ratings"
-                                }`}{" "}
-                                )
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                        <h3>{myProduct?.productName}</h3>
+                        <h3>{product?.title}</h3>
                         <div className="product-price">
                           <span>
                             $
-                            {myProduct?.price % 1 === 0
-                              ? `${myProduct?.price}.00`
-                              : myProduct?.price.toFixed(2)}
+                            {product?.price % 1 === 0
+                              ? `${product?.price}.00`
+                              : product?.price.toFixed(2)}
                           </span>
-                          {myProduct?.offer === true ? (
-                            <del>
-                              {`$${
-                                myProduct?.oldPrice % 1 === 0
-                                  ? `${myProduct?.oldPrice}.00`
-                                  : myProduct?.oldPrice.toFixed(2)
-                              }`}
-                            </del>
-                          ) : (
-                            <></>
-                          )}
                         </div>
-                        <div className="modal-product-meta bd__product-details-menu-1">
+                        {/* <div className="modal-product-meta bd__product-details-menu-1">
                           <ul>
                             <li>
                               <strong>Products:</strong>
-                              {myProduct?.productQuantity > 0 && (
-                                <span>
-                                  {" "}
-                                  {myProduct?.productQuantity} Pieces Available{" "}
-                                </span>
-                              )}
+                              {product?.currentStock &&
+                                product?.currentStock > 0 && (
+                                  <span>
+                                    {" "}
+                                    {product?.currentStock} Pieces Available{" "}
+                                  </span>
+                                )}
                             </li>
                           </ul>
                         </div>
                         <div className="product-quantity-cart mb-25">
-                          {myProduct?.productQuantity > 0 ? (
+                          {product?.currentStock && product?.currentStock > 0 ? (
                             <>
                               {" "}
                               <div className="product-quantity-form">
                                 <form onSubmit={(e) => e.preventDefault()}>
                                   <button
-                                    onClick={() => handDecressCart(myProduct)}
+                                    onClick={() =>
+                                      handDecressCart(product as any)
+                                    }
                                     className="cart-minus"
                                   >
                                     <i className="far fa-minus"></i>
@@ -241,7 +267,9 @@ const ProductModal = () => {
                                   />
                                   <button
                                     className="cart-plus"
-                                    onClick={() => handleAddToCart(myProduct)}
+                                    onClick={() =>
+                                      handleAddToCart(product as any)
+                                    }
                                   >
                                     <i className="far fa-plus"></i>
                                   </button>
@@ -266,7 +294,7 @@ const ProductModal = () => {
                           )}
                         </div>
 
-                        {myProduct?.productQuantity > 0 ? (
+                        {product?.currentStock && product?.currentStock > 0 ? (
                           <>
                             <div className="bd__product-details-menu-3">
                               <ul>
@@ -275,7 +303,7 @@ const ProductModal = () => {
                                     className="wishlist-btn"
                                     title="Wishlist"
                                     onClick={() =>
-                                      dispatch(wishlist_product(myProduct))
+                                      dispatch(wishlist_product(product as any))
                                     }
                                   >
                                     <i className="far fa-heart"></i>
@@ -296,7 +324,7 @@ const ProductModal = () => {
                           </>
                         ) : (
                           <></>
-                        )}
+                        )} */}
 
                         <div className="bd__social-media">
                           <ul>
@@ -305,25 +333,27 @@ const ProductModal = () => {
                               <Link
                                 href="https://www.facebook.com/"
                                 target="_blank"
+                                title="Facebook"
                               >
                                 <i className="fab fa-facebook-f"></i>
                               </Link>
                             </li>
                             <li>
                               <Link
-                                href="https://twitter.com/?lang=en"
-                                title="Twitter"
+                                href="https://www.tiktok.com/@"
+                                target="_blank"
+                                title="TikTok"
                               >
-                                <i className="fab fa-twitter"></i>
+                                <i className="fab fa-tiktok"></i>
                               </Link>
                             </li>
                             <li>
                               <Link
-                                href="https://www.linkedin.com/"
-                                title="Linkedin"
+                                href="https://www.threads.net/"
+                                title="Threads"
                                 target="_blank"
                               >
-                                <i className="fab fa-linkedin"></i>
+                                <i className="fab fa-threads"></i>
                               </Link>
                             </li>
                             <li>
@@ -339,9 +369,6 @@ const ProductModal = () => {
                         </div>
                         <div className="bd__safe-checkout">
                           <h5>Guaranteed Safe Checkout</h5>
-                          <a href="#">
-                            <Image src={discover} alt="Payment Image" />
-                          </a>
                           <a href="#">
                             <Image src={masterCard} alt="Payment Image" />
                           </a>

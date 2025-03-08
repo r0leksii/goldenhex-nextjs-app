@@ -50,6 +50,7 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
     "@types/react": "19.0.0",
     "@types/react-modal-image": "^2.6.4",
     "@types/react-modal-video": "^1.2.3",

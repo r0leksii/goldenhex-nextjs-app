@@ -20,23 +20,35 @@ import GetRatting from "@/hooks/GetRatting";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { wishlist_product } from "@/redux/slices/wishlistSlice";
+import { ProductType } from "../shop/ShopSection";
 const ShopDetailsMain = ({ id }: any) => {
   const dispatch = useDispatch();
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   const [newReview, setnewReview] = useState<boolean>(false);
-  const [product, setProduct] = useState<CartProductType[]>([]);
+  const [product, setProduct] = useState<ProductType[]>([]);
   const [retting, setRetting] = useState<any>({});
-  const myProduct: CartProductType = product[0];
+  const myProduct: ProductType = product[0];
 
   useEffect(() => {
-    axios
-      .get(`${process.env.BASE_URL}product/single-products/${id}`)
-      .then((res) => {
-        setRetting(res.data.rettingsData);
-        setProduct(res.data.data);
-      })
-      .catch((e) => console.log(e));
-  }, [id, setnewReview, newReview, setRetting]);
+    const fetchProductDetails = async () => {
+      try {
+        const response = await fetch(`/api/shop?id=${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch product details");
+        }
+        const data = await response.json();
+        if (data.products && data.products.length > 0) {
+          setProduct(data.products);
+        }
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
+
+    if (id) {
+      fetchProductDetails();
+    }
+  }, [id]);
 
   const handleAddToCart = (product: CartProductType) => {
     dispatch(cart_product(product));
@@ -51,6 +63,7 @@ const ShopDetailsMain = ({ id }: any) => {
   );
   const quantity = cartProducts.find((item) => item?._id === myProduct?._id);
   const totalCart = quantity?.totalCard;
+
   return (
     <>
       <Breadcrumb breadHome={"Home"} breadMenu={"Shop Details"} />
@@ -64,7 +77,32 @@ const ShopDetailsMain = ({ id }: any) => {
                   <div className="col-md-6">
                     <div className="product-details__thumb-inner small-device p-relative">
                       <div className="bd__shop-details-img-gallery mb-30">
-                        <div className="product-details-active swiper-container">
+                        <div className="product-details__thumb-inner small-device p-relative">
+                          <div className="bd__shop-details-img-gallery mb-30">
+                            <div className="product-image-container">
+                              {myProduct &&
+                                myProduct.imageURLs &&
+                                myProduct.imageURLs[0] && (
+                                  <div className="bd-product__details-large-img w-img">
+                                    <Image
+                                      src={myProduct.imageURLs[0]}
+                                      alt={
+                                        myProduct.title || "product-details-img"
+                                      }
+                                      width={577}
+                                      height={577}
+                                      style={{
+                                        width: "100%",
+                                        height: "auto",
+                                        objectFit: "contain",
+                                      }}
+                                    />
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        </div>
+                        {/* <div className="product-details-active swiper-container">
                           <div className="swiper-wrappers">
                             <Swiper
                               thumbs={{ swiper: thumbsSwiper }}
@@ -107,9 +145,9 @@ const ShopDetailsMain = ({ id }: any) => {
                                 })}
                             </Swiper>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
-                      <div className="bd-product__details-small-img">
+                      {/* <div className="bd-product__details-small-img">
                         <div className="swiper-container product-details-nav">
                           <div className="swiper-wrappers">
                             <Swiper
@@ -141,13 +179,13 @@ const ShopDetailsMain = ({ id }: any) => {
                                 ))}
                             </Swiper>
                           </div>
-                        </div>
-                      </div>
+                        </div> 
+                      </div> */}
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="modal-product-info shop-details-info">
-                      <div className="product-ratting">
+                      {/* <div className="product-ratting">
                         <ul>
                           <li>
                             <a href="#">
@@ -169,13 +207,12 @@ const ShopDetailsMain = ({ id }: any) => {
                             </a>
                           </li>
                         </ul>
-                      </div>
-                      <h3>{myProduct?.productName}</h3>
+                      </div> */}
+                      <h3>{myProduct?.title}</h3>
                       <div className="product-price">
-                        <span>${myProduct?.price}.00</span>
-                        <del>${myProduct?.oldPrice}.00</del>
+                        <span>${myProduct?.price}</span>
                       </div>
-                      {myProduct?.productQuantity > 0 ? (
+                      {/* {myProduct?.currentStock > 0 ? (
                         <>
                           <div className="modal-product-meta bd__product-details-menu-1">
                             <ul>
@@ -183,7 +220,7 @@ const ShopDetailsMain = ({ id }: any) => {
                                 <strong>Products:</strong>
                                 <span>
                                   {" "}
-                                  {myProduct?.productQuantity} Pieces Available{" "}
+                                  {myProduct?.currentStock} Pieces Available{" "}
                                 </span>
                               </li>
                             </ul>
@@ -191,9 +228,9 @@ const ShopDetailsMain = ({ id }: any) => {
                         </>
                       ) : (
                         <></>
-                      )}
+                      )} */}
 
-                      <div className="product-quantity-cart mb-25">
+                      {/* <div className="product-quantity-cart mb-25">
                         {myProduct?.productQuantity > 0 ? (
                           <>
                             {" "}
@@ -236,9 +273,9 @@ const ShopDetailsMain = ({ id }: any) => {
                             </span>
                           </>
                         )}
-                      </div>
+                      </div> */}
 
-                      {myProduct?.productQuantity > 0 ? (
+                      {/* {myProduct?.productQuantity > 0 ? (
                         <>
                           <div className="bd__product-details-menu-3">
                             <ul>
@@ -268,7 +305,7 @@ const ShopDetailsMain = ({ id }: any) => {
                         </>
                       ) : (
                         <></>
-                      )}
+                      )} */}
 
                       <div className="bd__social-media">
                         <ul>
@@ -312,9 +349,6 @@ const ShopDetailsMain = ({ id }: any) => {
                       <div className="bd__safe-checkout">
                         <h5>Guaranteed Safe Checkout</h5>
                         <a href="#">
-                          <Image src={discover} alt="Payment Image" />
-                        </a>
-                        <a href="#">
                           <Image src={masterCard} alt="Payment Image" />
                         </a>
                         <a href="#">
@@ -328,21 +362,21 @@ const ShopDetailsMain = ({ id }: any) => {
                   </div>
                 </div>
               </div>
-              <ShopDetailsReview
+              {/* <ShopDetailsReview
                 newReview={newReview}
                 setnewReview={setnewReview}
                 product={myProduct && myProduct}
-              />
+              /> */}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bd-related-Product__area mb-95">
+      {/* <div className="bd-related-Product__area mb-95">
         <div className="small-container container">
           <RelatedProduct productID={id} category={myProduct?.categoryName} />
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

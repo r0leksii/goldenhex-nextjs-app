@@ -12,10 +12,6 @@ import ShopSidebarRetting from "./ShopSidebarRetting";
 import ProductModal from "./ProductModal";
 import NiceSelect from "../common/NiceSelect";
 import PaginationTwo from "../elements/product/PaginationTwo";
-import { components } from "@/types/schema.type";
-import { useRouter } from "next/navigation";
-
-// Define ProductType to match what's expected by the context
 export interface ProductType {
   _id: string;
   categoryName: string;
@@ -27,6 +23,7 @@ export interface ProductType {
   imageURLs: string[];
   description?: string;
   isAvailable?: boolean;
+  currentStock?: number;
 }
 
 const ShopSection = () => {
@@ -82,7 +79,6 @@ const ShopSection = () => {
       })
       .then((data) => {
         if (data.products && Array.isArray(data.products)) {
-          // Map the API response to match the expected ProductType
           // Only include the fields we need, avoiding spreading the entire object
           const formattedProducts = data.products.map(
             (product: any): ProductType => ({
@@ -97,6 +93,8 @@ const ShopSection = () => {
               imageURLs: product.imageURLs || [product.ImageUrl || ""],
               description: product.description || product.Description || "",
               isAvailable: product.isAvailable || product.IsAvailable || false,
+              currentStock:
+                product.currentStock || product.StockSummary?.CurrentStock || 0,
             })
           );
 

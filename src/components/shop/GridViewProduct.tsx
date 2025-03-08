@@ -27,8 +27,10 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
   const displayProducts = Array.isArray(products) ? products : [];
 
   const handleMoldalData = (id: string) => {
-    setOpenModal(!openModal);
+    // First set the ID
     setModalId(id);
+    // Then set openModal to true
+    setOpenModal(true);
   };
 
   const handleAddToCart = (product: any) => {
@@ -103,8 +105,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                           data-toggle="tooltip"
                           data-placement="top"
                           title="Quick View"
-                          data-bs-toggle="modal"
-                          data-bs-target="#productmodal"
+                          id="#productmodal"
                           onClick={() => handleMoldalData(item._id)}
                         >
                           <i className="fal fa-eye"></i>

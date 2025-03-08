@@ -36,6 +36,7 @@ export async function GET(
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "12";
   const endpoint = searchParams.get("endpoint") || "";
+  const id = searchParams.get("id");
 
   try {
     // Create headers with authentication tokens from environment variables
@@ -143,6 +144,40 @@ export async function GET(
           };
         }
       );
+
+      // If an ID is provided, filter for just that product
+      if (id) {
+        const product = catalogueProducts.find((p) => p.Id?.toString() === id);
+        if (product && product.Id) {
+          const webProduct = productsMap[product.Id.toString()];
+          const sanitizedProduct = {
+            _id: product.Id.toString(),
+            categoryName: product.CategoryName || "",
+            price: webProduct?.SalePrice || 0,
+            img: webProduct?.ProductImages?.[0]?.ImageUrl || "",
+            title: webProduct?.Name || "",
+            quantity: 1,
+            tags: webProduct?.ProductTags?.map((tag) => tag.Name || "") || [],
+            imageURLs:
+              webProduct?.ProductImages?.map((img) => img.ImageUrl || "") || [],
+            description: webProduct?.Description || "",
+            currentStock: webProduct?.StockSummary?.CurrentStock || 0,
+            isAvailable: webProduct?.StockSummary?.CurrentStock
+              ? webProduct.StockSummary.CurrentStock > 0
+              : true,
+          };
+          return NextResponse.json({
+            products: [sanitizedProduct],
+            totalPages: 1,
+            currentPage: 1,
+          });
+        }
+        return NextResponse.json({
+          products: [],
+          totalPages: 1,
+          currentPage: 1,
+        });
+      }
 
       return NextResponse.json({
         products: sanitizedProducts,
