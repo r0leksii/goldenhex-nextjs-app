@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import moment from "moment";
 
-const CustomDateFormatter = ({ inputDate }: any) => {
+interface CustomDateFormatterProps {
+  inputDate: string;
+}
+
+const CustomDateFormatter = ({ inputDate }: CustomDateFormatterProps) => {
   const [formattedDate, setFormattedDate] = useState("");
 
   useEffect(() => {
@@ -17,10 +20,6 @@ const CustomDateFormatter = ({ inputDate }: any) => {
   }, [inputDate]);
 
   return <> {formattedDate}</>;
-};
-
-CustomDateFormatter.propTypes = {
-  inputDate: PropTypes.string.isRequired,
 };
 
 export default CustomDateFormatter;

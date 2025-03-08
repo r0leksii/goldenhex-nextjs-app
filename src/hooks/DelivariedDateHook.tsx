@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import moment from "moment";
 
-const DeliveredDateHook = ({ inputDate }: any) => {
+interface DeliveredDateHookProps {
+  inputDate: string;
+}
+
+const DeliveredDateHook = ({ inputDate }: DeliveredDateHookProps) => {
   const [formattedDate, setFormattedDate] = useState("");
 
   useEffect(() => {
@@ -10,7 +13,7 @@ const DeliveredDateHook = ({ inputDate }: any) => {
     const parsedDate = moment(inputDate, "MM/DD/YY h:mm A");
 
     // Add three days to the parsed date
-    const futureDate = parsedDate.add(3, 'days');
+    const futureDate = parsedDate.add(3, "days");
 
     // Format the date as "DD MMM h.mm A"
     const formattedDateString = futureDate.format("DD MMM h.mm A");
@@ -20,10 +23,6 @@ const DeliveredDateHook = ({ inputDate }: any) => {
   }, [inputDate]);
 
   return <> {formattedDate}</>;
-};
-
-DeliveredDateHook.propTypes = {
-  inputDate: PropTypes.string.isRequired,
 };
 
 export default DeliveredDateHook;
