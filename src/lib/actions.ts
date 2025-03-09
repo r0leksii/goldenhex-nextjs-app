@@ -8,13 +8,28 @@ type WebProductType = components["schemas"]["WebProduct"];
 type IProductGridType = components["schemas"]["IProductGrid"];
 type IProductGridPagedResponse =
   components["schemas"]["IProductGridPagedResponse"];
+type CategoryType = components["schemas"]["Category"];
 
 const headers = {
   Authorization: `Basic ${process.env.API_AUTH_TOKEN}`,
   "Content-Type": "application/json",
 };
 
-export async function getProducts(page: number = 1, limit: number = 8) {
+interface SanitizedCategory {
+  _id: string;
+  name: string;
+  description?: string;
+  imageUrl?: string;
+  parentId?: number;
+  children?: SanitizedCategory[];
+}
+
+export async function getProducts(
+  page: number = 1,
+  limit: number = 8,
+  categoryId?: number | null,
+  search?: string | null
+) {
   try {
     // Fetch web products
     const webProductsUrl = `${process.env.NEXT_PUBLIC_EPOS_URL}/Product/WebProducts`;
@@ -48,6 +63,8 @@ export async function getProducts(page: number = 1, limit: number = 8) {
           SellOnWeb: true,
           Page: page,
           Limit: limit,
+          CategoryId: categoryId,
+          Search: search,
         },
       }
     );
@@ -131,5 +148,38 @@ export async function getProductById(id: string) {
   } catch (error) {
     console.error("Error fetching product:", error);
     return null;
+  }
+}
+
+export async function getCategories() {
+  try {
+    const categoriesUrl = `${process.env.NEXT_PUBLIC_EPOS_URL}/Category`;
+    const categoriesRes = await axios.get<CategoryType[]>(categoriesUrl, {
+      headers,
+    });
+
+    const sanitizeCategory = (category: CategoryType): SanitizedCategory => {
+      return {
+        _id: category.Id?.toString() || "",
+        name: category.Name || "",
+        description: category.Description || undefined,
+        imageUrl: category.ImageUrl || undefined,
+        parentId: category.ParentId || undefined,
+        children:
+          category.Children?.map((child) => sanitizeCategory(child)) ||
+          undefined,
+      };
+    };
+
+    if (categoriesRes.data && Array.isArray(categoriesRes.data)) {
+      return categoriesRes.data.map((category) => sanitizeCategory(category));
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw new Error(error instanceof Error ? error.message : "Unknown error", {
+      cause: 500,
+    });
   }
 }

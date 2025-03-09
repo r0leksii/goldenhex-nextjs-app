@@ -1,8 +1,9 @@
+"use client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-
+import { getCategories } from "@/lib/actions";
 const chevronRight = <FontAwesomeIcon icon={faChevronRight} />;
 
 interface SanitizedCategory {
@@ -22,24 +23,13 @@ const CategoryItem = () => {
   );
   const [activeThirdLevel, setActiveThirdLevel] = useState<string | null>(null);
 
+  const fecthCategories = async () => {
+    const categories = await getCategories();
+    setCategories(categories);
+  };
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("/api/shop/categories");
-        const data = await response.json();
-
-        if (data.error) {
-          console.error("Error fetching categories:", data.error);
-          return;
-        }
-
-        setCategories(data.categories || []);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    };
-
-    fetchCategories();
+    fecthCategories();
   }, []);
 
   return (
