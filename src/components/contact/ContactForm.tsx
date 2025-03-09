@@ -179,14 +179,8 @@ const ContactForm = () => {
                           </div>
                           <span>
                             Mobile :{" "}
-                            <a href="tel:(+88)872-670-780">
-                              <span>(+88) 872-670-780</span>
-                            </a>
-                          </span>
-                          <span>
-                            Mobile :{" "}
-                            <a href="tel:(+8)422-655-793">
-                              <span>(+8) 422-655 -793</span>
+                            <a href="tel: ">
+                              <span>+1 (919) 946-2649</span>
                             </a>
                           </span>
                         </div>
@@ -202,13 +196,8 @@ const ContactForm = () => {
                             <h4>Email</h4>
                           </div>
                           <span>
-                            <a href="mailto:Info@example.com">
-                              Info@example.com
-                            </a>
-                          </span>
-                          <span>
-                            <a href="mailto:Info@example.com">
-                              Contact@example.com
+                            <a href="mailto:sales@goldenhex.com">
+                              sales@goldenhex.com
                             </a>
                           </span>
                         </div>
@@ -223,10 +212,7 @@ const ContactForm = () => {
                           <div className="bd-contact__title">
                             <h4>Location</h4>
                           </div>
-                          <p>
-                            Abbot Favicon Kinney, New York, <br />
-                            USA - 25423
-                          </p>
+                          <p>1200 NW Maynard Rd Cary, North Carolina</p>
                         </div>
                       </div>
                     </div>

@@ -6,7 +6,6 @@ import authorImg from "../../../public/assets/img/about/about-author.png";
 import authorSigneture from "../../../public/assets/img/about/author-signature.png";
 import Image from "next/image";
 const AboutSectionTwo = () => {
-  
   return (
     <section className="bd-about__area pt-130 pb-65">
       <div className="container">
@@ -35,26 +34,23 @@ const AboutSectionTwo = () => {
                 </div>
                 <div className="bd-about__info">
                   <p>
-                    We had reached a great height in the atmosphere, for the sky
-                    was a dead black, and the stars had ceased to twinkle. By
-                    the same illusion which lifts the horizon of the sea to the
-                    level. Always be able to find the phone that you are looking
-                    for in our offer, have made us stand out in the market, but
-                    they are simply symptoms of our dedication to what we are
-                    doing and our desire to constantly.
+                    Golden Hex story started in California, where a family of
+                    beekeepers decided to share their love of raw honey with the
+                    friends and family in Silicon Valley. Soon, the word about
+                    the quality of the honey got out, and the requests were
+                    pouring in. That how we began selling our bee products to
+                    Bay Area and Los Angeles customers. Our company kept
+                    growing, producing the finest raw honey, pollen, propolis,
+                    candies made out from beeswax, natural cosmetics, and soaps.
+                    Upon moving to North Carolina, we decided to grow our brand
+                    to the new level and to open a specialty store with European
+                    and Mediterranean products. In the Golden Hex store, we
+                    continue to offer our raw honey and other natural products
+                    of the Golden Hex brand, that is now produced in North
+                    Carolina. Our store is conveniently located next to downtown
+                    Cary, NC right next to Preston near Thomas Bond Park @ 1200
+                    NW Maynard Rd, Cary 27513
                   </p>
-                  <div className="bd-about__author">
-                    <div className="bd-about__author-thumb">
-                      <Image src={authorImg} alt="about-image" />
-                    </div>
-                    <div className="bd-about__author-info">
-                      <h4>Noyaviram</h4>
-                      <span>Founder & CEO, Orgado</span>
-                      <div className="ba-author__signature">
-                        <Image src={authorSigneture} alt="about-image" />
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

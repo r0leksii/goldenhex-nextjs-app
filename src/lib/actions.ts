@@ -26,7 +26,7 @@ interface SanitizedCategory {
 
 export async function getProducts(
   page: number = 1,
-  limit: number = 8,
+  limit: number = 12,
   categoryId?: number | null,
   search?: string | null
 ) {

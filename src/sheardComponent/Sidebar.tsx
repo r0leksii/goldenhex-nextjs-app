@@ -3,7 +3,7 @@ import React from "react";
 import useGlobalContext from "../hooks/use-context";
 import CartIcon from "../sheardComponent/elements/icons/cart-icon";
 import WishlistIcon from "../sheardComponent/elements/icons/wishlist-icon";
-import logo from "../../public/assets/img/logo/logo-2.png";
+import logo from "../../public/assets/img/logo/logo-h-goldenhex.png";
 import Image from "next/image";
 import MobileMenu from "./elements/MobileMenu";
 import SidebarSearchContent from "./elements/SidebarSearchContent";
@@ -22,7 +22,7 @@ const Sidebar = () => {
                   <div className="offcanvas__top mb-40 d-flex justify-content-between align-items-center">
                     <div className="offcanvas__logo logo">
                       <Link href="/">
-                        <Image src={logo} alt="logo" />
+                        <Image src={logo} alt="logo" width={180} height={70} />
                       </Link>
                     </div>
                     <div className="offcanvas__close">
@@ -34,7 +34,7 @@ const Sidebar = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="bd-utilize__buttons mb-25 d-none">
+                  {/* <div className="bd-utilize__buttons mb-25 d-none">
                     <div className="bd-action__item">
                       <div className="bd-action__cart d-none">
                         <div className="bd-action__cart-icon">
@@ -59,13 +59,11 @@ const Sidebar = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="offcanvas__search mb-25">
-                    <SidebarSearchContent/>
+                    <SidebarSearchContent />
                   </div>
                   <nav className="side-mobile-menu d-block d-xl-none mm-menu">
-                   
-
                     <MobileMenu />
                   </nav>
                   <div className="offcanvas__contact mt-30 mb-20">
@@ -76,11 +74,8 @@ const Sidebar = () => {
                           <i className="fal fa-map-marker-alt"></i>
                         </div>
                         <div className="offcanvas__contact-text">
-                          <Link
-                            target="_blank"
-                            href="https://www.google.com/maps/place/Dhaka/@23.7806207,90.3492859,12z/data=!3m1!4b1!4m5!3m4!1s0x3755b8b087026b81:0x8fa563bbdd5904c2!8m2!3d23.8104753!4d90.4119873"
-                          >
-                            12/A, Mirnada City Tower, NYC
+                          <Link target="_blank" href="https://g.co/kgs/egQkRSZ">
+                            1200 NW Maynard Rd Cary, North Carolina
                           </Link>
                         </div>
                       </li>
@@ -89,7 +84,7 @@ const Sidebar = () => {
                           <i className="far fa-phone"></i>
                         </div>
                         <div className="offcanvas__contact-text">
-                          <Link href="tel:+088889797697">+088889797697 </Link>
+                          <Link href="tel:+19199462649">(919) 946-2649</Link>
                         </div>
                       </li>
                       <li className="d-flex align-items-center">
@@ -97,10 +92,8 @@ const Sidebar = () => {
                           <i className="fal fa-envelope"></i>
                         </div>
                         <div className="offcanvas__contact-text">
-                          <Link href="tel:+012-345-6789">
-                            <span className="mailto:support@mail.com">
-                              support@mail.com{" "}
-                            </span>
+                          <Link href="mailto:sales@goldenhex.com">
+                            <span>sales@goldenhex.com</span>
                           </Link>
                         </div>
                       </li>
@@ -108,32 +101,17 @@ const Sidebar = () => {
                   </div>
                   <div className="offcanvas__social">
                     <ul>
-                      <li>Share:</li>
                       <li>
-                        <Link href="https://www.facebook.com/" target="_blank">
+                        <Link
+                          href="https://www.facebook.com/GoldenHex/"
+                          target="_blank"
+                        >
                           <i className="fab fa-facebook-f"></i>
                         </Link>
                       </li>
                       <li>
                         <Link
-                          href="https://twitter.com/?lang=en"
-                          title="Twitter"
-                        >
-                          <i className="fab fa-twitter"></i>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="https://www.linkedin.com/"
-                          title="Linkedin"
-                          target="_blank"
-                        >
-                          <i className="fab fa-linkedin"></i>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="https://www.instagram.com/"
+                          href="https://www.instagram.com/goldenhexfoods/"
                           target="_blank"
                           title="Instagram"
                         >

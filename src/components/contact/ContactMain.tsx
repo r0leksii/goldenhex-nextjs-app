@@ -6,8 +6,7 @@ import Breadcrumb from "../common/breadcrumb/Breadcrumb";
 const ContactMain = () => {
   return (
     <>
-      {" "}
-      <Breadcrumb breadHome="Home" breadMenu="Contact" />
+      {/* <Breadcrumb breadHome="Home" breadMenu="Contact" /> */}
       <ContactForm />
       <ContactMap />
     </>

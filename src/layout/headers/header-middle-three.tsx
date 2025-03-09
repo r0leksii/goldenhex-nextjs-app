@@ -13,7 +13,7 @@ const HeaderMiddleThree = () => {
         <ul className="d-flex gap-3 align-items-center py-2">
           <li>
             <Link
-              href="tel:9199462649"
+              href="tel:+19199462649"
               className="d-flex gap-2 align-items-center hover-primary"
             >
               {phoneIcon}
@@ -22,7 +22,8 @@ const HeaderMiddleThree = () => {
           </li>
           <li>
             <Link
-              href=""
+              href="https://g.co/kgs/egQkRSZ"
+              target="_blank"
               className="d-flex gap-2 align-items-center hover-primary"
             >
               {locationIcon}

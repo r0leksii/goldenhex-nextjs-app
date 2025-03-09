@@ -4,7 +4,7 @@ import useGlobalContext from "../../hooks/use-context";
 import HeaderMiddleThree from "./header-middle-three";
 import NavMenu from "./navmenu";
 import logo from "../../../public/assets/img/logo/logo-h-goldenhex.png";
-import support from "../../../public/assets/img/icon/support.png";
+import support from "../../../public/assets/img/icon/support.svg";
 import Image from "next/image";
 import CartIcon from "@/sheardComponent/elements/icons/cart-icon";
 import WishlistIcon from "@/sheardComponent/elements/icons/wishlist-icon";
@@ -84,7 +84,7 @@ const HeaderThree = () => {
                 <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-6">
                   <div className="bd-header__logo-3">
                     <Link href="/">
-                      <Image src={logo} alt="logo" />
+                      <Image src={logo} alt="logo" width={240} height={92} />
                     </Link>
                   </div>
                 </div>
@@ -246,7 +246,13 @@ const HeaderThree = () => {
                   <div className="bd-action__support d-flex justify-content-end">
                     <div className="bd-support__inner">
                       <div className="bd-support__icon">
-                        <Image src={support} alt="support-icon" />
+                        <Image
+                          src={support}
+                          alt="support-icon"
+                          width={45}
+                          height={51}
+                          style={{ color: "var(--clr-theme-1)" }}
+                        />
                       </div>
                       <div className="bd-support__text">
                         <span>
@@ -254,7 +260,7 @@ const HeaderThree = () => {
                           <br />
                           Sunday: 10:00am - 5:00pm
                         </span>
-                        <Link href="tel:9199462649">(919) 946-2649</Link>
+                        <Link href="tel:=19199462649"> +1 (919) 946-2649</Link>
                       </div>
                     </div>
                   </div>

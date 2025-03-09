@@ -68,7 +68,7 @@ const ShopSection = ({ initialData }: ShopSectionProps) => {
               {products && products.length > 0 ? (
                 <div className="bd-trending__item-wrapper">
                   <div className="row">
-                    <GridViewProduct products={products} limit={24} />
+                    <GridViewProduct products={products} limit={12} />
                   </div>
                 </div>
               ) : (

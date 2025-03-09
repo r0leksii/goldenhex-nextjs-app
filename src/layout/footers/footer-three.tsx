@@ -16,7 +16,12 @@ const FooterThree = () => {
                 <div className="bd-footer__widget text-center mb-40">
                   <div className="bd-footer__logo">
                     <Link href="/">
-                      <Image src={footerlogo} alt="footer-logo" />
+                      <Image
+                        src={footerlogo}
+                        alt="footer-logo"
+                        width={150}
+                        height={57}
+                      />
                     </Link>
                   </div>
                 </div>
@@ -27,43 +32,26 @@ const FooterThree = () => {
                         <Link href="/about">About Our Company</Link>
                       </li>
                       <li>
-                        <Link href="/shop">Latest Products</Link>
-                      </li>
-                      <li>
-                        <Link href="/checkout">Payment Type</Link>
-                      </li>
-                      <li>
                         <Link href="/about">Awards Winnings</Link>
                       </li>
+
                       <li>
-                        <Link href="/about">World Media Partner</Link>
-                      </li>
-                      <li>
-                        <Link href="/shop">Flash Offers</Link>
+                        <Link href="#">Flash Offers</Link>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className="bd-footer__widget text-center mb-40">
                   <div className="bd-footer__social">
-                    <Link href="https://www.facebook.com/" target="_blank">
+                    <Link
+                      href="https://www.facebook.com/GoldenHex/"
+                      target="_blank"
+                    >
                       <i className="fab fa-facebook-f"></i>
                     </Link>
 
-                    <Link href="https://twitter.com/?lang=en" title="Twitter">
-                      <i className="fab fa-twitter"></i>
-                    </Link>
-
                     <Link
-                      href="https://www.linkedin.com/"
-                      title="Linkedin"
-                      target="_blank"
-                    >
-                      <i className="fab fa-linkedin"></i>
-                    </Link>
-
-                    <Link
-                      href="https://www.instagram.com/"
+                      href="https://www.instagram.com/goldenhexfoods/"
                       target="_blank"
                       title="Instagram"
                     >
@@ -83,6 +71,7 @@ const FooterThree = () => {
               <div className="bd-footer__copyright text-center">
                 <ul>
                   <li>All Rights Reserved</li>
+                  <li>|</li>
                   <li>Copyrighted by ©{year} GoldenHex</li>
                 </ul>
               </div>
