@@ -58,14 +58,7 @@ const HeaderThree = () => {
 
   const handleInputChange = (e: any) => {
     setSearchValue(e.target.value);
-    // if (pathName === "/blog") {
-    //   axios
-    //     .get(`${process.env.BASE_URL}blog/search-blog?search=${searchValue}`)
-    //     .then((res) => {
-    //       setBlog(res.data);
-    //     })
-    //     .catch((e) => console.log(e));
-    // }
+
     if (pathName === "/shop") {
       setProdcutLoadding(true);
       axios
@@ -84,7 +77,6 @@ const HeaderThree = () => {
   return (
     <>
       <header>
-        {/* <HeaderTopThree /> */}
         <HeaderMiddleThree />
         <div className="bd-header__border">
           <div id="header-sticky" className="bd-header__middle-inner">
@@ -98,17 +90,15 @@ const HeaderThree = () => {
                   </div>
                 </div>
                 <div className="col-xxl-6 col-xl-6 col-lg-6 d-none d-lg-block">
-                  <div className="bd-header__left">
-                    <div className="main-menu d-none d-none d-lg-block">
-                      <nav id="mobile-menu">
-                        <NavMenu />
-                      </nav>
-                    </div>
+                  <div className="main-menu d-none d-none d-lg-flex justify-content-center">
+                    <nav id="mobile-menu">
+                      <NavMenu />
+                    </nav>
                   </div>
                 </div>
                 <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-6">
                   <div className="bd-header__right d-flex align-items-center justify-content-end">
-                    <div className="bd-action__cart-list">
+                    {/* <div className="bd-action__cart-list">
                       <div className="bd-action__item">
                         <div className="bd-action__cart">
                           <div
@@ -183,7 +173,7 @@ const HeaderThree = () => {
                           </>
                         )}
                       </div>
-                    </div>
+                    </div> */}
                     <div className="header__hamburger d-flex ml-25">
                       <button
                         type="button"
@@ -242,11 +232,7 @@ const HeaderThree = () => {
                       <form className="bd-filter__input" action="#">
                         <input
                           type="text"
-                          placeholder={
-                            pathName === "/shop"
-                              ? "Search products..."
-                              : "Search Blogs..."
-                          }
+                          placeholder={"Search products..."}
                           value={searchValue}
                           onChange={handleInputChange}
                         />
@@ -281,8 +267,8 @@ const HeaderThree = () => {
       </header>
 
       <Sidebar />
-      <SidebarCart />
-      <SidebarWishlist />
+      {/* <SidebarCart /> */}
+      {/* <SidebarWishlist /> */}
     </>
   );
 };

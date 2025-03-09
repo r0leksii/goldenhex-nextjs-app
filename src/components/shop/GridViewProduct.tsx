@@ -72,54 +72,28 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
       ) : (
         <>
           {displayProducts.length > 0 ? (
-            displayProducts.map((item, index) => {
+            displayProducts.map((item) => {
               // Debug the first item to see what's available
               const price = getPrice(item);
               return (
                 <div
                   className="col-xxl-2 col-xl-4 col-lg-6 col-md-6 col-sm-6"
-                  key={index}
+                  key={item._id}
                 >
                   <div className="bd-trending__item text-center mb-30 position-relative">
                     <div className="bd-trending__product-thumb border-5">
-                      <Link href={`/shop-details/${item?._id}`}>
+                      <Link
+                        href={`/shop-details/${item?._id}`}
+                        className="ratio ratio-1x1 d-block"
+                      >
                         <Image
                           src={getImageUrl(item)}
                           alt={item?.title || "Product image"}
                           width={500}
                           height={500}
-                          style={{ width: "100%", height: "auto" }}
+                          className="object-fit-contain "
                         />
                       </Link>
-                      {/* <div className="bd-product__action">
-                        <span
-                          className="cart-btn"
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title="Quick Shop"
-                          onClick={() => handleAddToCart(item)}
-                        >
-                          <i className="fal fa-cart-arrow-down"></i>
-                        </span>
-                        <span
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title="Quick View"
-                          id="#productmodal"
-                          onClick={() => handleMoldalData(item._id)}
-                        >
-                          <i className="fal fa-eye"></i>
-                        </span>
-                        <span
-                          className="wishlist-btn"
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title="Quick Wishlist"
-                          onClick={() => handleAddToWishlist(item)}
-                        >
-                          <i className="fal fa-heart"></i>
-                        </span>
-                      </div> */}
                     </div>
                     <div className="bd-teanding__content">
                       <h4 className="bd-product__title">

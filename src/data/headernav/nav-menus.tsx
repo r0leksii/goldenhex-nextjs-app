@@ -12,19 +12,20 @@ const nav_menus_list: NavMenuItem[] = [
       { link: "/home-three", title: "Home Style 03" },
     ],
   },
-  {
-    id: 2,
-    link: "/shop",
-    title: "Shop",
-    hasDropdown: true,
-    megamenu: false,
-    dropdownItems: [
-      { link: "/shop", title: "Shop" },
-      { link: "/wishlist", title: "Wishlist" },
-      { link: "/cart", title: "Cart" },
-      { link: "/checkout", title: "Checkout" },
-    ],
-  },
+  { id: 2, link: "/about", title: "About" },
+  // {
+  //   id: 2,
+  //   link: "/shop",
+  //   title: "Shop",
+  //   hasDropdown: true,
+  //   megamenu: false,
+  //   dropdownItems: [
+  //     { link: "/shop", title: "Shop" },
+  //     { link: "/wishlist", title: "Wishlist" },
+  //     { link: "/cart", title: "Cart" },
+  //     { link: "/checkout", title: "Checkout" },
+  //   ],
+  // },
   // {
   //   id: 3,
   //   link: "/shop",

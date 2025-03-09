@@ -1,50 +1,35 @@
 import Link from "next/link";
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+
+const phoneIcon = <FontAwesomeIcon icon={faPhone} />;
+const locationIcon = <FontAwesomeIcon icon={faLocationDot} />;
 
 const HeaderMiddleThree = () => {
   return (
-    <div className="bd-topbar-area__middle d-none d-lg-block">
-      <div className="container">
-        <div className="row align-items-center">
-          <div className="col-xxl-6 col-xl-6 col-md-8">
-            <div className="bd-topbar__contact">
-              <ul>
-                <li>
-                  <Link href="tel:9199462649">
-                    <i className="fa-regular fa-phone-flip"></i>(919) 946-2649
-                  </Link>
-                </li>
-                <li>
-                  <Link href="">
-                    <i className="fa-solid fa-location-dot"></i>1200 NW Maynard
-                    Rd Cary, North Carolina
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="col-xxl-6 col-xl-6 col-md-4">
-            <div className="bd-treak__right bd-treak__right3">
-              {/* <div className="border-lefts">
-                                <select name="lan-select" id="lan-select" className="language-select">
-                                    <option defaultValue="1">English</option>
-                                    <option defaultValue="2">Hindi</option>
-                                    <option defaultValue="3">Arabic</option>
-                                    <option defaultValue="4">Bengali</option>
-                                    <option defaultValue="5">French</option>
-                                </select>
-                            </div>
-                            <div className="border-left">
-                                <select name="currency-select" id="currency-select" className="currency-select border-left">
-                                    <option defaultValue="1">USD</option>
-                                    <option defaultValue="2">EUR</option>
-                                    <option defaultValue="3">JPY</option>
-                                    <option defaultValue="4">GBP</option>
-                                </select>
-                            </div> */}
-            </div>
-          </div>
-        </div>
+    <div className="d-none d-lg-flex" style={{ height: "40px" }}>
+      <div className="container d-flex gap-3 align-items-center py-2">
+        <ul className="d-flex gap-3 align-items-center py-2">
+          <li>
+            <Link
+              href="tel:9199462649"
+              className="d-flex gap-2 align-items-center hover-primary"
+            >
+              {phoneIcon}
+              (919) 946-2649
+            </Link>
+          </li>
+          <li>
+            <Link
+              href=""
+              className="d-flex gap-2 align-items-center hover-primary"
+            >
+              {locationIcon}
+              1200 NW Maynard Rd Cary, North Carolina
+            </Link>
+          </li>
+        </ul>
       </div>
     </div>
   );
