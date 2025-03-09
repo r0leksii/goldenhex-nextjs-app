@@ -41,7 +41,9 @@ const ShopSection = () => {
     setIsLoading(true);
 
     // Fetch data from our server-side API route
-    fetch(`/api/shop?page=${page}&limit=${limit}&endpoint=${apiEndPoint}`)
+    fetch(
+      `/api/shop/products?page=${page}&limit=${limit}&endpoint=${apiEndPoint}`
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

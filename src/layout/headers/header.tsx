@@ -3,7 +3,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Sidebar from "@/sheardComponent/Sidebar";
 import useGlobalContext from "../../hooks/use-context";
-import HeaderTopThree from "./header-top-three";
 import NavMenu from "./navmenu";
 import Image from "next/image";
 import whiteLogo from "../../../public/assets/img/logo/logo.png";
@@ -51,7 +50,6 @@ const HeaderOne = () => {
   return (
     <>
       <header>
-        <HeaderTopThree />
         <div id="header-sticky">
           <div className="bd-header__area-2 position-relative">
             <div className="container">
@@ -197,9 +195,9 @@ const HeaderOne = () => {
         </div>
       </header>
 
-      <Sidebar />
-      <SidebarCart />
-      <SidebarWishlist />
+      {/* <Sidebar /> */}
+      {/* <SidebarCart />
+      <SidebarWishlist /> */}
     </>
   );
 };

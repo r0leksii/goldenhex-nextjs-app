@@ -2,7 +2,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import useGlobalContext from "../../hooks/use-context";
 import HeaderMiddleThree from "./header-middle-three";
-import HeaderTopThree from "./header-top-three";
 import NavMenu from "./navmenu";
 import logo from "../../../public/assets/img/logo/logo-h-goldenhex.png";
 import support from "../../../public/assets/img/icon/support.png";
