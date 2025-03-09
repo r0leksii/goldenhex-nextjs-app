@@ -13,7 +13,7 @@ const ShopDetailsMain = ({ id }: any) => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await fetch(`/api/shop?id=${id}`);
+        const response = await fetch(`/api/shop/products?id=${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch product details");
         }
@@ -33,7 +33,7 @@ const ShopDetailsMain = ({ id }: any) => {
 
   return (
     <>
-      <Breadcrumb breadHome={"Home"} breadMenu={"Shop Details"} />
+      {/* <Breadcrumb breadHome={"Home"} breadMenu={"Shop Details"} /> */}
       <div className="bd__shop-details-area pt-115 pb-75">
         <div className="container small-container">
           <div className="row">
