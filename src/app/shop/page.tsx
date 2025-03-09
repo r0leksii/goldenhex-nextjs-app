@@ -8,7 +8,7 @@ const Shop = () => {
       <Wrapper>
         <main>
           {/* <Breadcrumb breadHome="Home" breadMenu="Shop"/> */}
-          <ShopMain />
+          {/* <ShopMain /> */}
         </main>
       </Wrapper>
     </>

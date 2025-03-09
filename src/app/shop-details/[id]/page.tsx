@@ -1,21 +1,29 @@
-
+import { Suspense } from "react";
 import ShopDetailsMain from "@/components/shop-details/ShopDetailsMain";
+import { getProductById } from "@/lib/actions";
+import { notFound } from "next/navigation";
 import Wrapper from "@/layout/DefaultWrapper";
 
-const ShoDetailsDynamic = ({ params }: { params: { id: number } }) => {
-    const id =  params.id
-
-   
-    return (
-        <>
-            <Wrapper>
-                <main>
-                    
-                    <ShopDetailsMain id={id}/>
-                </main>
-            </Wrapper>
-        </>
-    );
+interface PageProps {
+  params: {
+    id: string;
+  };
 }
 
-export default ShoDetailsDynamic
+export default async function ShopDetailsPage({ params }: PageProps) {
+  const product = await getProductById(params.id);
+
+  if (!product) {
+    notFound();
+  }
+
+  return (
+    <Wrapper>
+      <main>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ShopDetailsMain product={product} />
+        </Suspense>
+      </main>
+    </Wrapper>
+  );
+}

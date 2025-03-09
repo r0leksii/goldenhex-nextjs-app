@@ -6,31 +6,11 @@ import Breadcrumb from "../common/breadcrumb/Breadcrumb";
 import Image from "next/image";
 import { ProductType } from "../shop/ShopSection";
 
-const ShopDetailsMain = ({ id }: any) => {
-  const [product, setProduct] = useState<ProductType[]>([]);
-  const myProduct: ProductType = product[0];
+interface ShopDetailsMainProps {
+  product: ProductType;
+}
 
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        const response = await fetch(`/api/shop/products?id=${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch product details");
-        }
-        const data = await response.json();
-        if (data.products && data.products.length > 0) {
-          setProduct(data.products);
-        }
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-      }
-    };
-
-    if (id) {
-      fetchProductDetails();
-    }
-  }, [id]);
-
+const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
   return (
     <>
       {/* <Breadcrumb breadHome={"Home"} breadMenu={"Shop Details"} /> */}
@@ -41,41 +21,29 @@ const ShopDetailsMain = ({ id }: any) => {
               <div className="bd__shop-details-inner mb-55">
                 <div className="row">
                   <div className="col-md-6">
-                    <div className="product-details__thumb-inner small-device p-relative">
-                      <div className="bd__shop-details-img-gallery mb-30">
-                        <div className="product-details__thumb-inner small-device p-relative">
-                          <div className="bd__shop-details-img-gallery mb-30">
-                            <div className="product-image-container">
-                              {myProduct &&
-                                myProduct.imageURLs &&
-                                myProduct.imageURLs[0] && (
-                                  <div className="bd-product__details-large-img w-img">
-                                    <Image
-                                      src={myProduct.imageURLs[0]}
-                                      alt={
-                                        myProduct.title || "product-details-img"
-                                      }
-                                      width={577}
-                                      height={577}
-                                      style={{
-                                        width: "100%",
-                                        height: "auto",
-                                        objectFit: "contain",
-                                      }}
-                                    />
-                                  </div>
-                                )}
-                            </div>
-                          </div>
+                    <div className="product-details__thumb-inner">
+                      {product.imageURLs?.[0] && (
+                        <div className="bd-product__details-large-img">
+                          <Image
+                            src={product.imageURLs[0]}
+                            alt={product.title}
+                            width={577}
+                            height={577}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                              objectFit: "contain",
+                            }}
+                          />
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="modal-product-info shop-details-info">
-                      <h3>{myProduct?.title}</h3>
+                      <h3>{product.title}</h3>
                       <div className="product-price">
-                        <span>${myProduct?.price}</span>
+                        <span>${product.price}</span>
                       </div>
                       <div className="bd__social-media">
                         <ul>
@@ -106,7 +74,7 @@ const ShopDetailsMain = ({ id }: any) => {
                               href={`https://twitter.com/share?url=${encodeURIComponent(
                                 window.location.href
                               )}&text=${encodeURIComponent(
-                                myProduct?.title || ""
+                                product.title || ""
                               )}`}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -116,7 +84,7 @@ const ShopDetailsMain = ({ id }: any) => {
                                   `https://twitter.com/share?url=${encodeURIComponent(
                                     window.location.href
                                   )}&text=${encodeURIComponent(
-                                    myProduct?.title || ""
+                                    product.title || ""
                                   )}`,
                                   "twitter-share",
                                   "width=550,height=235"
@@ -139,7 +107,7 @@ const ShopDetailsMain = ({ id }: any) => {
                                 ) {
                                   // Try to open Instagram app with the image
                                   window.location.href = `instagram://library?AssetPath=${encodeURIComponent(
-                                    myProduct?.imageURLs?.[0] || ""
+                                    product.imageURLs?.[0] || ""
                                   )}`;
 
                                   // Set a timeout to fallback to web if app doesn't open
@@ -167,9 +135,9 @@ const ShopDetailsMain = ({ id }: any) => {
                               href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
                                 window.location.href
                               )}&media=${encodeURIComponent(
-                                myProduct?.imageURLs?.[0] || ""
+                                product.imageURLs?.[0] || ""
                               )}&description=${encodeURIComponent(
-                                myProduct?.title || ""
+                                product.title || ""
                               )}`}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -179,9 +147,9 @@ const ShopDetailsMain = ({ id }: any) => {
                                   `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
                                     window.location.href
                                   )}&media=${encodeURIComponent(
-                                    myProduct?.imageURLs?.[0] || ""
+                                    product.imageURLs?.[0] || ""
                                   )}&description=${encodeURIComponent(
-                                    myProduct?.title || ""
+                                    product.title || ""
                                   )}`,
                                   "pinterest-share",
                                   "width=750,height=550"
