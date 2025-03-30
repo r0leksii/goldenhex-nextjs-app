@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import ShopDetailsMain from "@/components/shop-details/ShopDetailsMain";
-import { getProductById } from "@/lib/actions";
+import { getProductById } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
 import Wrapper from "@/layout/DefaultWrapper";
 
