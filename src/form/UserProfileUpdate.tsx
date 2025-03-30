@@ -1,6 +1,5 @@
 "use client";
 import useGlobalContext from "@/hooks/use-context";
-import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -31,7 +30,7 @@ const UserProfileUpdate = () => {
   // update profile info
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    setUpdate(false)
+    setUpdate(false);
     const name = `${data.firstName} ${data.lastName}`;
     const phone = data.phone;
     const gender = Gender;
@@ -42,26 +41,26 @@ const UserProfileUpdate = () => {
       gender,
       photo: user?.photo,
     };
-    axios
-      .put(
-        `${process.env.BASE_URL}user/update-user?email=${user?.email}`,
-        userUpdateInfo,
-        header
-      )
-      .then((res) => {
-        if (res.data.message === "success") {
-          setUpdate(true)
-          router.push("/profile");
-          toast.success(`profile Updated`);
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          console.error("Unauthorized access");
-        } else {
-          console.error("Unauthorized access");
-        }
-      });
+    // axios
+    //   .put(
+    //     `${process.env.BASE_URL}user/update-user?email=${user?.email}`,
+    //     userUpdateInfo,
+    //     header
+    //   )
+    //   .then((res) => {
+    //     if (res.data.message === "success") {
+    //       setUpdate(true)
+    //       router.push("/profile");
+    //       toast.success(`profile Updated`);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.response.status === 403) {
+    //       console.error("Unauthorized access");
+    //     } else {
+    //       console.error("Unauthorized access");
+    //     }
+    //   });
   };
 
   const selectHandler = () => {};
@@ -122,7 +121,7 @@ const UserProfileUpdate = () => {
           <div className="col-md-6">
             <div className="contact-from-input mb-20">
               <label htmlFor="Occupation"> Select Gender </label>
-    
+
               <NiceSelectTwo
                 options={GenderData}
                 defaultCurrent={0}

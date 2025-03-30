@@ -1,7 +1,6 @@
 "use client";
 import GetRatting from "@/hooks/GetRatting";
 import { ProductType } from "@/interFace/api-interFace";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -9,14 +8,14 @@ import React, { useEffect, useState } from "react";
 const SidebarTopratedProduct = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.BASE_URL}product/trending-products`)
-      .then((res) => {
-        setProducts(Array.isArray(res.data) ? res.data : []);
-      })
-      .catch((e) => console.log(e));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.BASE_URL}product/trending-products`)
+  //     .then((res) => {
+  //       setProducts(Array.isArray(res.data) ? res.data : []);
+  //     })
+  //     .catch((e) => console.log(e));
+  // }, []);
 
   return (
     <div className="bd-sidebar__top-rated-area mb-30">

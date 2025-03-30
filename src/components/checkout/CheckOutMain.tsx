@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { clear_cart_after_payment } from "@/redux/slices/cartSlice";
 interface FormData {
@@ -45,26 +44,26 @@ const CheckOutMain = () => {
     router.push("/shop");
   };
 
-  useEffect(() => {
-    if (user?.email) {
-      axios
-        .post(
-          `${process.env.BASE_URL}payment/payment-intent?email=${user?.email}`,
-          { totalPrice },
-          header
-        )
-        .then((res) => {
-          setclientSecret(res.data.clientSecret);
-        })
-        .catch((error) => {
-          if (error.response.status === 403) {
-            console.error("Unauthorized access");
-          } else {
-            console.error("Unauthorized access");
-          }
-        });
-    }
-  }, [user?.email, totalPrice, header]);
+  // useEffect(() => {
+  //   if (user?.email) {
+  //     axios
+  //       .post(
+  //         `${process.env.BASE_URL}payment/payment-intent?email=${user?.email}`,
+  //         { totalPrice },
+  //         header
+  //       )
+  //       .then((res) => {
+  //         setclientSecret(res.data.clientSecret);
+  //       })
+  //       .catch((error) => {
+  //         if (error.response.status === 403) {
+  //           console.error("Unauthorized access");
+  //         } else {
+  //           console.error("Unauthorized access");
+  //         }
+  //       });
+  //   }
+  // }, [user?.email, totalPrice, header]);
 
   const {
     register,
@@ -134,31 +133,31 @@ const CheckOutMain = () => {
         shipmentStatusArray: [],
       };
 
-      axios
-        .post(
-          `${process.env.BASE_URL}success/save-payment-info?email=${user?.email}`,
-          sellProductInfo,
-          header
-        )
-        .then((res) => {
-          if (res.data.message === "success") {
-            router.push("/profile");
-            dispatch(clear_cart_after_payment());
-            setPaymentSuccess(true);
-            toast.success(`Payment Success`, {
-              position: "top-left",
-            });
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 403) {
-            console.error("Unauthorized access");
-            setPaymentSuccess(false);
-          } else {
-            console.error("Unauthorized access");
-            setPaymentSuccess(false);
-          }
-        });
+      // axios
+      //   .post(
+      //     `${process.env.BASE_URL}success/save-payment-info?email=${user?.email}`,
+      //     sellProductInfo,
+      //     header
+      //   )
+      //   .then((res) => {
+      //     if (res.data.message === "success") {
+      //       router.push("/profile");
+      //       dispatch(clear_cart_after_payment());
+      //       setPaymentSuccess(true);
+      //       toast.success(`Payment Success`, {
+      //         position: "top-left",
+      //       });
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     if (error.response.status === 403) {
+      //       console.error("Unauthorized access");
+      //       setPaymentSuccess(false);
+      //     } else {
+      //       console.error("Unauthorized access");
+      //       setPaymentSuccess(false);
+      //     }
+      //   });
     }
   };
   return (

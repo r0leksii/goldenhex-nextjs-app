@@ -1,7 +1,6 @@
 "use client";
 import GetRatting from "@/hooks/GetRatting";
 import useGlobalContext from "@/hooks/use-context";
-import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -72,30 +71,30 @@ const AddReview = ({ product, setnewReview, newReview }: any) => {
       img: user?.photo,
     };
 
-    axios
-      .post(
-        `${process.env.BASE_URL}user-input/add-review?email=${user?.email}`,
-        reviewInfoWithUser,
-        header
-      )
-      .then((res) => {
-        if (res.data.message === "success") {
-          toast.success(`Review Added`);
-          reset();
-          setnewReview(!newReview);
-          setRetting(0);
-        }
-        if (res.data.message === "custom error") {
-          toast.error(`Something Is Wrong`);
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          console.error("Unauthorized access");
-        } else {
-          console.error("Unauthorized access");
-        }
-      });
+    // axios
+    //   .post(
+    //     `${process.env.BASE_URL}user-input/add-review?email=${user?.email}`,
+    //     reviewInfoWithUser,
+    //     header
+    //   )
+    //   .then((res) => {
+    //     if (res.data.message === "success") {
+    //       toast.success(`Review Added`);
+    //       reset();
+    //       setnewReview(!newReview);
+    //       setRetting(0);
+    //     }
+    //     if (res.data.message === "custom error") {
+    //       toast.error(`Something Is Wrong`);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.response.status === 403) {
+    //       console.error("Unauthorized access");
+    //     } else {
+    //       console.error("Unauthorized access");
+    //     }
+    //   });
   };
 
   return (

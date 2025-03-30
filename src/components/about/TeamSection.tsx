@@ -1,20 +1,11 @@
 "use client";
 import Link from "next/link";
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import axios from "axios";
 import { TeamMember } from "@/interFace/api-interFace";
 const TeamSection = () => {
-  const [teamList, setTeamList] = useState<TeamMember[]>([])
- 
-  useEffect(() => { 
-    axios
-      .get(`${process.env.BASE_URL}team/team-member`)
-      .then((res) => {
-        setTeamList(res.data);
-      })
-      .catch((e) => {});
-  }, [setTeamList]);
+  const [teamList, setTeamList] = useState<TeamMember[]>([]);
+
   return (
     <section className="bd-team__area pt-125 pb-95">
       <div className="container">
@@ -75,11 +66,11 @@ const TeamSection = () => {
               </div>
             ))}
           </div>
-        ):
-         <>
-         <p className="text-center">No Member Found</p>
-         </>
-        }
+        ) : (
+          <>
+            <p className="text-center">No Member Found</p>
+          </>
+        )}
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 "use client";
 import CustomDateFormatter from "@/hooks/CustomDateFormatter ";
 import useGlobalContext from "@/hooks/use-context";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { CanceOrderDataType } from "@/interFace/api-interFace";
 import Image from "next/image";
@@ -12,15 +11,15 @@ const CancelOrderTrack = () => {
     []
   );
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.BASE_URL}success/single-user-cancel-orders?email=${user?.email}`,
-        header
-      )
-      .then((res) => {
-        setCancelOrderData(res.data.data);
-      })
-      .catch((e) => {});
+    // axios
+    //   .get(
+    //     `${process.env.BASE_URL}success/single-user-cancel-orders?email=${user?.email}`,
+    //     header
+    //   )
+    //   .then((res) => {
+    //     setCancelOrderData(res.data.data);
+    //   })
+    //   .catch((e) => {});
   }, [user?.email, header]);
   return (
     <>
@@ -30,7 +29,10 @@ const CancelOrderTrack = () => {
             {cancelOrderData?.map((item) => (
               <>
                 <div key={item?._id}>
-                  <p> <strong>Order Id</strong> : {item?.orderId}</p>
+                  <p>
+                    {" "}
+                    <strong>Order Id</strong> : {item?.orderId}
+                  </p>
                   <p>
                     <strong>Order Date</strong> :{" "}
                     <CustomDateFormatter inputDate={item?.date as string} />{" "}
@@ -88,7 +90,9 @@ const CancelOrderTrack = () => {
                                   </td>
                                   <td className="product-subtotal">
                                     <span className="amount">
-                                    {item?.returnStatus === "approved" ? "Cancelled" : "Cancel Pending"}
+                                      {item?.returnStatus === "approved"
+                                        ? "Cancelled"
+                                        : "Cancel Pending"}
                                     </span>
                                   </td>
                                 </tr>

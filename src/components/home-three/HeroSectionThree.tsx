@@ -1,6 +1,5 @@
 "use client";
 import { offerProductType } from "@/interFace/api-interFace";
-import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import HeroSliderThree from "./HeroSliderThree";
@@ -9,12 +8,12 @@ import BannerPreloader from "@/preloaders/BannerPreloader";
 const HeroSectionThree = () => {
   const [product, setproduct] = useState<offerProductType[]>([]);
   useEffect(() => {
-    axios
-      .get(`${process.env.BASE_URL}product/offer-products-banner`)
-      .then((res) => {
-        setproduct(Array.isArray(res.data) ? res.data : []);
-      })
-      .catch((e) => console.log(e));
+    // axios
+    //   .get(`${process.env.BASE_URL}product/offer-products-banner`)
+    //   .then((res) => {
+    //     setproduct(Array.isArray(res.data) ? res.data : []);
+    //   })
+    //   .catch((e) => console.log(e));
   }, []);
   return (
     <>

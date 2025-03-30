@@ -1,6 +1,5 @@
 "use client";
 import useGlobalContext from "@/hooks/use-context";
-import axios from "axios";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -32,41 +31,41 @@ const RestPasswordForm = () => {
     };
 
     if (user?.email) {
-      axios
-        .put(
-          `${process.env.BASE_URL}user/change-password?email=${user?.email}`,
-          updatePassword,
-          header
-        )
-        .then((res) => {
-          switch (res.data.message) {
-            case "Password changed successfully":
-              localStorage.removeItem("accessToken");
-              setLoading(false);
-              setLoggedIn(false);
-              setUser(undefined);
-              break;
-            case "Current password is incorrect":
-              setregisterError("Current password is incorrect");
-              break;
-            case "User not found":
-              setregisterError("User not found");
-              break;
-            case "Internal Server Error":
-              setregisterError("Internal Server Error");
-              break;
-            default:
-              // Handle any other response messages if needed.
-              break;
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 403) {
-            console.error("Unauthorized access");
-          } else {
-            console.error("Unauthorized access");
-          }
-        });
+      // axios
+      //   .put(
+      //     `${process.env.BASE_URL}user/change-password?email=${user?.email}`,
+      //     updatePassword,
+      //     header
+      //   )
+      //   .then((res) => {
+      //     switch (res.data.message) {
+      //       case "Password changed successfully":
+      //         localStorage.removeItem("accessToken");
+      //         setLoading(false);
+      //         setLoggedIn(false);
+      //         setUser(undefined);
+      //         break;
+      //       case "Current password is incorrect":
+      //         setregisterError("Current password is incorrect");
+      //         break;
+      //       case "User not found":
+      //         setregisterError("User not found");
+      //         break;
+      //       case "Internal Server Error":
+      //         setregisterError("Internal Server Error");
+      //         break;
+      //       default:
+      //         // Handle any other response messages if needed.
+      //         break;
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     if (error.response.status === 403) {
+      //       console.error("Unauthorized access");
+      //     } else {
+      //       console.error("Unauthorized access");
+      //     }
+      //   });
     }
   };
 

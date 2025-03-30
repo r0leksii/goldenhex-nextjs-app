@@ -6,7 +6,6 @@ import Image from "next/image";
 import RestPasswordForm from "@/form/RestPasswordForm";
 import UserProfileUpdate from "@/form/UserProfileUpdate";
 import useGlobalContext from "@/hooks/use-context";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 const UpdateProfile = () => {
@@ -20,16 +19,16 @@ const UpdateProfile = () => {
     const formData = new FormData();
     formData.append("image", file);
     try {
-      const response = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_URL}`,
-        formData
-      );
-      const imageUrl = response.data.data.url;
-      if (response.data.success === true) {
-        setupload(true);
-        setUpdate(true);
-      }
-      setProfilePic(imageUrl);
+      // const response = await axios.post(
+      //   `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_URL}`,
+      //   formData
+      // );
+      // const imageUrl = response.data.data.url;
+      // if (response.data.success === true) {
+      //   setupload(true);
+      //   setUpdate(true);
+      // }
+      // setProfilePic(imageUrl);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -41,7 +40,7 @@ const UpdateProfile = () => {
   };
 
   const handleUpdateProfile = () => {
-    setUpdate(false)
+    setUpdate(false);
     const profileUpdateInfo = {
       id: user?._id,
       name: user?.name,
@@ -50,27 +49,27 @@ const UpdateProfile = () => {
       photo: profilePic,
     };
 
-    axios
-      .put(
-        `${process.env.BASE_URL}user/update-user?email=${user?.email}`,
-        profileUpdateInfo,
-        header
-      )
-      .then((res) => {
-        if (res.data.message === "success") {
-          setupload(false);
-           setUpdate(true)
+    // axios
+    //   .put(
+    //     `${process.env.BASE_URL}user/update-user?email=${user?.email}`,
+    //     profileUpdateInfo,
+    //     header
+    //   )
+    //   .then((res) => {
+    //     if (res.data.message === "success") {
+    //       setupload(false);
+    //       setUpdate(true);
 
-          toast.success(`profile Picture Updated`);
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          console.error("Unauthorized access");
-        } else {
-          console.error("Unauthorized access");
-        }
-      });
+    //       toast.success(`profile Picture Updated`);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.response.status === 403) {
+    //       console.error("Unauthorized access");
+    //     } else {
+    //       console.error("Unauthorized access");
+    //     }
+    //   });
   };
 
   return (

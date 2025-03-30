@@ -2,7 +2,6 @@
 
 import useGlobalContext from "@/hooks/use-context";
 import { CommentType } from "@/interFace/api-interFace";
-import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -27,89 +26,92 @@ const UserComments = () => {
 
   useEffect(() => {
     if (user?.email) {
-      axios
-        .get(`${process.env.BASE_URL}blog/user-comment?email=${user?.email}`)
-        .then((res) => {
-          setMyComments(res.data.data);
-        })
-        .catch((e) => {});
+      // axios
+      //   .get(`${process.env.BASE_URL}blog/user-comment?email=${user?.email}`)
+      //   .then((res) => {
+      //     setMyComments(res.data.data);
+      //   })
+      //   .catch((e) => {});
     }
   }, [user?.email, updateComment]);
-
 
   const handleDeleteReview = (item: CommentType) => {
     const url = `${process.env.BASE_URL}blog/delete-comment?email=${user?.email}`;
 
     const deleteReview = async () => {
-      try {
-        const response = await axios.delete(url, {
-          ...header,
-          data: item,
-        });
-        if (response.data.message === "success") {
-          const remainingReviews = myComments.filter(
-            (itm) => itm._id !== item?._id
-          );
-          setMyComments(remainingReviews);
-          toast.success("Comment Deleted");
-        }
-      } catch (error: any) {
-        if (error.response.status === 403) {
-          console.error("Unauthorized access");
-        } else {
-          console.error("Unauthorized access");
-        }
-      }
+      //   try {
+      //   //   const response = await axios.delete(url, {
+      //   //     ...header,
+      //   //     data: item,
+      //   //   });
+      //   //   if (response.data.message === "success") {
+      //   //     const remainingReviews = myComments.filter(
+      //   //       (itm) => itm._id !== item?._id
+      //   //     );
+      //   //     setMyComments(remainingReviews);
+      //   //     toast.success("Comment Deleted");
+      //   //   }
+      //   // } catch (error: any) {
+      //   //   if (error.response.status === 403) {
+      //   //     console.error("Unauthorized access");
+      //   //   } else {
+      //   //     console.error("Unauthorized access");
+      //   //   }
+      //   }
+      // };
+      // deleteReview();
     };
 
-    deleteReview();
-  };
-
-  const handleActiveEdete = (item: CommentType) => {
-    setEdeteActive(!edeteActive);
-    setEdetedId(item?._id);
-    setComment(item);
-  };
-
-  const handleResetEdete = () => {
-    setEdeteActive(!edeteActive);
-  };
-
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    const commen = data.comment ? data.comment : comment?.comment;
-
-    const commentInfo = {
-      id: comment?._id,
-      comment: commen,
+    const handleActiveEdete = (item: CommentType) => {
+      setEdeteActive(!edeteActive);
+      setEdetedId(item?._id);
+      setComment(item);
     };
 
-    axios
-      .put(
-        `${process.env.BASE_URL}blog/update-comment?email=${user?.email}`,
-        commentInfo,
-        header
-      )
-      .then((res) => {
-        if (res.data.message === "success") {
-          setEdeteActive(!edeteActive);
+    const handleResetEdete = () => {
+      setEdeteActive(!edeteActive);
+    };
 
-          setupdateComment(!updateComment);
-          toast.success(`Review Updated`);
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          console.error("Unauthorized access");
-        } else {
-          console.error("Unauthorized access");
-        }
-      });
+    const onSubmit: SubmitHandler<FormData> = (data) => {
+      const commen = data.comment ? data.comment : comment?.comment;
+
+      const commentInfo = {
+        id: comment?._id,
+        comment: commen,
+      };
+
+      // axios
+      //   .put(
+      //     `${process.env.BASE_URL}blog/update-comment?email=${user?.email}`,
+      //     commentInfo,
+      //     header
+      //   )
+      //   .then((res) => {
+      //     if (res.data.message === "success") {
+      //       setEdeteActive(!edeteActive);
+
+      //       setupdateComment(!updateComment);
+      //       toast.success(`Review Updated`);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     if (error.response.status === 403) {
+      //       console.error("Unauthorized access");
+      //     } else {
+      //       console.error("Unauthorized access");
+      //     }
+      //   });
+    };
   };
 
   return (
     <>
       {myComments.length ? (
-        <div className={`student-profile-reviews ${myComments.length > 4 ? "scrollbox" : ""}`}>
+        <div
+          className={`student-profile-reviews ${
+            myComments.length > 4 ? "scrollbox" : ""
+          }`}
+        >
           {myComments.map((item) => (
             <div key={item._id} className="student-profile-reviews-item mb-30">
               <div className="student-profile-reviews-course-title">
@@ -123,7 +125,7 @@ const UserComments = () => {
               {edeteActive && item._id === edetedId ? (
                 <>
                   <form
-                    onSubmit={handleSubmit(onSubmit)}
+                    // onSubmit={handleSubmit(onSubmit)}
                     className="student-profile-reviews-text"
                   >
                     <div className="student-profile-reviews-text-wrap mb-20">
@@ -132,7 +134,7 @@ const UserComments = () => {
                       </div>
                       <div className="student-profile-review-update">
                         <button
-                          onClick={() => handleActiveEdete(item)}
+                          // onClick={() => handleActiveEdete(item)}
                           type="button"
                           className="student-profile-review-update-btn"
                         >
@@ -169,7 +171,7 @@ const UserComments = () => {
                       <div>
                         <div className="cont-btn mb-20  mt-10">
                           <button
-                            onClick={handleResetEdete}
+                            // onClick={handleResetEdete}
                             className="update-close-btn"
                           >
                             <i className="fa-solid fa-xmark"></i>
@@ -188,14 +190,14 @@ const UserComments = () => {
                       </div>
                       <div className="student-profile-review-update d-flex">
                         <button
-                          onClick={() => handleActiveEdete(item)}
+                          // onClick={() => handleActiveEdete(item)}
                           type="button"
                           className="student-profile-review-update-btn"
                         >
                           <i className="far fa-edit"></i> Edit
                         </button>
                         <button
-                          onClick={() => handleDeleteReview(item)}
+                          // onClick={() => handleDeleteReview(item)}
                           type="button"
                           className="student-profile-review-update-btn"
                         >

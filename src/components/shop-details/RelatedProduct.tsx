@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay, Navigation, Scrollbar } from "swiper/modules";
 import "swiper/css/bundle";
-import axios from "axios";
 import { ProductType } from "@/interFace/api-interFace";
 import Link from "next/link";
 import Image from "next/image";

@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import GridIcon from "@/svg/GridIcon";
 import ListIcon from "@/svg/ListIcon";
-import axios from "axios";
 import useGlobalContext from "@/hooks/use-context";
 import ShopSidebarCategories from "../ShopSidebarCategories";
 import ShopSidebarRetting from "../ShopSidebarRetting";
@@ -11,7 +10,6 @@ import NiceSelect from "@/components/common/NiceSelect";
 import GridViewProduct from "../GridViewProduct";
 import ListViewProduct from "../ListViewProduct";
 import Pagination from "@/components/elements/product/Pagination";
-import PaginationTwo from "@/components/elements/product/PaginationTwo";
 import ProductModal from "../ProductModal";
 interface propsType {
   id: string;
@@ -59,33 +57,33 @@ const ShopSectionSubCategoryWise = ({ id }: propsType) => {
     setProdcutLoadding(true);
     setSearchValue(e.target.value);
 
-    axios
-      .get(
-        `${process.env.BASE_URL}product/search-products?search=${searchValue}&page=${page}&limit=${limit}`
-      )
-      .then((res) => {
-        setProducts(res.data.products);
-        setotalPages(res.data.totalPages);
-        setcurrentPage(res.data.currentPage);
-        setProdcutLoadding(false);
-      })
-      .catch((e) => console.log(e));
+    // axios
+    //   .get(
+    //     `${process.env.BASE_URL}product/search-products?search=${searchValue}&page=${page}&limit=${limit}`
+    //   )
+    //   .then((res) => {
+    //     setProducts(res.data.products);
+    //     setotalPages(res.data.totalPages);
+    //     setcurrentPage(res.data.currentPage);
+    //     setProdcutLoadding(false);
+    //   })
+    //   .catch((e) => console.log(e));
   };
 
   useEffect(() => {
     setProducts([]);
     setProdcutLoadding(true);
-    axios
-      .get(
-        `${process.env.BASE_URL}product/sub-categorywise-product/${id}?page=${page}&limit=${limit}`
-      )
-      .then((res) => {
-        setProducts(res.data.products);
-        setotalPages(res.data.totalPages);
-        setcurrentPage(res.data.currentPage);
-        setProdcutLoadding(false);
-      })
-      .catch((e) => console.log(e));
+    // axios
+    //   .get(
+    //     `${process.env.BASE_URL}product/sub-categorywise-product/${id}?page=${page}&limit=${limit}`
+    //   )
+    //   .then((res) => {
+    //     setProducts(res.data.products);
+    //     setotalPages(res.data.totalPages);
+    //     setcurrentPage(res.data.currentPage);
+    //     setProdcutLoadding(false);
+    //   })
+    //   .catch((e) => console.log(e));
   }, [
     page,
     limit,
@@ -100,10 +98,10 @@ const ShopSectionSubCategoryWise = ({ id }: propsType) => {
     setProdcutLoadding(true);
     async function fetchData() {
       try {
-        const response = await axios.get(
-          `${process.env.BASE_URL}product/${apiEndPoint}`
-        );
-        setProducts(response.data);
+        // const response = await axios.get(
+        //   `${process.env.BASE_URL}product/${apiEndPoint}`
+        // );
+        // setProducts(response.data);
         setProdcutLoadding(false);
       } catch (error) {
         console.error(error);
@@ -252,14 +250,7 @@ const ShopSectionSubCategoryWise = ({ id }: propsType) => {
               ) : (
                 <>
                   <div className="row justify-content-center">
-                    <div className="col-xxl-12">
-                      <PaginationTwo
-                        totalPages={1}
-                        currentPage={1}
-                        setPage={setPage}
-                        Pagination_space="d-flex justify-content-center mt-40  mb-45"
-                      />
-                    </div>
+                    <div className="col-xxl-12"></div>
                   </div>
                 </>
               )}
