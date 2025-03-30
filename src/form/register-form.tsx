@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -55,29 +54,29 @@ const RegistrationForm: React.FC = () => {
       gender,
     };
 
-    axios
-      .post(`${process.env.BASE_URL}user/register`, userInfo)
-      .then((res) => {
-        switch (res.data.message) {
-          case "success":
-            setloadings(false);
-            router.push("/login");
-            break;
-          case "custome error":
-            setloadings(false);
-            setregisterError("Enter Valid Info");
-            break;
-          case "User Is Alreay Exist":
-            setloadings(false);
-            setregisterError("User Is Already Exist");
-            break;
-          default:
-            setloadings(false);
-            // Handle any other response messages if needed.
-            break;
-        }
-      })
-      .catch((error) => console.log(error));
+    // axios
+    //   .post(`${process.env.BASE_URL}user/register`, userInfo)
+    //   .then((res) => {
+    //     switch (res.data.message) {
+    //       case "success":
+    //         setloadings(false);
+    //         router.push("/login");
+    //         break;
+    //       case "custome error":
+    //         setloadings(false);
+    //         setregisterError("Enter Valid Info");
+    //         break;
+    //       case "User Is Alreay Exist":
+    //         setloadings(false);
+    //         setregisterError("User Is Already Exist");
+    //         break;
+    //       default:
+    //         setloadings(false);
+    //         // Handle any other response messages if needed.
+    //         break;
+    //     }
+    //   })
+    //   .catch((error) => console.log(error));
   };
 
   if (loadings) {
@@ -105,7 +104,9 @@ const RegistrationForm: React.FC = () => {
                           })}
                         />
                         {errors.firstName && (
-                          <span className="error-message">{errors.firstName.message}</span>
+                          <span className="error-message">
+                            {errors.firstName.message}
+                          </span>
                         )}
                       </div>
                     </div>
@@ -119,7 +120,9 @@ const RegistrationForm: React.FC = () => {
                           })}
                         />
                         {errors.lastName && (
-                          <span className="error-message">{errors.lastName.message}</span>
+                          <span className="error-message">
+                            {errors.lastName.message}
+                          </span>
                         )}
                       </div>
                     </div>
@@ -137,7 +140,11 @@ const RegistrationForm: React.FC = () => {
                             },
                           })}
                         />
-                        {errors.email && <span className="error-message">{errors.email.message}</span>}
+                        {errors.email && (
+                          <span className="error-message">
+                            {errors.email.message}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="col-xxl-6 col-xl-6 col-lg-6">
@@ -151,7 +158,11 @@ const RegistrationForm: React.FC = () => {
                             minLength: 10,
                           })}
                         />
-                        {errors.phone && <span className="error-message">{errors.phone.message}</span>}
+                        {errors.phone && (
+                          <span className="error-message">
+                            {errors.phone.message}
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -181,7 +192,9 @@ const RegistrationForm: React.FC = () => {
                           </button>
                         </span>
                         {errors.password && (
-                          <span className="error-message">{errors.password.message}</span>
+                          <span className="error-message">
+                            {errors.password.message}
+                          </span>
                         )}
                       </div>
                     </div>
@@ -216,7 +229,9 @@ const RegistrationForm: React.FC = () => {
                         </label>
                       </div>
                       {errors.acceptTerms && (
-                        <span className="error-message">{errors.acceptTerms.message}</span>
+                        <span className="error-message">
+                          {errors.acceptTerms.message}
+                        </span>
                       )}
                     </div>
 

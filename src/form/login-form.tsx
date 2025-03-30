@@ -1,7 +1,6 @@
 "use client";
 import Preloader from "@/components/common/Preloader";
 import useGlobalContext from "@/hooks/use-context";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -37,37 +36,37 @@ const LoginForm: React.FC = () => {
       password,
     };
 
-    axios
-      .post(`${process.env.BASE_URL}user/login`, userInfo)
+    // axios
+    //   .post(`${process.env.BASE_URL}user/login`, userInfo)
 
-      .then((res) => {
-        switch (res.data.message) {
-          case "Login Successful":
-            const token = res.data.data;
-            localStorage.setItem("accessToken", token);
-            setLoading(false);
-            router.push("/");
-            toast.success(`Login Successfull`);
-            break;
-          case "password not Match":
-            setLoading(false);
-            setloginError("Password Not Match");
-            break;
-          case "user not Valid":
-            setLoading(false);
-            setloginError("user not Valid");
-            break;
-          case "custome error":
-            setLoading(false);
-            setloginError("Inter Valid Into");
-            break;
-          default:
-            // Handle any other response messages if needed.
-            setLoading(false);
-            break;
-        }
-      })
-      .catch((error) => console.log(error));
+    //   .then((res) => {
+    //     switch (res.data.message) {
+    //       case "Login Successful":
+    //         const token = res.data.data;
+    //         localStorage.setItem("accessToken", token);
+    //         setLoading(false);
+    //         router.push("/");
+    //         toast.success(`Login Successfull`);
+    //         break;
+    //       case "password not Match":
+    //         setLoading(false);
+    //         setloginError("Password Not Match");
+    //         break;
+    //       case "user not Valid":
+    //         setLoading(false);
+    //         setloginError("user not Valid");
+    //         break;
+    //       case "custome error":
+    //         setLoading(false);
+    //         setloginError("Inter Valid Into");
+    //         break;
+    //       default:
+    //         // Handle any other response messages if needed.
+    //         setLoading(false);
+    //         break;
+    //     }
+    //   })
+    //   .catch((error) => console.log(error));
   };
 
   if (loading) {

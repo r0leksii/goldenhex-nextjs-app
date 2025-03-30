@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import AddReview from "./AddReview";
-import axios from "axios";
 import { UserReviewType } from "@/interFace/api-interFace";
 import GetRatting from "@/hooks/GetRatting";
 import Image from "next/image";

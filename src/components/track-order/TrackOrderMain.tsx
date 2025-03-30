@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { PaymentInfoType } from "@/interFace/interFace";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import CustomDateFormatter from "@/hooks/CustomDateFormatter ";
@@ -19,22 +18,22 @@ const TrackOrderMain = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .get(`${process.env.BASE_URL}success/track-order/${searchValue}`)
-      .then((res) => {
-        if (res.data.message === "No products found for the given ID") {
-          setPaymentInfo([]);
-          setErrorMessage(res.data.message);
-        }
-        if (res.data.message === "success") {
-          setPaymentInfo(res.data.data);
-        }
-        if (res.data.message === "Internal Server Error") {
-          setPaymentInfo([]);
-          setErrorMessage(res.data.message);
-        }
-      })
-      .catch((e) => {});
+    // axios
+    //   .get(`${process.env.BASE_URL}success/track-order/${searchValue}`)
+    //   .then((res) => {
+    //     if (res.data.message === "No products found for the given ID") {
+    //       setPaymentInfo([]);
+    //       setErrorMessage(res.data.message);
+    //     }
+    //     if (res.data.message === "success") {
+    //       setPaymentInfo(res.data.data);
+    //     }
+    //     if (res.data.message === "Internal Server Error") {
+    //       setPaymentInfo([]);
+    //       setErrorMessage(res.data.message);
+    //     }
+    //   })
+    //   .catch((e) => {});
   };
 
   let totalCardSum = 0;
@@ -76,14 +75,29 @@ const TrackOrderMain = () => {
                     <>
                       <div key={item?._id}>
                         <div className="order-user-info">
-                          <p className="text-capitalize"> <strong>Name</strong> : {item?.name} </p>
-                          <p> <strong>Order Id</strong> : {item?.orderId}</p>
-                          <p> <strong>Order Date</strong> : <CustomDateFormatter inputDate={item?.date as string}/></p>
-                          <p> <strong>Email</strong> : {item?.buyerEmail} </p>
+                          <p className="text-capitalize">
+                            {" "}
+                            <strong>Name</strong> : {item?.name}{" "}
+                          </p>
+                          <p>
+                            {" "}
+                            <strong>Order Id</strong> : {item?.orderId}
+                          </p>
+                          <p>
+                            {" "}
+                            <strong>Order Date</strong> :{" "}
+                            <CustomDateFormatter
+                              inputDate={item?.date as string}
+                            />
+                          </p>
+                          <p>
+                            {" "}
+                            <strong>Email</strong> : {item?.buyerEmail}{" "}
+                          </p>
                           {item?.shipmentStatus === "Delivered" ? (
                             <>
                               <p>
-                                <strong>Delivered Date</strong> : 
+                                <strong>Delivered Date</strong> :
                                 <CustomDateFormatter
                                   inputDate={item?.orderStatusDate as string}
                                 />
@@ -92,7 +106,7 @@ const TrackOrderMain = () => {
                           ) : (
                             <>
                               <p>
-                                <strong>Estimate Delivery Date</strong> : 
+                                <strong>Estimate Delivery Date</strong> :
                                 <DeliveredDateHook
                                   inputDate={item?.orderStatusDate as string}
                                 />
@@ -100,7 +114,8 @@ const TrackOrderMain = () => {
                             </>
                           )}
                           <p>
-                            <strong>Shiping Address</strong> : {item?.City}, {item?.Address}{" "}
+                            <strong>Shiping Address</strong> : {item?.City},{" "}
+                            {item?.Address}{" "}
                           </p>
                         </div>
 

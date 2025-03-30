@@ -1,7 +1,6 @@
 "use client";
 import useGlobalContext from "@/hooks/use-context";
 import SearchIcon from "@/sheardComponent/elements/icons/search-icon";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, {
@@ -47,23 +46,21 @@ const HeaderOneSearchBar = () => {
       setProdcutLoadding(false);
     } else {
       setProdcutLoadding(true);
-      axios
-        .get(
-          `${process.env.BASE_URL}product/search-products-admin?search=${searchQuery}`
-        )
-        .then((res) => {
-          setProducts(res.data);
-          setProdcutLoadding(false);
-        })
-        .catch((e) => console.log(e));
+      // axios
+      //   .get(
+      //     `${process.env.BASE_URL}product/search-products-admin?search=${searchQuery}`
+      //   )
+      //   .then((res) => {
+      //     setProducts(res.data);
+      //     setProdcutLoadding(false);
+      //   })
+      //   .catch((e) => console.log(e));
     }
   };
 
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
-
-  
 
   return (
     <>
@@ -99,55 +96,52 @@ const HeaderOneSearchBar = () => {
                 />
               </form>
               <div
-            className={`search-result-inner ${
-              openSearchBox ? "open_search_box search_wrapper" : ""
-            }`}
-          >
-            <div className="search-result-l">
-              {products?.length ? (
-                <>
-                  {products?.map((item, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="search_product header_search_one"
-                      >
-                        <div className="row">
-                          <div className="col-lg-2">
-                            <div className="preview_img">
-                              <Image
-                                src={item?.img}
-                                alt="product-img"
-                                width={50}
-                                height={50}
-                                style={{ width: "auto", height: "auto" }}
-                              />
+                className={`search-result-inner ${
+                  openSearchBox ? "open_search_box search_wrapper" : ""
+                }`}
+              >
+                <div className="search-result-l">
+                  {products?.length ? (
+                    <>
+                      {products?.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="search_product header_search_one"
+                          >
+                            <div className="row">
+                              <div className="col-lg-2">
+                                <div className="preview_img">
+                                  <Image
+                                    src={item?.img}
+                                    alt="product-img"
+                                    width={50}
+                                    height={50}
+                                    style={{ width: "auto", height: "auto" }}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-lg-10">
+                                <div className="single_product">
+                                  <Link href={`/product/${item._id}`}>
+                                    {item.productName}
+                                  </Link>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          <div className="col-lg-10">
-                            <div className="single_product">
-                              <Link href={`/product/${item._id}`}>
-                                {item.productName}
-                              </Link>
-                            </div>
-                            
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
-          </div>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* show serch result */}
-
-          
         </div>
       </div>
     </>

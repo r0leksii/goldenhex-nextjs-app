@@ -8,7 +8,6 @@ import {
   remove_cart_product,
 } from "@/redux/slices/cartSlice";
 import { RootState } from "@/redux/store";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -136,7 +135,6 @@ const CartSection = () => {
                 <div className="row">
                   <div className="col-12">
                     <div className="coupon-all">
-                    
                       <div className="coupon2">
                         <button
                           className="bd-border__btn"

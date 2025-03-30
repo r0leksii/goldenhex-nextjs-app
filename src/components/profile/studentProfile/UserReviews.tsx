@@ -2,7 +2,6 @@
 import GetRatting from "@/hooks/GetRatting";
 import useGlobalContext from "@/hooks/use-context";
 import { UserReviewType } from "@/interFace/api-interFace";
-import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -46,14 +45,14 @@ const UserReviews = () => {
 
   useEffect(() => {
     if (user?.email) {
-      axios
-        .get(
-          `${process.env.BASE_URL}user-input/client-review?email=${user?.email}`
-        )
-        .then((res) => {
-          setMyReviews(res.data);
-        })
-        .catch((e) => {});
+      // axios
+      //   .get(
+      //     `${process.env.BASE_URL}user-input/client-review?email=${user?.email}`
+      //   )
+      //   .then((res) => {
+      //     setMyReviews(res.data);
+      //   })
+      //   .catch((e) => {});
     }
   }, [user?.email, updateReview]);
 
@@ -62,22 +61,20 @@ const UserReviews = () => {
 
     const deleteReview = async () => {
       try {
-        const response = await axios.delete(url, {
-          ...header,
-          data: item,
-        });
-        if (response.data.message === "success") {
-          const remainingReviews = myReviews.filter(
-            (itm) => itm._id !== item?._id
-          );
-          setMyReviews(remainingReviews);
-          toast.success("Review Deleted");
-        }
+        // const response = await axios.delete(url, {
+        //   ...header,
+        //   data: item,
+        // });
+        // if (response.data.message === "success") {
+        //   const remainingReviews = myReviews.filter(
+        //     (itm) => itm._id !== item?._id
+        //   );
+        //   setMyReviews(remainingReviews);
+        //   toast.success("Review Deleted");
+        // }
       } catch (error: any) {
         if (error.response.status === 403) {
-          console.error(
-            "Unauthorized access"
-          );
+          console.error("Unauthorized access");
         } else {
           console.error("Unauthorized access");
         }
@@ -106,35 +103,39 @@ const UserReviews = () => {
       productId: singleReview?.productId,
       email: singleReview?.email,
       review,
-      retting:newretting,
+      retting: newretting,
       oldRatting: singleReview?.retting,
     };
 
-    axios
-      .put(`${process.env.BASE_URL}user-input/update-review?email=${user?.email}`, reviewInfoData, header)
-      .then((res) => {
-        if (res.data.message === "success") {
-          setEdeteActive(!edeteActive);
-          setRetting(0);
-          setupdateReview(!updateReview);
-          toast.success(`Review Updated`);
-        }
-      })
-     .catch((error)=>{
-        if (error.response.status === 403) {
-          console.error(
-            "Unauthorized access"
-          );
-        } else {
-          console.error("Unauthorized access");
-        }
-      })
+    // axios
+    //   .put(`${process.env.BASE_URL}user-input/update-review?email=${user?.email}`, reviewInfoData, header)
+    //   .then((res) => {
+    //     if (res.data.message === "success") {
+    //       setEdeteActive(!edeteActive);
+    //       setRetting(0);
+    //       setupdateReview(!updateReview);
+    //       toast.success(`Review Updated`);
+    //     }
+    //   })
+    //  .catch((error)=>{
+    //     if (error.response.status === 403) {
+    //       console.error(
+    //         "Unauthorized access"
+    //       );
+    //     } else {
+    //       console.error("Unauthorized access");
+    //     }
+    //   })
   };
 
   return (
     <>
       {myReviews.length ? (
-        <div className={`student-profile-reviews ${myReviews.length > 4 ? "scrollbox" : ""}`}>
+        <div
+          className={`student-profile-reviews ${
+            myReviews.length > 4 ? "scrollbox" : ""
+          }`}
+        >
           {myReviews.map((item) => (
             <div key={item._id} className="student-profile-reviews-item mb-30">
               <div className="student-profile-reviews-course-title">

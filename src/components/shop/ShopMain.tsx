@@ -1,5 +1,6 @@
 import React from "react";
-import ShopSection, { ProductType } from "./ShopSection";
+import ShopSection from "./ShopSection";
+import { ProductType } from "@/types/product/product.type";
 
 interface ShopMainProps {
   initialData: {

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import useGlobalContext from "@/hooks/use-context";
 import Link from "next/link";
 import Image from "next/image";
@@ -48,17 +47,17 @@ const BrowseProductSlider = () => {
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}product/all-products?page=${page}&limit=${limit}`
-      )
-      .then((res) => {
-        setProducts(Array.isArray(res.data.products) ? res.data.products : []);
-      })
-      .catch((e) => {
-        console.error(e);
-        setProducts([]);
-      });
+    // axios
+    //   .get(
+    //     `${process.env.NEXT_PUBLIC_BASE_URL}product/all-products?page=${page}&limit=${limit}`
+    //   )
+    //   .then((res) => {
+    //     setProducts(Array.isArray(res.data.products) ? res.data.products : []);
+    //   })
+    //   .catch((e) => {
+    //     console.error(e);
+    //     setProducts([]);
+    //   });
   }, [page, limit]);
 
   const handleCallApi = () => {
@@ -71,10 +70,10 @@ const BrowseProductSlider = () => {
 
       setLoading(true);
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
-        );
-        setTabProduct(Array.isArray(response.data) ? response.data : []);
+        // const response = await axios.get(
+        //   `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
+        // );
+        // setTabProduct(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error(error);
         setTabProduct([]);
@@ -248,9 +247,7 @@ const BrowseProductSlider = () => {
                                     </div>
                                     <div className="bd-teanding__content">
                                       <h4 className="bd-product__title">
-                                        <Link
-                                          href={`/product/${item?._id}`}
-                                        >
+                                        <Link href={`/product/${item?._id}`}>
                                           {item?.productName}
                                         </Link>
                                       </h4>

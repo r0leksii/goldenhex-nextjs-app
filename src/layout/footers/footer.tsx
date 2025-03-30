@@ -7,18 +7,17 @@ import discover from "../../../public/assets/img/icon/discover.png";
 import masterCard from "../../../public/assets/img/icon/mastercard.png";
 import paypal from "../../../public/assets/img/icon/paypal.png";
 import visa from "../../../public/assets/img/icon/visa.png";
-import axios from "axios";
 import { CategoryType } from "@/interFace/api-interFace";
 const FooterOne = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.BASE_URL}setting/category`)
-      .then((res) => {
-        setCategories(res.data);
-      })
-      .catch((e) => console.log(e));
+    // axios
+    //   .get(`${process.env.BASE_URL}setting/category`)
+    //   .then((res) => {
+    //     setCategories(res.data);
+    //   })
+    //   .catch((e) => console.log(e));
   }, []);
   return (
     <footer>

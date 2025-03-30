@@ -2,7 +2,6 @@
 
 import useGlobalContext from "@/hooks/use-context";
 import { PaymentInfoType } from "@/interFace/interFace";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -12,22 +11,22 @@ const PaymentInfo = () => {
   const [copied, setCopied] = useState<boolean>(false);
   const [productId, setProductId] = useState<string>("");
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.BASE_URL}success/payment-info?email=${user?.email}`,
-        header
-      )
-      .then((res) => {
-        setPaymentInfo(res.data.data);
-      })
-      .catch((e) => {});
+    // axios
+    //   .get(
+    //     `${process.env.BASE_URL}success/payment-info?email=${user?.email}`,
+    //     header
+    //   )
+    //   .then((res) => {
+    //     setPaymentInfo(res.data.data);
+    //   })
+    //   .catch((e) => {});
   }, [user?.email, header]);
   const copyPaymentId = (item: PaymentInfoType) => {
     setCopied(false);
     setProductId(item._id);
     if (item._id == productId) {
       navigator.clipboard.writeText(item.paymentId);
-      toast.success("Payment Id Copyed")
+      toast.success("Payment Id Copyed");
       setCopied(true);
     }
   };
@@ -66,7 +65,7 @@ const PaymentInfo = () => {
                     <ul className="icon_list  unordered_list_block">
                       {item.orderProducts.length ? (
                         <>
-                          {item.orderProducts.map((itm:any) => (
+                          {item.orderProducts.map((itm: any) => (
                             <li
                               key={itm._id}
                               className="d-flex justify-content-between"
@@ -83,7 +82,10 @@ const PaymentInfo = () => {
                           ))}
                         </>
                       ) : (
-                        <> <p className="text-center">No Purchases</p> </>
+                        <>
+                          {" "}
+                          <p className="text-center">No Purchases</p>{" "}
+                        </>
                       )}
                     </ul>
                   </div>
@@ -93,7 +95,10 @@ const PaymentInfo = () => {
           ))}
         </>
       ) : (
-        <> <p className="text-center">No Purchases</p> </>
+        <>
+          {" "}
+          <p className="text-center">No Purchases</p>{" "}
+        </>
       )}
     </>
   );

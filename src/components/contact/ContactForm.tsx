@@ -4,8 +4,6 @@ import LocationIcon from "@/sheardComponent/elements/icons/location-icon";
 import PhoneIcon from "@/sheardComponent/elements/icons/phone-icon";
 import { useForm, SubmitHandler } from "react-hook-form";
 import React from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
 import emailjs from "@emailjs/browser";
 import moment from "moment";
 import useGlobalContext from "@/hooks/use-context";
@@ -66,18 +64,18 @@ const ContactForm = () => {
         );
     };
 
-    axios
-      .post(`${process.env.BASE_URL}user-input/contact`, userInfo)
-      .then((res) => {
-        if (res.data.message === "success") {
-          reset();
-          sendEmail();
-          toast.success(`Message Send Success`);
-        }
-        if (res.data.message === "custom error") {
-          toast.error(`Message Send Faield`);
-        }
-      });
+    // axios
+    //   .post(`${process.env.BASE_URL}user-input/contact`, userInfo)
+    //   .then((res) => {
+    //     if (res.data.message === "success") {
+    //       reset();
+    //       sendEmail();
+    //       toast.success(`Message Send Success`);
+    //     }
+    //     if (res.data.message === "custom error") {
+    //       toast.error(`Message Send Faield`);
+    //     }
+    //   });
   };
 
   return (

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Scrollbar, A11y, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
-import axios from "axios";
 import { CategoryType } from "@/interFace/api-interFace";
 import Image from "next/image";
 import { productsPreloader } from "@/data/preloader-data";
@@ -13,12 +12,12 @@ const CategorySlider = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.BASE_URL}setting/category`)
-      .then((res) => {
-        setCategories(Array.isArray(res.data) ? res.data : []);
-      })
-      .catch((e) => console.log(e));
+    // axios
+    //   .get(`${process.env.BASE_URL}setting/category`)
+    //   .then((res) => {
+    //     setCategories(Array.isArray(res.data) ? res.data : []);
+    //   })
+    //   .catch((e) => console.log(e));
   }, []);
 
   return (

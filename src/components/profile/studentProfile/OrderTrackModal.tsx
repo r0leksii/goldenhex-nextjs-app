@@ -3,7 +3,6 @@ import CustomDateFormatter from "@/hooks/CustomDateFormatter ";
 import { getClass, getLineActiveClass } from "@/hooks/condition-class";
 import useGlobalContext from "@/hooks/use-context";
 import { PaymentInfoType } from "@/interFace/interFace";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 const OrderTrackModal = () => {

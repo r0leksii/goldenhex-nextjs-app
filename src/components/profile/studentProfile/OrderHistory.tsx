@@ -2,7 +2,6 @@
 import CustomDateFormatter from "@/hooks/CustomDateFormatter ";
 import useGlobalContext from "@/hooks/use-context";
 import { PaymentInfoType } from "@/interFace/interFace";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
