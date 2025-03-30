@@ -4,3 +4,4 @@ export { default as ProductModal } from "./ProductModal";
 export { default as ShopMain } from "./ShopMain";
 export { default as ShopSidebarCategories } from "./ShopSidebarCategories";
 export { default as ShopSidebarRetting } from "./ShopSidebarRetting";
+export { default as ListViewProduct } from "./ListViewProduct";
