@@ -7,7 +7,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { cart_product } from "@/redux/slices/cartSlice";
 import { wishlist_product } from "@/redux/slices/wishlistSlice";
-import { ProductType } from "./ShopSection";
+import { ProductType } from "@/types/product/product.type";
+import { createSlug } from "@/utils";
 import { CartProductType } from "@/interFace/interFace";
 
 interface GridViewProductProps {
@@ -75,6 +76,8 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
             displayProducts.map((item) => {
               // Debug the first item to see what's available
               const price = getPrice(item);
+              const slug = createSlug(item.title);
+              const href = `/product/${slug}-${item._id}`;
               return (
                 <div
                   className="col-xxl-2 col-xl-4 col-lg-6 col-md-6 col-sm-6"
@@ -82,10 +85,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                 >
                   <div className="bd-trending__item text-center mb-30 position-relative">
                     <div className="bd-trending__product-thumb border-5">
-                      <Link
-                        href={`/shop-details/${item?._id}`}
-                        className="ratio ratio-1x1 d-block"
-                      >
+                      <Link href={href} className="ratio ratio-1x1 d-block">
                         <Image
                           src={getImageUrl(item)}
                           alt={item?.title || "Product image"}
@@ -97,7 +97,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                     </div>
                     <div className="bd-teanding__content">
                       <h4 className="bd-product__title">
-                        <Link href={`/shop-details/${item?._id}`}>
+                        <Link href={href}>
                           {item?.title || "Unnamed Product"}
                         </Link>
                       </h4>

@@ -16,7 +16,6 @@ import {
   useTotalProductCount,
   useTotalProductWishlistCount,
 } from "@/hooks/useCartQuantity";
-import axios from "axios";
 import { usePathname } from "next/navigation";
 import SidebarWishlist from "./SidebarWishlist";
 
@@ -55,22 +54,22 @@ const HeaderThree = () => {
     }
   };
 
-  const handleInputChange = (e: any) => {
-    setSearchValue(e.target.value);
+  // const handleInputChange = (e: any) => {
+  //   setSearchValue(e.target.value);
 
-    if (pathName === "/shop") {
-      setProdcutLoadding(true);
-      axios
-        .get(
-          `${process.env.BASE_URL}product/search-products-admin?search=${searchValue}`
-        )
-        .then((res) => {
-          setProducts(res.data);
-          setProdcutLoadding(false);
-        })
-        .catch((e) => console.log(e));
-    }
-  };
+  //   if (pathName === "/shop") {
+  //     setProdcutLoadding(true);
+  //     axios
+  //       .get(
+  //         `${process.env.BASE_URL}product/search-products-admin?search=${searchValue}`
+  //       )
+  //       .then((res) => {
+  //         setProducts(res.data);
+  //         setProdcutLoadding(false);
+  //       })
+  //       .catch((e) => console.log(e));
+  //   }
+  // };
 
   // Sticky Menu Area End
   return (
@@ -233,7 +232,7 @@ const HeaderThree = () => {
                           type="text"
                           placeholder={"Search products..."}
                           value={searchValue}
-                          onChange={handleInputChange}
+                          // onChange={handleInputChange}
                         />
                         <button>
                           <i className="flaticon-magnifiying-glass"></i>

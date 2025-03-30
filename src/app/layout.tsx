@@ -1,10 +1,10 @@
 import "./globals.css";
 import "../style/index.scss";
-import AppProvider from "@/contextApi/AppProvider";
-import ReduxProvider from "@/redux/provider";
 import { childrenType } from "@/interFace/interFace";
 import { ToastContainer } from "react-toastify";
 import { Jost } from "next/font/google";
+import AppProvider from "@/contextApi/AppProvider";
+import ReduxProvider from "@/redux/provider";
 
 const jost = Jost({
   subsets: ["latin"],

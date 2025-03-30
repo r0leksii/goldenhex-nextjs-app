@@ -1,5 +1,5 @@
-import type { components } from "./schema.type";
-import type { paths } from "./schema.d";
+import type { components } from "../schema.type";
+import type { paths } from "../schema";
 
 // Types for the GET request
 export type GetProductQueryParameters =

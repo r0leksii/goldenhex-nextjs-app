@@ -3,7 +3,7 @@
 import HomeThreeMain from "@/components/home-three/HomeThreeMain";
 import Wrapper from "@/layout/DefaultWrapper";
 import ShopMain from "@/components/shop/ShopMain";
-import { getProducts } from "@/lib/actions";
+import { getProducts } from "@/lib/actions/product.actions";
 import { Suspense } from "react";
 
 const Home = async () => {

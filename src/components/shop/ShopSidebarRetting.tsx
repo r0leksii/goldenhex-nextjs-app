@@ -2,7 +2,6 @@
 
 import GetRatting from "@/hooks/GetRatting";
 import ShopSidebarPreloader from "@/preloaders/ShopSidebarPreloader";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 interface ProductReview {
@@ -14,16 +13,16 @@ const ShopSidebarRetting = () => {
   const [rattings, setRattings] = useState<ProductReview[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${process.env.BASE_URL}product/rattings`)
-      .then((res) => {
-        setRattings(Array.isArray(res.data) ? res.data : []);
-        setLoading(false);
-      })
-      .catch((e) => console.log(e));
-  }, []);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   axios
+  //     .get(`${process.env.BASE_URL}product/rattings`)
+  //     .then((res) => {
+  //       setRattings(Array.isArray(res.data) ? res.data : []);
+  //       setLoading(false);
+  //     })
+  //     .catch((e) => console.log(e));
+  // }, []);
 
   return (
     <>

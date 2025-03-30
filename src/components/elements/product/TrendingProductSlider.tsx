@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { A11y, Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
-import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CartProductType } from "@/interFace/interFace";
@@ -49,38 +48,38 @@ const TrendingProductSlider = ({ trending_product_title }: any) => {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_BASE_URL}product/trending-products`)
-      .then((res) => {
-        setProducts(Array.isArray(res.data) ? res.data : []);
-      })
-      .catch((e) => {
-        console.error(e);
-        setProducts([]);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.NEXT_PUBLIC_BASE_URL}product/trending-products`)
+  //     .then((res) => {
+  //       setProducts(Array.isArray(res.data) ? res.data : []);
+  //     })
+  //     .catch((e) => {
+  //       console.error(e);
+  //       setProducts([]);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    async function fetchData() {
-      if (apiEndPoint.trim() === "") return;
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     if (apiEndPoint.trim() === "") return;
 
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
-        );
-        setTabProduct(Array.isArray(response.data) ? response.data : []);
-      } catch (error) {
-        console.error(error);
-        setTabProduct([]);
-      } finally {
-        setLoading(false);
-      }
-    }
+  //     setLoading(true);
+  //     try {
+  //       const response = await axios.get(
+  //         `${process.env.NEXT_PUBLIC_BASE_URL}product/${apiEndPoint}`
+  //       );
+  //       setTabProduct(Array.isArray(response.data) ? response.data : []);
+  //     } catch (error) {
+  //       console.error(error);
+  //       setTabProduct([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
 
-    fetchData();
-  }, [apiEndPoint]);
+  //   fetchData();
+  // }, [apiEndPoint]);
 
   const handleCallApi = () => {
     setTabProduct([]);
@@ -208,7 +207,7 @@ const TrendingProductSlider = ({ trending_product_title }: any) => {
                                     <div className="bd-trending__item text-center mb-30">
                                       <div className="bd-trending__product-thumb">
                                         <Link
-                                          href={`/shop-details/${item?._id}`}
+                                          href={`/product/${item?._id}`}
                                         >
                                           <Image
                                             width={500}
@@ -284,7 +283,7 @@ const TrendingProductSlider = ({ trending_product_title }: any) => {
                                       <div className="bd-teanding__content">
                                         <h4 className="bd-product__title">
                                           <Link
-                                            href={`/shop-details/${item?._id}`}
+                                            href={`/product/${item?._id}`}
                                           >
                                             {item?.productName}
                                           </Link>
@@ -382,7 +381,7 @@ const TrendingProductSlider = ({ trending_product_title }: any) => {
                               <div className="swiper-slides">
                                 <div className="bd-trending__item text-center mb-30">
                                   <div className="bd-trending__product-thumb">
-                                    <Link href={`/shop-details/${item._id}`}>
+                                    <Link href={`/product/${item._id}`}>
                                       <Image
                                         width={500}
                                         height={500}
@@ -454,7 +453,7 @@ const TrendingProductSlider = ({ trending_product_title }: any) => {
                                   </div>
                                   <div className="bd-teanding__content">
                                     <h4 className="bd-product__title">
-                                      <Link href={`/shop-details/${item?._id}`}>
+                                      <Link href={`/product/${item?._id}`}>
                                         {item?.productName}
                                       </Link>
                                     </h4>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { getCategories } from "@/lib/actions";
+import { getCategories } from "@/lib/actions/category.actions";
 const chevronRight = <FontAwesomeIcon icon={faChevronRight} />;
 
 interface SanitizedCategory {
@@ -45,7 +45,7 @@ const CategoryItem = () => {
             >
               <Link
                 className="text-capitalize d-flex align-items-center justify-content-between"
-                href={`/shop?category=${category._id}`}
+                href={`/shop?category=${category.name}`}
               >
                 <span>{category.name}</span>
                 {category.children && category.children.length > 0 && (
@@ -68,7 +68,7 @@ const CategoryItem = () => {
                     >
                       <Link
                         className="text-capitalize d-flex align-items-center justify-content-between"
-                        href={`/shop?category=${category._id}&subcategory=${subCategory._id}`}
+                        href={`/shop?category=${category.name}&subcategory=${subCategory.name}`}
                       >
                         <span>{subCategory.name}</span>
                         {subCategory.children &&
@@ -87,7 +87,7 @@ const CategoryItem = () => {
                               <li key={thirdLevel._id}>
                                 <Link
                                   className="text-capitalize"
-                                  href={`/shop?category=${category._id}&subcategory=${subCategory._id}&thirdlevel=${thirdLevel._id}`}
+                                  href={`/shop?category=${category.name}&subcategory=${subCategory.name}&thirdlevel=${thirdLevel.name}`}
                                 >
                                   {thirdLevel.name}
                                 </Link>

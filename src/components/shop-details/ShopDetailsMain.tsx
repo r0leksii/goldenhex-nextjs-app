@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import "swiper/css/bundle";
 import Breadcrumb from "../common/breadcrumb/Breadcrumb";
 import Image from "next/image";
-import { ProductType } from "../shop/ShopSection";
+import { ProductType } from "@/types/product/product.type";
 
 interface ShopDetailsMainProps {
   product: ProductType;

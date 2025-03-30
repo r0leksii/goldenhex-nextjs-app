@@ -147,7 +147,7 @@ const OrderHistory = () => {
                                           <tr key={index}>
                                             <td className="product-thumbnail">
                                               <Link
-                                                href={`/shop-details/${itm.productId}`}
+                                                href={`/product/${itm.productId}`}
                                               >
                                                 <Image
                                                   src={itm.img}
@@ -163,7 +163,7 @@ const OrderHistory = () => {
                                             </td>
                                             <td className="product-name">
                                               <Link
-                                                href={`/shop-details/${itm._id}`}
+                                                href={`/product/${itm._id}`}
                                               >
                                                 {itm.productName}
                                               </Link>

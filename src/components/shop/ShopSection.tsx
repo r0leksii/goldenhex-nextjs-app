@@ -1,24 +1,11 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import Pagination from "../elements/product/Pagination";
-import GridViewProduct from "./GridViewProduct";
-import ProductModal from "./ProductModal";
-import { getProducts } from "@/lib/actions";
 
-export interface ProductType {
-  _id: string;
-  categoryName: string;
-  price: number;
-  img: string;
-  title: string;
-  quantity: number;
-  tags: string[];
-  imageURLs: string[];
-  description?: string;
-  isAvailable?: boolean;
-  currentStock?: number;
-}
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Pagination } from "@/components/elements/product";
+import { GridViewProduct, ProductModal } from "@/components/shop";
+import { getProducts } from "@/lib/actions/product.actions";
+import { ProductType } from "@/types/product/product.type";
 
 interface ShopSectionProps {
   initialData: {
@@ -31,7 +18,6 @@ interface ShopSectionProps {
 const ShopSection = ({ initialData }: ShopSectionProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
 
   const initialPage =
     Number(searchParams.get("page")) || initialData?.currentPage || 1;

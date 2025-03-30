@@ -5,7 +5,6 @@ import {
   IUser,
   SellProductInfoType,
 } from "@/interFace/interFace";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
   ProductType,
@@ -60,35 +59,35 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     []
   );
 
-  useEffect(() => {
-    if (token || loggedIn) {
-      axios
-        .post(`${process.env.BASE_URL}user/get-user`, { token }, header)
-        .then((res) => {
-          if (res.data.data) {
-            const userinfo = res.data.data;
-            setLoggedIn(true);
-            setUser(userinfo);
-            setLoading(false);
-            if (token) {
-              const decodedToken: any = jwtDecode(token);
-              const expirationTime = decodedToken.exp * 1000; // Convert expiration time to milliseconds.
-              const currentTime = Date.now();
+  // useEffect(() => {
+  //   if (token || loggedIn) {
+  //     axios
+  //       .post(`${process.env.BASE_URL}user/get-user`, { token }, header)
+  //       .then((res) => {
+  //         if (res.data.data) {
+  //           const userinfo = res.data.data;
+  //           setLoggedIn(true);
+  //           setUser(userinfo);
+  //           setLoading(false);
+  //           if (token) {
+  //             const decodedToken: any = jwtDecode(token);
+  //             const expirationTime = decodedToken.exp * 1000; // Convert expiration time to milliseconds.
+  //             const currentTime = Date.now();
 
-              const timeUntilExpiration = expirationTime - currentTime;
-              setTimeout(() => {
-                logout();
-              }, timeUntilExpiration);
-            }
-          }
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [token, loggedIn, update, header]);
+  //             const timeUntilExpiration = expirationTime - currentTime;
+  //             setTimeout(() => {
+  //               logout();
+  //             }, timeUntilExpiration);
+  //           }
+  //         }
+  //       })
+  //       .catch((e) => {
+  //         setLoading(false);
+  //       });
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // }, [token, loggedIn, update, header]);
 
   // useEffect(() => {
   //   if (user?.email) {

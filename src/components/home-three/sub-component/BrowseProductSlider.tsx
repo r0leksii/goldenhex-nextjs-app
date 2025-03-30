@@ -176,7 +176,7 @@ const BrowseProductSlider = () => {
                                 >
                                   <div className="bd-trending__item text-center mb-30 position-relative">
                                     <div className="bd-trending__product-thumb">
-                                      <Link href={`/shop-details/${item?._id}`}>
+                                      <Link href={`/product/${item?._id}`}>
                                         <Image
                                           width={500}
                                           height={500}
@@ -249,7 +249,7 @@ const BrowseProductSlider = () => {
                                     <div className="bd-teanding__content">
                                       <h4 className="bd-product__title">
                                         <Link
-                                          href={`/shop-details/${item?._id}`}
+                                          href={`/product/${item?._id}`}
                                         >
                                           {item?.productName}
                                         </Link>
@@ -349,7 +349,7 @@ const BrowseProductSlider = () => {
                             >
                               <div className="bd-trending__item text-center mb-30 position-relative">
                                 <div className="bd-trending__product-thumb">
-                                  <Link href={`/shop-details/${item?._id}`}>
+                                  <Link href={`/product/${item?._id}`}>
                                     <Image
                                       width={500}
                                       height={500}
@@ -416,7 +416,7 @@ const BrowseProductSlider = () => {
                                 </div>
                                 <div className="bd-teanding__content">
                                   <h4 className="bd-product__title">
-                                    <Link href={`/shop-details/${item?._id}`}>
+                                    <Link href={`/product/${item?._id}`}>
                                       {item?.productName}
                                     </Link>
                                   </h4>

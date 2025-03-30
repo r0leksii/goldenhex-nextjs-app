@@ -9,15 +9,13 @@ import "swiper/css/bundle";
 import useGlobalContext from "@/hooks/use-context";
 import Image from "next/image";
 import { cart_product, decrease_quantity } from "@/redux/slices/cartSlice";
-import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import { CartProductType } from "@/interFace/interFace";
-import axios from "axios";
 import masterCard from "../../../public/assets/img/icon/mastercard.png";
 import papyle from "../../../public/assets/img/icon/paypal.png";
 import visa from "../../../public/assets/img/icon/visa.png";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { ProductType } from "./ShopSection";
+import { ProductType } from "@/types/product/product.type";
 import { Modal } from "bootstrap";
 
 const ProductModal = () => {
