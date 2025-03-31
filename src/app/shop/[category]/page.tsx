@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import Breadcrumb from "@/components/common/breadcrumb/Breadcrumb";
 import ShopSectionCategoryWize from "@/components/shop/categoryWizeShop/ShopSectionCategoryWize";
 import Wrapper from "@/layout/DefaultWrapper";

@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { Suspense } from "react";
 import ShopDetailsMain from "@/components/shop-details/ShopDetailsMain";
 import { getProductById } from "@/lib/actions/product.actions";
