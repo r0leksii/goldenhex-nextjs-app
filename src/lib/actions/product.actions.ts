@@ -54,6 +54,55 @@ function calculateStockDetails(stockData: IProductStock[] | null): {
 }
 
 /**
+ * Transforms raw API product data into the application's ProductType format.
+ */
+function transformToProductType(
+  webProduct: WebProductType | undefined | null,
+  catalogueProduct: CatalogueProductType | undefined | null,
+  stockInfo: { currentStock: number; minStock: number }
+): ProductType | null {
+  const productId = webProduct?.Id ?? catalogueProduct?.Id;
+  if (productId == null) {
+    // Cannot create a product without an ID from either source
+    console.warn("Missing product ID during transformation.");
+    return null;
+  }
+
+  const idString = productId.toString();
+  const title =
+    webProduct?.Name ?? catalogueProduct?.Name ?? "Untitled Product";
+  const imageUrl = webProduct?.ProductImages?.[0]?.ImageUrl ?? "";
+  const imageURLs =
+    webProduct?.ProductImages?.map((img) => img.ImageUrl ?? "").filter(
+      Boolean
+    ) ?? [];
+  const tags =
+    webProduct?.ProductTags?.map((tag) => tag.Name ?? "").filter(Boolean) ?? [];
+  const price = webProduct?.SalePrice ?? 0;
+  const description = webProduct?.Description ?? "";
+  // Prefer catalogue category name if available, fallback to web product category ID
+  const categoryName =
+    catalogueProduct?.CategoryName ??
+    webProduct?.CategoryId?.toString() ??
+    "Unknown Category";
+
+  return {
+    _id: idString,
+    categoryName,
+    price,
+    img: imageUrl,
+    title,
+    quantity: 1, // Default quantity
+    tags,
+    imageURLs,
+    description,
+    currentStock: stockInfo.currentStock,
+    minStock: stockInfo.minStock,
+    isAvailable: stockInfo.currentStock > stockInfo.minStock,
+  };
+}
+
+/**
  * Fetches a paginated list of products combined from WebProducts and Catalogue endpoints.
  * Uses page and limit parameters for pagination.
  */
@@ -154,30 +203,10 @@ export async function getProducts(
           minStock: 0,
         };
 
-        // Construct object explicitly matching ProductType structure
-        const productData: ProductType = {
-          _id: productId.toString(),
-          categoryName: catalogueProduct.CategoryName ?? "",
-          price: webProduct.SalePrice ?? 0,
-          img: webProduct.ProductImages?.[0]?.ImageUrl ?? "",
-          title: webProduct.Name ?? catalogueProduct.Name ?? "Untitled Product",
-          quantity: 1, // Default quantity, adjust if needed based on context
-          tags:
-            webProduct.ProductTags?.map((tag) => tag.Name ?? "").filter(
-              Boolean
-            ) ?? [],
-          imageURLs:
-            webProduct.ProductImages?.map((img) => img.ImageUrl ?? "").filter(
-              Boolean
-            ) ?? [],
-          description: webProduct.Description ?? "", // Ensure string
-          currentStock: stockInfo.currentStock,
-          minStock: stockInfo.minStock, // Add minStock
-          isAvailable: stockInfo.currentStock > stockInfo.minStock, // Update availability check
-        };
-        return productData;
+        // Use the transformer function
+        return transformToProductType(webProduct, catalogueProduct, stockInfo);
       })
-      .filter((product): product is ProductType => product !== null); // Keep the type predicate filter
+      .filter((product): product is ProductType => product !== null);
 
     return { products, totalPages, currentPage };
   } catch (error) {
@@ -223,30 +252,30 @@ export async function getProductById(id: string): Promise<ProductType | null> {
 
     // --- 2. Fetch Stock Details using getStockByProductId ---
     const stockData = await getStockByProductId(productIdNum);
-    const stockInfo = calculateStockDetails(stockData); // Use fetched stock data
+    const stockInfo = calculateStockDetails(stockData);
 
-    // --- 3. Combine Data ---
-    // Note: CategoryName might still be missing if not on WebProduct.
-    // Consider an additional call to /Catalogue/products?Search=ID if needed.
-    const finalProductData = {
-      _id: webProduct.Id!.toString(), // We know Id exists
-      categoryName: webProduct.CategoryId?.toString() ?? "Unknown Category", // Or fetch from catalogue
-      price: webProduct.SalePrice ?? 0,
-      img: webProduct.ProductImages?.[0]?.ImageUrl ?? "",
-      title: webProduct.Name ?? "Untitled Product", // Add fallback from catalogue if needed
-      quantity: 1, // Default quantity
-      tags:
-        webProduct.ProductTags?.map((tag) => tag.Name ?? "").filter(Boolean) ??
-        [],
-      imageURLs:
-        webProduct.ProductImages?.map((img) => img.ImageUrl ?? "").filter(
-          Boolean
-        ) ?? [],
-      description: webProduct.Description ?? "",
-      currentStock: stockInfo.currentStock,
-      minStock: stockInfo.minStock,
-      isAvailable: stockInfo.currentStock > stockInfo.minStock,
-    };
+    // --- 3. Combine Data using the transformer ---
+    // Pass both webProduct and potentially fetched catalogueProduct
+    // If webProduct is null/undefined, the transformer will try to use catalogueProduct data.
+    // If catalogueProduct wasn't fetched, pass undefined or null.
+    const finalProductData = transformToProductType(
+      webProduct,
+      undefined /* or catalogueProduct */,
+      stockInfo
+    );
+
+    if (!finalProductData && !webProduct) {
+      // If transformation failed AND we never found a web product, it's likely not found.
+      console.warn(`Product not found for ID: ${id}`);
+      return null;
+    } else if (!finalProductData && webProduct) {
+      // If transformation failed but we had a webProduct, log it but maybe return partial?
+      // Or handle as error depending on requirements. For now, returning null.
+      console.error(
+        `Failed to transform product data for ID: ${id} despite finding web product.`
+      );
+      return null;
+    }
 
     return finalProductData;
   } catch (error) {
