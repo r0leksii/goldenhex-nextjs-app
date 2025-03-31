@@ -1,13 +1,14 @@
-import React from 'react';
-import Breadcrumb from '../common/breadcrumb/Breadcrumb';
-import WishlistSection from './WishlistSection';
+import React from "react";
+import Breadcrumb from "../common/breadcrumb/Breadcrumb";
+// import WishlistSection from './WishlistSection';
 
 const WistListMain = () => {
-    return (
-        <><Breadcrumb breadHome="Home" breadMenu="Wishlist"/>
-            <WishlistSection/>
-        </>
-    );
+  return (
+    <>
+      <Breadcrumb breadHome="Home" breadMenu="Wishlist" />
+      {/* <WishlistSection/> */}
+    </>
+  );
 };
 
 export default WistListMain;
