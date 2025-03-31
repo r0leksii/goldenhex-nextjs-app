@@ -1,5 +1,5 @@
 import React from "react";
-import TrendingProductSlider from "../elements/product/TrendingProductSlider";
+// import TrendingProductSlider from "../elements/product/TrendingProductSlider";
 import HurryupBanner from "./sub-component/HurryupBanner";
 import BrowseProductSlider from "./sub-component/BrowseProductSlider";
 import BrowseProductBanner from "./sub-component/BrowseProductBanner";
@@ -17,7 +17,7 @@ const TrendingProducts = () => {
             <div className="col-xxl-9 col-xl-8">
               <div className="row">
                 <div className="col-xxl-12 col-xl-12 col-lg-12 mb-45">
-                  <TrendingProductSlider trending_product_title="Trending Product" />
+                  {/* <TrendingProductSlider trending_product_title="Trending Product" /> */}
                 </div>
                 <HurryupBanner />
                 <BrowseProductSlider />

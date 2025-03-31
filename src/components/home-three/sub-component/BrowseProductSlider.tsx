@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { cart_product } from "@/redux/slices/cartSlice";
 import { CartProductType } from "@/interFace/interFace";
 import GetRatting from "@/hooks/GetRatting";
-import { wishlist_product } from "@/redux/slices/wishlistSlice";
+// import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import ShopPreloader from "@/preloaders/ShopPreloader";
 const BrowseProductSlider = () => {
   const { setOpenModal, openModal, setModalId } = useGlobalContext();
@@ -218,9 +218,8 @@ const BrowseProductSlider = () => {
                                               data-toggle="tooltip"
                                               data-placement="top"
                                               title="Quick Wishlist"
-                                              onClick={() =>
-                                                dispatch(wishlist_product(item))
-                                              }
+                                              onClick={() => {}}
+                                              // dispatch(wishlist_product(item))
                                             >
                                               <i className="fal fa-heart"></i>
                                             </span>
@@ -384,9 +383,8 @@ const BrowseProductSlider = () => {
                                           data-toggle="tooltip"
                                           data-placement="top"
                                           title="Quick Wishlist"
-                                          onClick={() =>
-                                            dispatch(wishlist_product(item))
-                                          }
+                                          onClick={() => {}}
+                                          // dispatch(wishlist_product(item))
                                         >
                                           <i className="fal fa-heart"></i>
                                         </span>
