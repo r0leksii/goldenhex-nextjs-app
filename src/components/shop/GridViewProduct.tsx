@@ -69,6 +69,10 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
     return product.productQuantity;
   };
 
+  const getProductDescription = (product: any): string => {
+    return product.productDescription;
+  };
+
   return (
     <>
       {prodcutLoadding ? (
@@ -111,14 +115,17 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                           ${price.toFixed(2)}
                         </span>
                       </div>
-                      {getDescription(item) && (
+                      <div className="bd-product__description">
+                        <p>From: {getProductDescription(item)}</p>
+                      </div>
+                      {/* {getDescription(item) && (
                         <div className="bd-product__description">
                           <p>
                             {getDescription(item).substring(0, 60)}
                             {getDescription(item).length > 60 ? "..." : ""}
                           </p>
                         </div>
-                      )}
+                      )} */}
                       {!item.isAvailable && (
                         <div className="bd-product__availability">
                           <span className="out-of-stock">Out of Stock</span>

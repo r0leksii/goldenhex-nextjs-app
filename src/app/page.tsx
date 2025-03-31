@@ -20,7 +20,7 @@ const Home = async ({ searchParams }: HomePageProps) => {
 
   // For categoryId, we want undefined if invalid, not a default number
   let categoryId: number | undefined = undefined;
-  const rawCategoryId = searchParams.categoryId;
+  const rawCategoryId = searchParams?.categoryId;
   if (
     rawCategoryId !== undefined &&
     rawCategoryId !== null &&
@@ -33,7 +33,7 @@ const Home = async ({ searchParams }: HomePageProps) => {
     // If parsing fails, categoryId remains undefined
   }
 
-  const search = searchParams.search;
+  const search = searchParams?.search;
 
   // Fetch initial products based on URL parameters
   const { products, totalPages, currentPage } = await getProducts(

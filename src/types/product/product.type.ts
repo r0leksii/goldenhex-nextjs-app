@@ -11,4 +11,5 @@ export interface ProductType {
   isAvailable?: boolean;
   currentStock?: number;
   minStock?: number;
+  productDescription?: string;
 }
