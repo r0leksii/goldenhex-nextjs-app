@@ -27,6 +27,7 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
                           <Image
                             src={product.imageURLs[0]}
                             alt={product.title}
+                            priority
                             width={577}
                             height={577}
                             style={{

@@ -91,7 +91,8 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                           alt={item?.title || "Product image"}
                           width={500}
                           height={500}
-                          className="object-fit-contain "
+                          className="object-fit-contain"
+                          priority
                         />
                       </Link>
                     </div>
