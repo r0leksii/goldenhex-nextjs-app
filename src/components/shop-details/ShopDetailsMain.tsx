@@ -32,7 +32,6 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
                             height={577}
                             style={{
                               width: "100%",
-                              height: "auto",
                               objectFit: "contain",
                             }}
                           />
@@ -46,6 +45,70 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
                       <div className="product-price">
                         <span>${product.price}</span>
                       </div>
+
+                      {product?.isAvailable ? (
+                        <>
+                          <div className="modal-product-meta bd__product-details-menu-1">
+                            <ul>
+                              <li>
+                                <strong>Products:</strong>
+                                <span>
+                                  {" "}
+                                  {product?.currentStock} Pieces Available{" "}
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+
+                      <div className="product-quantity-cart mb-25">
+                        {product?.isAvailable ? (
+                          <>
+                            {" "}
+                            <div className="product-quantity-form">
+                              <form onSubmit={(e) => e.preventDefault()}>
+                                <button
+                                  // onClick={() => handDecressCart(myProduct)}
+                                  className="cart-minus"
+                                >
+                                  <i className="far fa-minus"></i>
+                                </button>
+                                <input
+                                  className="cart-input"
+                                  type="text"
+                                  readOnly
+                                  // value={totalCart ? totalCart : 0}
+                                />
+                                <button
+                                  className="cart-plus"
+                                  // onClick={() => handleAddToCart(myProduct)}
+                                >
+                                  <i className="far fa-plus"></i>
+                                </button>
+                              </form>
+                            </div>
+                            <span data-bs-dismiss="modal" aria-label="Close">
+                              <Link
+                                className="cart-btn bd-fill__btn"
+                                href="/cart"
+                              >
+                                <i className="fal fa-cart-arrow-down"></i> View
+                                Cart
+                              </Link>
+                            </span>{" "}
+                          </>
+                        ) : (
+                          <>
+                            <span className="text-danger">
+                              This Product Is Out Of Stock
+                            </span>
+                          </>
+                        )}
+                      </div>
+
                       <div className="bd__social-media">
                         <ul>
                           <li>Share:</li>

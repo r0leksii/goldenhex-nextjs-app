@@ -9,7 +9,6 @@ import { cart_product } from "@/redux/slices/cartSlice";
 import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import { ProductType } from "@/types/product/product.type";
 import { createSlug } from "@/utils";
-import { CartProductType } from "@/interFace/interFace";
 
 interface GridViewProductProps {
   products: ProductType[];
@@ -27,27 +26,27 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
   // No need to slice products here as pagination is handled by the API
   const displayProducts = Array.isArray(products) ? products : [];
 
-  const handleMoldalData = (id: string) => {
-    // First set the ID
-    setModalId(id);
-    // Then set openModal to true
-    setOpenModal(true);
-  };
+  // const handleMoldalData = (id: string) => {
+  //   // First set the ID
+  //   setModalId(id);
+  //   // Then set openModal to true
+  //   setOpenModal(true);
+  // };
 
-  const handleAddToCart = (product: any) => {
-    dispatch(cart_product(product));
-  };
+  // const handleAddToCart = (product: any) => {
+  //   dispatch(cart_product(product));
+  // };
 
-  const handleAddToWishlist = (product: any) => {
-    dispatch(wishlist_product(product));
-  };
+  // const handleAddToWishlist = (product: any) => {
+  //   dispatch(wishlist_product(product));
+  // };
 
   // Helper function to get image URL safely
   const getImageUrl = (product: ProductType): string => {
     if (product.img) {
-      return product.img;
+      return product.img || "";
     } else if (product.imageURLs && product.imageURLs.length > 0) {
-      return product.imageURLs[0];
+      return product.imageURLs[0] || "";
     }
     return "/assets/img/icon/image-x-generic.svg";
   };
@@ -66,6 +65,10 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
     return 0;
   };
 
+  const getStock = (product: any): number => {
+    return product.productQuantity;
+  };
+
   return (
     <>
       {prodcutLoadding ? (
@@ -78,6 +81,7 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
               const price = getPrice(item);
               const slug = createSlug(item.title);
               const href = `/product/${slug}-${item._id}`;
+              const stock = getStock(item);
               return (
                 <div
                   className="col-xxl-2 col-xl-4 col-lg-6 col-md-6 col-sm-6"

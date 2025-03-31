@@ -32,7 +32,7 @@ function extractIdFromSlug(slug: string): string | null {
 }
 
 export default async function ShopDetailsPage({ params }: PageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const productId = extractIdFromSlug(slug);
 
   if (!productId) {
