@@ -210,7 +210,6 @@ export async function getProducts(
         return transformToProductType(webProduct, catalogueProduct, stockInfo);
       })
       .filter((product): product is ProductType => product !== null);
-    console.log(`[getProducts] Returning Data:`, products);
     return { products, totalPages, currentPage };
   } catch (error) {
     console.error(`Error in getProducts:`, error);
@@ -279,7 +278,6 @@ export async function getProductById(id: string): Promise<ProductType | null> {
       );
       return null;
     }
-    console.log(`[getProductById] Returning Data:`, finalProductData);
     return finalProductData;
   } catch (error) {
     console.error(`Error fetching product with ID ${id}:`, error);

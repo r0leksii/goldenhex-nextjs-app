@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useRef, KeyboardEvent, MouseEvent } from "react";
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  KeyboardEvent,
+  MouseEvent,
+} from "react";
 import { useClickAway } from "react-use";
 
 interface Option {
@@ -14,7 +20,7 @@ interface NiceSelectProps {
   className?: string;
   onChange: (item: Option, name: string) => void;
   name: string;
-  setapiEndPoint:any
+  setapiEndPoint: any;
 }
 
 const NiceSelect: React.FC<NiceSelectProps> = ({
@@ -24,10 +30,10 @@ const NiceSelect: React.FC<NiceSelectProps> = ({
   className,
   onChange,
   name,
-  setapiEndPoint
+  setapiEndPoint,
 }) => {
   const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState<Option>(options[defaultCurrent]);
+  // const [current, setCurrent] = useState<Option>(options[defaultCurrent]);
   const onClose = useCallback(() => {
     setOpen(false);
   }, []);
@@ -36,10 +42,10 @@ const NiceSelect: React.FC<NiceSelectProps> = ({
   useClickAway(ref, onClose);
 
   const currentHandler = (item: Option) => {
-    setCurrent(item);
+    // setCurrent(item);
     onChange(item, name);
     onClose();
-    setapiEndPoint(item?.api)
+    setapiEndPoint(item?.api);
   };
 
   const handleClick = () => {
@@ -65,7 +71,7 @@ const NiceSelect: React.FC<NiceSelectProps> = ({
       onKeyPress={handleKeyPress}
       ref={ref}
     >
-      <span className="current mr-20">{current?.text || placeholder}</span>
+      {/* <span className="current mr-20">{current?.text || placeholder}</span>
       <ul className="list" role="menubar" onClick={stopPropagation} onKeyPress={stopPropagation}>
         {options?.map((item) => (
           <li
@@ -81,11 +87,9 @@ const NiceSelect: React.FC<NiceSelectProps> = ({
             {item.text}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
 
 export default NiceSelect;
-
-
