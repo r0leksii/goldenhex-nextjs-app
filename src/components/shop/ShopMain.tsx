@@ -1,19 +1,26 @@
-import React from "react";
 import ShopSection from "./ShopSection";
-import { ProductType } from "@/types/product/product.type";
+import { ShopSharedProps } from "./types/shop.type";
 
-interface ShopMainProps {
-  initialData: {
-    products: ProductType[];
-    totalPages: number;
-    currentPage: number;
-  };
-}
-
-const ShopMain = ({ initialData }: ShopMainProps) => {
+const ShopMain = ({
+  products,
+  totalPages,
+  currentPage,
+  page,
+  categoryId,
+  search,
+  limit,
+}: ShopSharedProps) => {
   return (
     <>
-      <ShopSection initialData={initialData} />
+      <ShopSection
+        products={products}
+        totalPages={totalPages}
+        currentPage={currentPage}
+        page={page}
+        categoryId={categoryId}
+        search={search}
+        limit={limit}
+      />
     </>
   );
 };

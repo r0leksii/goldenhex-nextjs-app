@@ -1,48 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Pagination } from "@/components/elements/product";
 import { GridViewProduct, ProductModal } from "@/components/shop";
-import { getProducts } from "@/lib/actions/product.actions";
-import { ProductType } from "@/types/product/product.type";
+import { ShopSharedProps } from "./types/shop.type";
 
-interface ShopSectionProps {
-  initialData: {
-    products: ProductType[];
-    totalPages: number;
-    currentPage: number;
-  };
-}
-
-const ShopSection = ({ initialData }: ShopSectionProps) => {
+const ShopSection = ({
+  products,
+  totalPages,
+  currentPage,
+  categoryId,
+  search,
+  limit,
+}: ShopSharedProps) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const initialPage =
-    Number(searchParams.get("page")) || initialData?.currentPage || 1;
-  const [products, setProducts] = useState(initialData?.products || []);
-  const [currentPage, setCurrentPage] = useState(initialPage);
-  const [totalPages, setTotalPages] = useState(initialData?.totalPages || 1);
+  const [loading, setLoading] = useState(false);
 
-  const fetchProducts = async (page: number) => {
-    const data = await getProducts(page);
-    const validProducts = data.products.filter(Boolean) as ProductType[];
-    setProducts(validProducts);
-    setCurrentPage(data.currentPage);
-    setTotalPages(data.totalPages);
-  };
-
-  const handlePageChange = async (newPage: number) => {
-    try {
-      await fetchProducts(newPage);
-
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("page", newPage.toString());
-      router.push(`/?${params.toString()}`);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+  const handlePageChange = (newPage: number) => {
+    router.push(
+      `?page=${newPage}&limit=${limit}&categoryId=${categoryId}&search=${search}`
+    );
   };
 
   return (
@@ -51,10 +30,14 @@ const ShopSection = ({ initialData }: ShopSectionProps) => {
         <div className="row">
           <div className="col-xxl-12">
             <div className="bd-shop__wrapper">
-              {products && products.length > 0 ? (
+              {loading ? (
+                <div className="text-center py-5">
+                  <p>Loading products...</p>
+                </div>
+              ) : products && products.length > 0 ? (
                 <div className="bd-trending__item-wrapper">
                   <div className="row">
-                    <GridViewProduct products={products} limit={12} />
+                    <GridViewProduct products={products} limit={limit} />
                   </div>
                 </div>
               ) : (
@@ -67,7 +50,7 @@ const ShopSection = ({ initialData }: ShopSectionProps) => {
               )}
             </div>
 
-            {products?.length > 0 && (
+            {!loading && products?.length > 0 && totalPages > 1 && (
               <div className="row justify-content-center">
                 <div className="col-xxl-12">
                   <Pagination

@@ -1,11 +1,12 @@
 import Link from "next/link";
 import React from "react";
+import { useSearchParams } from "next/navigation";
 
 interface paginationType {
   Pagination_space: string;
   totalPages: number;
   currentPage: number;
-  setPage: any;
+  setPage: (page: number) => void;
 }
 
 const Pagination = ({
@@ -14,16 +15,26 @@ const Pagination = ({
   currentPage,
   setPage,
 }: paginationType) => {
-  const paginationItems: any = [];
+  const searchParams = useSearchParams();
+
+  const paginationItems = [];
 
   // Loop through totalPages and generate pagination elements
   for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+    // Create a new URLSearchParams object based on the current ones
+    const newParams = new URLSearchParams(searchParams.toString());
+    // Set the 'page' parameter for this specific link
+    newParams.set("page", pageNumber.toString());
+
+    // Construct the href for the Link
+    const href = `?${newParams.toString()}`;
+
     paginationItems.push(
       <li
         className={pageNumber === currentPage ? "active" : ""}
         key={pageNumber}
       >
-        <Link href="" onClick={() => setPage(pageNumber)}>
+        <Link href={href} onClick={() => setPage(pageNumber)}>
           {pageNumber < 10 ? "0" + pageNumber : pageNumber}
         </Link>
       </li>
