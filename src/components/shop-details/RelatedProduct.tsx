@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { cart_product } from "@/redux/slices/cartSlice";
 import ProductModal from "../shop/ProductModal";
 import useGlobalContext from "@/hooks/use-context";
-import { wishlist_product } from "@/redux/slices/wishlistSlice";
+// import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import GetRatting from "@/hooks/GetRatting";
 
 const RelatedProduct = ({ category, productID }: any) => {
@@ -20,7 +20,7 @@ const RelatedProduct = ({ category, productID }: any) => {
     dispatch(cart_product(item));
   };
   const handleWishlist = (item: any) => {
-    dispatch(wishlist_product(item));
+    // dispatch(wishlist_product(item));
   };
 
   const handleMoldalData = (id: string) => {

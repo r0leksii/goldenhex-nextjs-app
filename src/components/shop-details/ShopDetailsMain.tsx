@@ -93,7 +93,8 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
                             <span data-bs-dismiss="modal" aria-label="Close">
                               <Link
                                 className="cart-btn bd-fill__btn"
-                                href="/cart"
+                                href="#"
+                                // href="/cart"
                               >
                                 <i className="fal fa-cart-arrow-down"></i> View
                                 Cart

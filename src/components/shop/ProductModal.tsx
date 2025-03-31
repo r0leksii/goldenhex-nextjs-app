@@ -27,13 +27,13 @@ const ProductModal = () => {
 
   const dispatch = useDispatch();
 
-  const cartProducts = useSelector(
-    (state: RootState) => state.cart.cartProducts
-  );
-  const quantity = product
-    ? cartProducts.find((item) => item?._id === product?._id)
-    : undefined;
-  const totalCart = quantity?.totalCard || 0;
+  // const cartProducts = useSelector(
+  //   (state: RootState) => state.cart.cartProducts
+  // );
+  // const quantity = product
+  //   ? cartProducts.find((item) => item?._id === product?._id)
+  //   : undefined;
+  // const totalCart = quantity?.totalCard || 0;
 
   // First: Fetch product data when modalId changes
   useEffect(() => {

@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { cart_product } from "@/redux/slices/cartSlice";
-import { wishlist_product } from "@/redux/slices/wishlistSlice";
+// import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import { ProductType } from "@/types/product/product.type";
 import { createSlug } from "@/utils";
 

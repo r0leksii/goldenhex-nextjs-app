@@ -3,7 +3,7 @@ import GetRatting from "@/hooks/GetRatting";
 import useGlobalContext from "@/hooks/use-context";
 import { CartProductType } from "@/interFace/interFace";
 import { cart_product } from "@/redux/slices/cartSlice";
-import { wishlist_product } from "@/redux/slices/wishlistSlice";
+// import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -31,7 +31,7 @@ const ListViewProduct: React.FC<ListViewProductProps> = ({
   };
 
   const handleAddToWishlist = (product: CartProductType) => {
-    dispatch(wishlist_product(product));
+    // dispatch(wishlist_product(product));
   };
 
   const handleMoldalData = (id: string) => {
