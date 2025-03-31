@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import Wrapper from "@/layout/DefaultWrapper";
 import ShopMain from "@/components/shop/ShopMain";
 import { Suspense } from "react";
