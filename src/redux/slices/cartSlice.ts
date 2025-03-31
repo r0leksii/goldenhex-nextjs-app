@@ -23,8 +23,10 @@ export const cartSlice = createSlice({
       );
 
       if (productIndex >= 0) {
-        state.cartProducts[productIndex].totalCard! += 1;
-        toast.info("Increase Product Quantity");
+        if (state.cartProducts[productIndex]) {
+          state.cartProducts[productIndex].totalCard += 1;
+          toast.info("Increase Product Quantity");
+        }
       } else {
         const now = moment();
         const orderDate = now.format("MM/DD/YY hh:mm a"); // Format the current date as "MM/DD/YY hh:mm a"
