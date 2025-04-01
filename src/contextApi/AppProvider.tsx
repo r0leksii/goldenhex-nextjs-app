@@ -36,8 +36,8 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [showSidebar, setShowSidebar] = useState<boolean>(false);
   const [openCart, setOpenCart] = useState<boolean>(false);
   // wishlist states
-  const [showSidebarWishlist, setShowSidebarWishlist] =
-    useState<boolean>(false);
+  // const [showSidebarWishlist, setShowSidebarWishlist] =
+  //   useState<boolean>(false);
   const [openWishlist, setOpenWishlist] = useState<boolean>(false);
   const [user, setUser] = useState<IUser>();
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -167,8 +167,8 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     page,
     setPage,
     limit,
-    showSidebarWishlist,
-    setShowSidebarWishlist,
+    // showSidebarWishlist,
+    // setShowSidebarWishlist,
     openWishlist,
     setOpenWishlist,
     prodcutLoadding,

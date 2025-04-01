@@ -13,12 +13,12 @@ import SearchIcon from "@/sheardComponent/elements/icons/search-icon";
 import CartIcon from "@/sheardComponent/elements/icons/cart-icon";
 import WishlistIcon from "@/sheardComponent/elements/icons/wishlist-icon";
 import User from "@/sheardComponent/elements/icons/user";
-import {
-  useTotalProductCount,
-  useTotalProductWishlistCount,
-} from "@/hooks/useCartQuantity";
-import SidebarCart from "./SidebarCart";
-import SidebarWishlist from "./SidebarWishlist";
+// import {
+//   useTotalProductCount,
+//   useTotalProductWishlistCount,
+// } from "@/hooks/useCartQuantity";
+// import SidebarCart from "./SidebarCart";
+// import SidebarWishlist from "./SidebarWishlist";
 import HeaderOneSearchBar from "./HeaderOneSearchBar";
 
 const HeaderOne = () => {
@@ -26,8 +26,8 @@ const HeaderOne = () => {
     useGlobalContext();
   const safeSetShowSidebar = setShowSidebar || (() => {});
 
-  const productQuantity = useTotalProductCount();
-  const wishlistQuantity = useTotalProductWishlistCount();
+  // const productQuantity = useTotalProductCount();
+  // const wishlistQuantity = useTotalProductWishlistCount();
 
   useEffect(() => {
     window.addEventListener("scroll", sticky);
@@ -93,9 +93,9 @@ const HeaderOne = () => {
                                 <span className="bd-cart-mini-btn">
                                   <CartIcon />
                                 </span>
-                                <span className="bd-action__item-number cart-count">
+                                {/* <span className="bd-action__item-number cart-count">
                                   {productQuantity}
-                                </span>
+                                </span> */}
                               </div>
                             </div>
                           </div>
@@ -109,9 +109,9 @@ const HeaderOne = () => {
                                 <span className="bd-cart-mini-btn">
                                   <WishlistIcon />
                                 </span>
-                                <span className="bd-action__item-number wishlist-count">
+                                {/* <span className="bd-action__item-number wishlist-count">
                                   {wishlistQuantity}
-                                </span>
+                                </span> */}
                               </div>
                             </div>
                           </div>

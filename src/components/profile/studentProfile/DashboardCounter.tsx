@@ -1,16 +1,16 @@
 "use client";
 import CountUpContent from "@/components/common/counter/CountUpContent";
 import useGlobalContext from "@/hooks/use-context";
-import {
-  useTotalProductCount,
-  useTotalProductWishlistCount,
-   
-} from "@/hooks/useCartQuantity";
+// import {
+//   useTotalProductCount,
+//   useTotalProductWishlistCount,
+
+// } from "@/hooks/useCartQuantity";
 import React from "react";
 const DashboardCounter = () => {
   const { totalProduct } = useGlobalContext();
-  const cartQuantity = useTotalProductCount();
-  const WishlistQuantity = useTotalProductWishlistCount();
+  // const cartQuantity = useTotalProductCount();
+  // const WishlistQuantity = useTotalProductWishlistCount();
   return (
     <div className="row">
       <div className="col-xl-4 col-lg-6 col-md-4">
@@ -30,7 +30,7 @@ const DashboardCounter = () => {
             <div className="counter-icon-wrap">{/* incon will be here */}</div>
             <div className="count-number">
               <span className="counter">
-                <CountUpContent number={cartQuantity} text="" />
+                {/* <CountUpContent number={cartQuantity} text="" /> */}
               </span>
               <p> My Cart </p>
             </div>
@@ -43,7 +43,7 @@ const DashboardCounter = () => {
             <div className="counter-icon-wrap">{/* incon will be here */}</div>
             <div className="count-number">
               <span className="counter">
-                <CountUpContent number={WishlistQuantity} text="" />
+                {/* <CountUpContent number={WishlistQuantity} text="" /> */}
               </span>
               <p> My Wishlist </p>
             </div>

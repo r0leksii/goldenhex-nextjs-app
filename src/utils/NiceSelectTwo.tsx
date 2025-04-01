@@ -1,9 +1,15 @@
-import React, { useState, useCallback, useRef, KeyboardEvent, MouseEvent } from "react";
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  KeyboardEvent,
+  MouseEvent,
+} from "react";
 import { useClickAway } from "react-use";
 
 interface Option {
   categoryName: string;
-} 
+}
 
 interface NiceSelectProps {
   options: Option[];
@@ -12,7 +18,7 @@ interface NiceSelectProps {
   className?: string;
   onChange: (item: Option, name: string) => void;
   name: string;
-  setapiEndPoint:any
+  setapiEndPoint: any;
 }
 
 const NiceSelectTwo: React.FC<NiceSelectProps> = ({
@@ -22,10 +28,10 @@ const NiceSelectTwo: React.FC<NiceSelectProps> = ({
   className,
   onChange,
   name,
-  setapiEndPoint
-}) => { 
+  setapiEndPoint,
+}) => {
   const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState<Option>(options[defaultCurrent]);
+  // const [current, setCurrent] = useState<Option>(options[defaultCurrent]);
   const onClose = useCallback(() => {
     setOpen(false);
   }, []);
@@ -34,10 +40,10 @@ const NiceSelectTwo: React.FC<NiceSelectProps> = ({
   useClickAway(ref, onClose);
 
   const currentHandler = (item: Option) => {
-    setCurrent(item);
+    // setCurrent(item);
     onChange(item, name);
     onClose();
-    setapiEndPoint(item?.categoryName)
+    setapiEndPoint(item?.categoryName);
   };
 
   const handleClick = () => {
@@ -63,7 +69,7 @@ const NiceSelectTwo: React.FC<NiceSelectProps> = ({
       onKeyPress={handleKeyPress}
       ref={ref}
     >
-      <span className="current mr-20 capitalize">{current?.categoryName || placeholder}</span>
+      {/* <span className="current mr-20 capitalize">{current?.categoryName || placeholder}</span>
       <ul className="list" role="menubar" onClick={stopPropagation} onKeyPress={stopPropagation}>
         {options?.map((item,index) => (
           <li
@@ -79,11 +85,9 @@ const NiceSelectTwo: React.FC<NiceSelectProps> = ({
             {item.categoryName}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
 
 export default NiceSelectTwo;
-
-

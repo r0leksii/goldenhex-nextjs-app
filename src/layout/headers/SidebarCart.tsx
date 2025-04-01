@@ -16,13 +16,13 @@ import { useDispatch } from "react-redux";
 const SidebarCart = () => {
   const { openCart, setOpenCart } = useGlobalContext();
   const dispatch = useDispatch();
-  const cartProducts = useSelector(
-    (state: RootState) => state.cart.cartProducts
-  );
-  const totalPrice = cartProducts.reduce(
-    (total, product) => total + (product.price ?? 0) * (product.totalCard ?? 0),
-    0
-  );
+  // const cartProducts = useSelector(
+  //   (state: RootState) => state.cart.cartProducts
+  // );
+  // const totalPrice = cartProducts.reduce(
+  //   (total, product) => total + (product.price ?? 0) * (product.totalCard ?? 0),
+  //   0
+  // );
   const handleAddToCart = (product: CartProductType) => {
     dispatch(cart_product(product));
   };
@@ -47,7 +47,6 @@ const SidebarCart = () => {
           <div className="cartmini__wrapper">
             <div className="cartmini__title">
               <h4>Shopping Cart</h4>
-              
             </div>
             <div className="cartmini__close">
               <button
@@ -58,7 +57,7 @@ const SidebarCart = () => {
                 <i className="fal fa-times"></i>
               </button>
             </div>
-            <div className="cartmini__widget">
+            {/* <div className="cartmini__widget">
               {cartProducts.length ? (
                 <>
                   <div className="cartmini__inner">
@@ -142,7 +141,7 @@ const SidebarCart = () => {
                   <p className="text-center pt-20">Your cart is empty</p>
                 </>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

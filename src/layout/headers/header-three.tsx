@@ -12,12 +12,12 @@ import Sidebar from "@/sheardComponent/Sidebar";
 import User from "@/sheardComponent/elements/icons/user";
 import CategoryItem from "@/components/home-three/CategoryItem";
 import SidebarCart from "./SidebarCart";
-import {
-  useTotalProductCount,
-  useTotalProductWishlistCount,
-} from "@/hooks/useCartQuantity";
+// import {
+//   useTotalProductCount,
+//   useTotalProductWishlistCount,
+// } from "@/hooks/useCartQuantity";
 import { usePathname } from "next/navigation";
-import SidebarWishlist from "./SidebarWishlist";
+// import SidebarWishlist from "./SidebarWishlist";
 
 const HeaderThree = () => {
   const pathName = usePathname();
@@ -33,8 +33,8 @@ const HeaderThree = () => {
   const [searchValue, setSearchValue] = useState("");
   const safeSetShowSidebar = setShowSidebar || (() => {});
   const [catMenuOpen, setCatMenuOpen] = useState(false);
-  const productQuantity = useTotalProductCount();
-  const wishlistQuantity = useTotalProductWishlistCount();
+  // const productQuantity = useTotalProductCount();
+  // const wishlistQuantity = useTotalProductWishlistCount();
 
   // Sticky Menu Area start
   useEffect(() => {

@@ -82,7 +82,7 @@ const ProductModal = () => {
         modal.dispose();
       }
     };
-  }, [product, openModal]); // Dependencies include product and openModal
+  }, [product, openModal, modalId, modal]); // Dependencies include product and openModal
 
   const handleAddToCart = (product: CartProductType) => {
     dispatch(cart_product(product));

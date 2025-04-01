@@ -1,7 +1,7 @@
 "use client";
 import useGlobalContext from "@/hooks/use-context";
 import { CartProductType } from "@/interFace/interFace";
-import { decrease_quantity, remove_wishlist_product, wishlist_product } from "@/redux/slices/wishlistSlice";
+// import { decrease_quantity, remove_wishlist_product, wishlist_product } from "@/redux/slices/wishlistSlice";
 
 import { RootState } from "@/redux/store";
 import Image from "next/image";
@@ -13,23 +13,23 @@ import { useDispatch } from "react-redux";
 const SidebarWishlist = () => {
   const { openWishlist, setOpenWishlist } = useGlobalContext();
   const dispatch = useDispatch();
-  const cartProducts = useSelector(
-    (state: RootState) => state.wishlist.cartProducts
-  );
-  const totalPrice = cartProducts.reduce(
-    (total, product) => total + (product.price ?? 0) * (product.totalCard ?? 0),
-    0
-  );
+  // const cartProducts = useSelector(
+  //   (state: RootState) => state.wishlist.cartProducts
+  // );
+  // const totalPrice = cartProducts.reduce(
+  //   (total, product) => total + (product.price ?? 0) * (product.totalCard ?? 0),
+  //   0
+  // );
   const handleAddToCart = (product: CartProductType) => {
-    dispatch(wishlist_product(product));
+    // dispatch(wishlist_product(product));
   };
 
   const handDecressCart = (product: CartProductType) => {
-    dispatch(decrease_quantity(product));
+    // dispatch(decrease_quantity(product));
   };
 
   const handleDelteProduct = (product: CartProductType) => {
-    dispatch(remove_wishlist_product(product));
+    // dispatch(remove_wishlist_product(product));
   };
 
   const handleChange = (e: any) => {};
@@ -44,7 +44,6 @@ const SidebarWishlist = () => {
           <div className="cartmini__wrapper">
             <div className="cartmini__title">
               <h4>Wishlist Products</h4>
-              
             </div>
             <div className="cartmini__close">
               <button
@@ -55,7 +54,7 @@ const SidebarWishlist = () => {
                 <i className="fal fa-times"></i>
               </button>
             </div>
-            <div className="cartmini__widget">
+            {/* <div className="cartmini__widget">
               {cartProducts.length ? (
                 <>
                   <div className="cartmini__inner">
@@ -137,7 +136,7 @@ const SidebarWishlist = () => {
                   <p className="text-center pt-20 text-capitalize">Your wishlist is empty</p>
                 </>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
