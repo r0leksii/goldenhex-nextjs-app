@@ -2,9 +2,10 @@ import Link from "next/link";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { CategoryGroup } from "@/lib/actions/combine-categories";
 // No longer need getCategories here if data is passed via props
 // import { getCategories } from "@/lib/actions/category.actions";
-
+import { createSlug } from "@/utils";
 interface SanitizedCategory {
   _id: string;
   name: string;
@@ -16,7 +17,7 @@ interface SanitizedCategory {
 
 // Define props interface
 interface CategoryItemProps {
-  categories: SanitizedCategory[];
+  categories: CategoryGroup[];
 }
 
 // Make it a regular component accepting props
@@ -28,31 +29,33 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories }) => {
       <ul>
         {categories && categories.length > 0 ? ( // Check if categories exist
           categories.map((category) => (
-            <li key={category._id} className="has-dropdown">
+            <li key={category.groupName} className="has-dropdown">
               <Link
-                className="text-capitalize d-flex align-items-center justify-content-between"
-                href={`/shop?category=${category.name}`}
+                className="text-capitalize d-flex align-items-center justify-content-between p-3"
+                href={`/shop?category=${createSlug(category.groupName)}`}
               >
-                <span>{category.name}</span>
-                {category.children && category.children.length > 0 && (
+                <span>{category.groupName}</span>
+                {category.categories && category.categories.length > 0 && (
                   <FontAwesomeIcon
                     icon={faChevronRight}
                     className="submenu-arrow"
                   />
                 )}
               </Link>
-              {category.children && category.children.length > 0 && (
+              {category.categories && category.categories.length > 0 && (
                 <ul className="category-submenu">
-                  {category.children.map((subCategory) => (
+                  {category.categories.map((subCategory) => (
                     <li
-                      key={subCategory._id}
+                      key={subCategory.id}
                       className={
                         subCategory.children?.length ? "has-dropdown" : ""
                       }
                     >
                       <Link
                         className="text-capitalize d-flex align-items-center justify-content-between"
-                        href={`/shop?category=${category.name}&subcategory=${subCategory.name}`}
+                        href={`/shop?category=${createSlug(
+                          category.groupName
+                        )}&subcategory=${createSlug(subCategory.name)}`}
                       >
                         <span>{subCategory.name}</span>
                         {subCategory.children &&
@@ -68,10 +71,14 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories }) => {
                         subCategory.children.length > 0 && (
                           <ul className="category-submenu">
                             {subCategory.children.map((thirdLevel) => (
-                              <li key={thirdLevel._id}>
+                              <li key={thirdLevel.id}>
                                 <Link
                                   className="text-capitalize"
-                                  href={`/shop?category=${category.name}&subcategory=${subCategory.name}&thirdlevel=${thirdLevel.name}`}
+                                  href={`/shop?category=${createSlug(
+                                    category.groupName
+                                  )}&subcategory=${createSlug(
+                                    subCategory.name
+                                  )}&thirdlevel=${createSlug(thirdLevel.name)}`}
                                 >
                                   {thirdLevel.name}
                                 </Link>
