@@ -8,9 +8,9 @@ import ShopSidebarRetting from "../ShopSidebarRetting";
 import FlashBanner from "@/components/elements/product/FlashBanner";
 import NiceSelect from "@/components/common/NiceSelect";
 import GridViewProduct from "../GridViewProduct";
-import ListViewProduct from "../ListViewProduct";
 import Pagination from "@/components/elements/product/Pagination";
 import ProductModal from "../ProductModal";
+import { ProductType } from "@/types/product/product.type";
 interface propsType {
   category: string;
 }
@@ -208,8 +208,7 @@ const ShopSectionCategoryWize = ({ category }: propsType) => {
                         <div className="bd-trending__item-wrapper">
                           <div className="row">
                             <GridViewProduct
-                              products={products as any}
-                              limit={limit}
+                              products={products as unknown as ProductType[]}
                             />
                           </div>
                         </div>
