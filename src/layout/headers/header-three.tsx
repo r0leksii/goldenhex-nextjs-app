@@ -199,7 +199,7 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
             </div>
           </div>
 
-          <div className="bd-header__buttom d-none d-sm-block">
+          <div className="bd-header__buttom">
             <div className="container">
               <div className="row align-items-center">
                 <div className="col-xxl-8 col-xl-8 col-md-8 col-sm-6">
@@ -249,7 +249,7 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xxl-4 col-xl-4 col-md-4 col-sm-6">
+                <div className="col-xxl-4 col-xl-4 col-md-4 col-sm-6  d-none d-sm-block">
                   <div className="bd-action__support d-flex justify-content-end">
                     <div className="bd-support__inner">
                       <div className="bd-support__icon">

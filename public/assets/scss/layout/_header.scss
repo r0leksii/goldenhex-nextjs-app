@@ -848,6 +848,16 @@
 	}
 
 	&__category-nav {
+		width: 100%;
+
+		@media #{$lg,$md} {
+			width: 220px;
+		}
+
+		@media (min-width: 576px) {
+			width: 250px;
+		}
+
 		.category__items {
 			position: absolute;
 			top: calc(100% + 5px);
@@ -857,6 +867,8 @@
 			@include border-radius(5px);
 			z-index: 10;
 			@include box-shadow (0 0 60px 0 rgba(53, 57, 69, 0.15));
+
+			
 		}
 
 		&:not(items-open) {
@@ -881,11 +893,15 @@
 		font-weight: var(--bd-fw-medium);
 		position: relative;
 		gap: 15px;
-		width: 250px;
+		width: 100%;
 		cursor: pointer;
 
 		@media #{$lg,$md} {
 			width: 220px;
+		}
+
+		@media (min-width: 576px) {
+			width: 250px;
 		}
 
 		&:before {

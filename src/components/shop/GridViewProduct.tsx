@@ -81,7 +81,7 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
 
         return (
           <div
-            className="col-xxl-2 col-xl-4 col-lg-6 col-md-6 col-sm-6"
+            className="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4 col-xxl-2"
             key={item._id}
           >
             <div className="bd-trending__item text-center mb-30 position-relative">
