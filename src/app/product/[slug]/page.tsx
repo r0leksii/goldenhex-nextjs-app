@@ -1,10 +1,8 @@
 export const runtime = "edge";
 
-import { Suspense } from "react";
 import ShopDetailsMain from "@/components/shop-details/ShopDetailsMain";
 import { getProductById } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
-import Wrapper from "@/layout/DefaultWrapper";
 
 interface PageProps {
   params: {
@@ -46,13 +44,5 @@ export default async function ShopDetailsPage({ params }: PageProps) {
     notFound();
   }
 
-  return (
-    <Wrapper>
-      <main>
-        <Suspense fallback={<div>Loading...</div>}>
-          <ShopDetailsMain product={product} />
-        </Suspense>
-      </main>
-    </Wrapper>
-  );
+  return <ShopDetailsMain product={product} />;
 }

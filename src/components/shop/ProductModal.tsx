@@ -2,19 +2,14 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Thumbs, Controller, Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import useGlobalContext from "@/hooks/use-context";
 import Image from "next/image";
-import { cart_product, decrease_quantity } from "@/redux/slices/cartSlice";
-import { CartProductType } from "@/interFace/interFace";
 import masterCard from "../../../public/assets/img/icon/mastercard.png";
 import papyle from "../../../public/assets/img/icon/paypal.png";
 import visa from "../../../public/assets/img/icon/visa.png";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { ProductType } from "@/types/product/product.type";
 import { Modal } from "bootstrap";
 
@@ -22,10 +17,7 @@ const ProductModal = () => {
   const { modalId, openModal } = useGlobalContext();
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   const [product, setProduct] = useState<ProductType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [modal, setModal] = useState<Modal | null>(null);
-
-  const dispatch = useDispatch();
 
   // const cartProducts = useSelector(
   //   (state: RootState) => state.cart.cartProducts
@@ -40,7 +32,6 @@ const ProductModal = () => {
     const fetchProduct = async () => {
       if (!modalId) return;
 
-      setIsLoading(true);
       try {
         const response = await fetch(`/api/shop/products?id=${modalId}`);
         if (!response.ok) throw new Error("Failed to fetch product");
@@ -51,8 +42,6 @@ const ProductModal = () => {
         }
       } catch (error) {
         console.error("Error fetching product:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -84,26 +73,26 @@ const ProductModal = () => {
     };
   }, [product, openModal, modalId, modal]); // Dependencies include product and openModal
 
-  const handleAddToCart = (product: CartProductType) => {
-    dispatch(cart_product(product));
-  };
+  // const handleAddToCart = (product: CartProductType) => {
+  //   dispatch(cart_product(product));
+  // };
 
-  const handDecressCart = (product: CartProductType) => {
-    dispatch(decrease_quantity(product));
-  };
-  const handleChange = (e: any) => {};
+  // const handDecressCart = (product: CartProductType) => {
+  //   dispatch(decrease_quantity(product));
+  // };
+  // const handleChange = (e: any) => {};
 
-  if (isLoading) {
-    return (
-      <div className="product__modal-sm modal fade" id="productmodal">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="text-center p-4">Loading...</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="product__modal-sm modal fade" id="productmodal">
+  //       <div className="modal-dialog modal-dialog-centered">
+  //         <div className="modal-content">
+  //           <div className="text-center p-4">Loading...</div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (!product) {
     return null;

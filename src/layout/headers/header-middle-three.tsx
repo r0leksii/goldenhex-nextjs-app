@@ -3,8 +3,11 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
-const phoneIcon = <FontAwesomeIcon icon={faPhone} />;
-const locationIcon = <FontAwesomeIcon icon={faLocationDot} />;
+// Set explicit width and height for icons to prevent layout shift on load
+const phoneIcon = <FontAwesomeIcon icon={faPhone} width="16" height="16" />;
+const locationIcon = (
+  <FontAwesomeIcon icon={faLocationDot} width="16" height="16" />
+);
 
 const HeaderMiddleThree = () => {
   return (

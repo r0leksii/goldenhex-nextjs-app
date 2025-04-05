@@ -5,7 +5,7 @@ export interface ShopSharedProps {
   totalPages: number;
   currentPage: number;
   page: number;
-  categoryId: number | undefined;
-  search: string | undefined;
+  categoryId: number | null;
+  search: string;
   limit: number;
 }

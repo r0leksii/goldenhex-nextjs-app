@@ -1,29 +1,23 @@
 //@refresh
-"use client";
-import React, { useEffect } from "react";
-import { animationCreate } from "@/utils/utils";
-if (typeof window !== "undefined") {
-  require("bootstrap/dist/js/bootstrap");
-}
+import React, { ReactNode } from "react";
+
 import HeaderThree from "./headers/header-three";
 import FooterThree from "./footers/footer-three";
-import { childrenType } from "@/interFace/interFace";
 import BacktoTop from "@/components/common/backToTop/BacktoTop";
-import OrderTrackModal from "@/components/profile/studentProfile/OrderTrackModal";
+import { SanitizedCategory } from "@/lib/actions/category.actions";
 
-const Wrapper = ({ children }: childrenType) => {
-  useEffect(() => {
-    setTimeout(() => {
-      animationCreate();
-    }, 200);
-  }, []);
-
+const Wrapper = ({
+  children,
+  categories,
+}: {
+  children: ReactNode;
+  categories: SanitizedCategory[];
+}) => {
   return (
     <>
       <BacktoTop />
-      <HeaderThree />
+      <HeaderThree categories={categories} />
       {children}
-      <OrderTrackModal />
       <FooterThree />;
     </>
   );

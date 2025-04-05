@@ -1,27 +1,31 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pagination } from "@/components/elements/product";
-import { GridViewProduct, ProductModal } from "@/components/shop";
+import GridViewProduct from "./GridViewProduct";
 import { ShopSharedProps } from "./types/shop.type";
 
 const ShopSection = ({
   products,
   totalPages,
   currentPage,
-  categoryId,
   search,
   limit,
+  categoryId,
 }: ShopSharedProps) => {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
-
   const handlePageChange = (newPage: number) => {
-    router.push(
-      `?page=${newPage}&limit=${limit}&categoryId=${categoryId}&search=${search}`
-    );
+    const params = new URLSearchParams();
+    params.set("page", newPage.toString());
+    params.set("limit", limit.toString());
+    if (categoryId) {
+      params.set("categoryId", categoryId.toString());
+    }
+    if (search) {
+      params.set("search", search);
+    }
+    router.push(`?${params.toString()}`);
   };
 
   return (
@@ -30,14 +34,10 @@ const ShopSection = ({
         <div className="row">
           <div className="col-xxl-12">
             <div className="bd-shop__wrapper">
-              {loading ? (
-                <div className="text-center py-5">
-                  <p>Loading products...</p>
-                </div>
-              ) : products && products.length > 0 ? (
+              {products && products.length > 0 ? (
                 <div className="bd-trending__item-wrapper">
                   <div className="row">
-                    <GridViewProduct products={products} limit={limit} />
+                    <GridViewProduct products={products} />
                   </div>
                 </div>
               ) : (
@@ -50,7 +50,7 @@ const ShopSection = ({
               )}
             </div>
 
-            {!loading && products?.length > 0 && totalPages > 1 && (
+            {products?.length > 0 && totalPages > 1 && (
               <div className="row justify-content-center">
                 <div className="col-xxl-12">
                   <Pagination
@@ -65,7 +65,7 @@ const ShopSection = ({
           </div>
         </div>
       </div>
-      <ProductModal />
+      {/* <ProductModal /> */}
     </section>
   );
 };

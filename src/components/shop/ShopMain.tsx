@@ -6,22 +6,20 @@ const ShopMain = ({
   totalPages,
   currentPage,
   page,
-  categoryId,
   search,
   limit,
+  categoryId,
 }: ShopSharedProps) => {
   return (
-    <>
-      <ShopSection
-        products={products}
-        totalPages={totalPages}
-        currentPage={currentPage}
-        page={page}
-        categoryId={categoryId}
-        search={search}
-        limit={limit}
-      />
-    </>
+    <ShopSection
+      products={products}
+      totalPages={totalPages}
+      currentPage={currentPage}
+      page={page}
+      search={search}
+      limit={limit}
+      categoryId={categoryId}
+    />
   );
 };
 

@@ -46,7 +46,6 @@ const Pagination = ({
       className={`bd-basic__pagination ${
         Pagination_space ? Pagination_space : "mt-30 mb-20"
       }`}
-      data-wow-delay=".3s"
     >
       <nav>
         <ul>{paginationItems}</ul>

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import useGlobalContext from "../../hooks/use-context";
@@ -17,19 +19,17 @@ import SidebarCart from "./SidebarCart";
 //   useTotalProductWishlistCount,
 // } from "@/hooks/useCartQuantity";
 import { usePathname } from "next/navigation";
+import { SanitizedCategory } from "@/lib/actions/category.actions";
 // import SidebarWishlist from "./SidebarWishlist";
 
-const HeaderThree = () => {
+// Define props for HeaderThree
+interface HeaderThreeProps {
+  categories: SanitizedCategory[];
+}
+
+const HeaderThree = ({ categories }: HeaderThreeProps) => {
   const pathName = usePathname();
-  const {
-    setShowSidebar,
-    user,
-    setOpenCart,
-    setProducts,
-    setBlog,
-    setOpenWishlist,
-    setProdcutLoadding,
-  } = useGlobalContext();
+  const { setShowSidebar } = useGlobalContext();
   const [searchValue, setSearchValue] = useState("");
   const safeSetShowSidebar = setShowSidebar || (() => {});
   const [catMenuOpen, setCatMenuOpen] = useState(false);
@@ -54,22 +54,22 @@ const HeaderThree = () => {
     }
   };
 
-  // const handleInputChange = (e: any) => {
-  //   setSearchValue(e.target.value);
+  const handleInputChange = (e: any) => {
+    setSearchValue(e.target.value);
 
-  //   if (pathName === "/shop") {
-  //     setProdcutLoadding(true);
-  //     axios
-  //       .get(
-  //         `${process.env.BASE_URL}product/search-products-admin?search=${searchValue}`
-  //       )
-  //       .then((res) => {
-  //         setProducts(res.data);
-  //         setProdcutLoadding(false);
-  //       })
-  //       .catch((e) => console.log(e));
-  //   }
-  // };
+    // if (pathName === "/shop") {
+    //   setProdcutLoadding(true);
+    //   // axios
+    //   //   .get(
+    //   //     `${process.env.BASE_URL}product/search-products-admin?search=${searchValue}`
+    //   //   )
+    //   //   .then((res) => {
+    //   //     setProducts(res.data);
+    //   //     setProdcutLoadding(false);
+    //   //   })
+    //   //   .catch((e) => console.log(e));
+    // }
+  };
 
   // Sticky Menu Area End
   return (
@@ -83,7 +83,13 @@ const HeaderThree = () => {
                 <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-6">
                   <div className="bd-header__logo-3">
                     <Link href="/">
-                      <Image src={logo} alt="logo" width={240} height={92} />
+                      <Image
+                        src={logo}
+                        alt="logo"
+                        width={240}
+                        height={92}
+                        priority
+                      />
                     </Link>
                   </div>
                 </div>
@@ -222,7 +228,7 @@ const HeaderThree = () => {
                         }
                       >
                         <div className="category-item">
-                          <CategoryItem />
+                          <CategoryItem categories={categories} />
                         </div>
                       </div>
                     </div>
@@ -232,7 +238,7 @@ const HeaderThree = () => {
                           type="text"
                           placeholder={"Search products..."}
                           value={searchValue}
-                          // onChange={handleInputChange}
+                          onChange={handleInputChange}
                         />
                         <button>
                           <i className="flaticon-magnifiying-glass"></i>

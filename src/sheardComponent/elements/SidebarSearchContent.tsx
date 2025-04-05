@@ -43,35 +43,35 @@ const SidebarSearchContent = () => {
     };
   }, []);
 
-  // const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setSearchProducts([]);
-  //   setSearchQuery(event.target.value);
-  //   setOpenSearchBox(true);
-  //   if (event.target.value === "") {
-  //     setSearchProducts([]);
-  //     setOpenSearchBox(false);
-  //     setProdcutLoadding(false);
-  //   } else {
-  //     setProdcutLoadding(true);
-  //     axios
-  //       .get(
-  //         `${process.env.NEXT_PUBLIC_BASE_URL}product/search-products?search=${event.target.value}&page=${page}&limit=${limit}`
-  //       )
-  //       .then((res) => {
-  //         setSearchProducts(
-  //           Array.isArray(res.data.products) ? res.data.products : []
-  //         );
-  //         setTotalPages(res.data.totalPages);
-  //         setCurrentPage(res.data.currentPage);
-  //         setProdcutLoadding(false);
-  //       })
-  //       .catch((e) => {
-  //         console.log(e);
-  //         setSearchProducts([]);
-  //         setProdcutLoadding(false);
-  //       });
-  //   }
-  // };
+  const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchProducts([]);
+    setSearchQuery(event.target.value);
+    setOpenSearchBox(true);
+    if (event.target.value === "") {
+      setSearchProducts([]);
+      setOpenSearchBox(false);
+      setProdcutLoadding(false);
+    } else {
+      setProdcutLoadding(true);
+      // axios
+      //   .get(
+      //     `${process.env.NEXT_PUBLIC_BASE_URL}product/search-products?search=${event.target.value}&page=${page}&limit=${limit}`
+      //   )
+      //   .then((res) => {
+      //     setSearchProducts(
+      //       Array.isArray(res.data.products) ? res.data.products : []
+      //     );
+      //     setTotalPages(res.data.totalPages);
+      //     setCurrentPage(res.data.currentPage);
+      //     setProdcutLoadding(false);
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //     setSearchProducts([]);
+      //     setProdcutLoadding(false);
+      //   });
+    }
+  };
 
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -89,7 +89,7 @@ const SidebarSearchContent = () => {
           type="text"
           placeholder="What are you searching for?"
           value={searchQuery}
-          // onChange={handleSearchInputChange}
+          onChange={handleSearchInputChange}
         />
         <button type="submit">
           <i className="far fa-search"></i>

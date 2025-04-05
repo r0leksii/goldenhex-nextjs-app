@@ -4,11 +4,11 @@ import ShopSidebarPreloader from "@/preloaders/ShopSidebarPreloader";
 import { useState } from "react";
 
 const ShopSidebarCategories = () => {
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { setProducts, setotalPages, setcurrentPage, limit, setPage, page } =
-    useGlobalContext();
+  // const [categories, setCategories] = useState<CategoryType[]>([]);
+  // const [searchValue, setSearchValue] = useState("");
+  // const [loading, setLoading] = useState(false);
+  // const { setProducts, setotalPages, setcurrentPage, limit, setPage, page } =
+  //   useGlobalContext();
 
   // useEffect(() => {
   //   setLoading(true);
@@ -91,7 +91,7 @@ const ShopSidebarCategories = () => {
               </div>
             </label>
           </div>
-          {categories?.length ? (
+          {/* {categories?.length ? (
             categories.map((item, index) => (
               <div
                 onClick={() => setSearchValue(item.categoryName)}
@@ -119,7 +119,7 @@ const ShopSidebarCategories = () => {
                 <p className="text-center">No Category Found</p>
               )}
             </>
-          )}
+          )} */}
         </div>
       </div>
     </>

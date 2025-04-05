@@ -4,7 +4,7 @@ import { components } from "@/types/schema.type";
 import { components as stockComponents } from "@/types/stock/stock.type";
 import { ProductType } from "@/types/product/product.type";
 import { fetchData } from "@/utils/fetchData";
-
+import { DEFAULT_PAGE, DEFAULT_LIMIT } from "@/lib/consts";
 type WebProductType = components["schemas"]["WebProduct"];
 type CatalogueProductType = components["schemas"]["IProductGrid"];
 type CatalogueResponse = components["schemas"]["IProductGridPagedResponse"];
@@ -16,9 +16,6 @@ const headers = {
 };
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_EPOS_URL;
-
-const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 12;
 
 /** Helper function to calculate stock details from IProductStock[] */
 function calculateStockDetails(stockData: IProductStock[] | null): {
@@ -125,8 +122,9 @@ export async function getProducts(
     catalogueUrl.searchParams.append("SellOnWeb", "true");
     catalogueUrl.searchParams.append("Page", page.toString());
     catalogueUrl.searchParams.append("Limit", limit.toString());
-    if (categoryId != null)
+    if (categoryId) {
       catalogueUrl.searchParams.append("CategoryId", categoryId.toString());
+    }
     if (search) catalogueUrl.searchParams.append("Search", search);
 
     const catalogueData = await fetchData<CatalogueResponse>(

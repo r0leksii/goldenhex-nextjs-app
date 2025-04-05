@@ -4,9 +4,10 @@ import { childrenType } from "@/interFace/interFace";
 import { ToastContainer } from "react-toastify";
 import { Jost } from "next/font/google";
 import AppProvider from "@/contextApi/AppProvider";
-import ReduxProvider from "@/redux/provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-
+import { HeaderThree, FooterThree } from "@/layout";
+import { BacktoTop } from "@/components/common";
+import HeaderThreeServer from "@/layout/headers/header-three-server";
 const jost = Jost({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "900"],
@@ -32,21 +33,27 @@ export default function RootLayout({ children }: childrenType) {
 
       <body suppressHydrationWarning={true}>
         <SpeedInsights />
-        <ReduxProvider>
-          <AppProvider>{children}</AppProvider>
-          <ToastContainer
-            position="top-left"
-            autoClose={1000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        </ReduxProvider>
+
+        <AppProvider>
+          <BacktoTop />
+          <main>
+            <HeaderThreeServer />
+            {children}
+            <FooterThree />
+          </main>
+        </AppProvider>
+        <ToastContainer
+          position="top-left"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </body>
     </html>
   );

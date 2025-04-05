@@ -1,17 +1,7 @@
-
 import ContactMain from "@/components/contact/ContactMain";
-import Wrapper from "@/layout/DefaultWrapper";
 
 const Contact = () => {
-  return (
-    <>
-      <Wrapper>
-        <main>
-          <ContactMain/>
-        </main>
-      </Wrapper>
-    </>
-  );
-}
+  return <ContactMain />;
+};
 
-export default Contact
+export default Contact;

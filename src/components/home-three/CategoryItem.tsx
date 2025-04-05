@@ -1,10 +1,9 @@
-"use client";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { getCategories } from "@/lib/actions/category.actions";
-const chevronRight = <FontAwesomeIcon icon={faChevronRight} />;
+// No longer need getCategories here if data is passed via props
+// import { getCategories } from "@/lib/actions/category.actions";
 
 interface SanitizedCategory {
   _id: string;
@@ -15,34 +14,21 @@ interface SanitizedCategory {
   children?: SanitizedCategory[];
 }
 
-const CategoryItem = () => {
-  const [categories, setCategories] = useState<SanitizedCategory[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [activeSubCategory, setActiveSubCategory] = useState<string | null>(
-    null
-  );
-  const [activeThirdLevel, setActiveThirdLevel] = useState<string | null>(null);
+// Define props interface
+interface CategoryItemProps {
+  categories: SanitizedCategory[];
+}
 
-  const fecthCategories = async () => {
-    const categories = await getCategories();
-    setCategories(categories);
-  };
-
-  useEffect(() => {
-    fecthCategories();
-  }, []);
+// Make it a regular component accepting props
+const CategoryItem: React.FC<CategoryItemProps> = ({ categories }) => {
+  // No fetching logic needed here anymore
 
   return (
     <nav>
       <ul>
-        {categories.length > 0 ? (
+        {categories && categories.length > 0 ? ( // Check if categories exist
           categories.map((category) => (
-            <li
-              key={category._id}
-              className="has-dropdown"
-              onMouseEnter={() => setActiveCategory(category._id)}
-              onMouseLeave={() => setActiveCategory(null)}
-            >
+            <li key={category._id} className="has-dropdown">
               <Link
                 className="text-capitalize d-flex align-items-center justify-content-between"
                 href={`/shop?category=${category.name}`}
@@ -63,8 +49,6 @@ const CategoryItem = () => {
                       className={
                         subCategory.children?.length ? "has-dropdown" : ""
                       }
-                      onMouseEnter={() => setActiveSubCategory(subCategory._id)}
-                      onMouseLeave={() => setActiveSubCategory(null)}
                     >
                       <Link
                         className="text-capitalize d-flex align-items-center justify-content-between"

@@ -1,30 +1,22 @@
-"use client";
-import useGlobalContext from "@/hooks/use-context";
-import ShopPreloader from "@/preloaders/ShopPreloader";
+// "use client";
+// import useGlobalContext from "@/hooks/use-context";
+// import ShopPreloader from "@/preloaders/ShopPreloader";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { cart_product } from "@/redux/slices/cartSlice";
-// import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import { ProductType } from "@/types/product/product.type";
 import { createSlug } from "@/utils";
 
 interface GridViewProductProps {
   products: ProductType[];
-  limit?: number;
 }
 
-const GridViewProduct: React.FC<GridViewProductProps> = ({
-  products,
-  limit,
-}) => {
-  const { openModal, setOpenModal, setModalId, prodcutLoadding } =
-    useGlobalContext();
-  const dispatch = useDispatch();
+const GridViewProduct = ({ products }: GridViewProductProps) => {
+  // const { openModal, setOpenModal, setModalId, prodcutLoadding } =
+  //   useGlobalContext();
 
   // No need to slice products here as pagination is handled by the API
-  const displayProducts = Array.isArray(products) ? products : [];
+  // const displayProducts = Array.isArray(products) ? products : [];
 
   // const handleMoldalData = (id: string) => {
   //   // First set the ID
@@ -73,52 +65,51 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
     return product.productDescription;
   };
 
+  if (!products || products.length === 0) {
+    return <div>No products to display</div>;
+  }
+
   return (
     <>
-      {prodcutLoadding ? (
-        <ShopPreloader end={8} />
-      ) : (
-        <>
-          {displayProducts.length > 0 ? (
-            displayProducts.map((item) => {
-              // Debug the first item to see what's available
-              const price = getPrice(item);
-              const slug = createSlug(item.title);
-              const href = `/product/${slug}-${item._id}`;
-              const stock = getStock(item);
-              return (
-                <div
-                  className="col-xxl-2 col-xl-4 col-lg-6 col-md-6 col-sm-6"
-                  key={item._id}
-                >
-                  <div className="bd-trending__item text-center mb-30 position-relative">
-                    <div className="bd-trending__product-thumb border-5">
-                      <Link href={href} className="ratio ratio-1x1 d-block">
-                        <Image
-                          src={getImageUrl(item)}
-                          alt={item?.title || "Product image"}
-                          width={500}
-                          height={500}
-                          className="object-fit-contain"
-                          priority
-                        />
-                      </Link>
-                    </div>
-                    <div className="bd-teanding__content">
-                      <h4 className="bd-product__title">
-                        <Link href={href}>
-                          {item?.title || "Unnamed Product"}
-                        </Link>
-                      </h4>
-                      <div className="bd-product__price">
-                        <span className="bd-product__new-price">
-                          ${price.toFixed(2)}
-                        </span>
-                      </div>
-                      <div className="bd-product__description">
-                        <p>From: {getProductDescription(item)}</p>
-                      </div>
-                      {/* {getDescription(item) && (
+      {products.map((item) => {
+        // Debug the first item to see what's available
+        const price = getPrice(item);
+        const slug = createSlug(item.title);
+        const href = `/product/${slug}-${item._id}`;
+        const description = getDescription(item);
+        const stock = getStock(item);
+
+        return (
+          <div
+            className="col-xxl-2 col-xl-4 col-lg-6 col-md-6 col-sm-6"
+            key={item._id}
+          >
+            <div className="bd-trending__item text-center mb-30 position-relative">
+              <div className="bd-trending__product-thumb border-5">
+                <Link href={href} className="ratio ratio-1x1 d-block">
+                  <Image
+                    src={getImageUrl(item)}
+                    alt={item?.title || "Product image"}
+                    width={500}
+                    height={500}
+                    className="object-fit-contain"
+                    priority
+                  />
+                </Link>
+              </div>
+              <div className="bd-teanding__content">
+                <h4 className="bd-product__title">
+                  <Link href={href}>{item?.title || "Unnamed Product"}</Link>
+                </h4>
+                <div className="bd-product__price">
+                  <span className="bd-product__new-price">
+                    ${price.toFixed(2)}
+                  </span>
+                </div>
+                <div className="bd-product__description">
+                  <p>From: {getProductDescription(item)}</p>
+                </div>
+                {/* {getDescription(item) && (
                         <div className="bd-product__description">
                           <p>
                             {getDescription(item).substring(0, 60)}
@@ -126,23 +117,16 @@ const GridViewProduct: React.FC<GridViewProductProps> = ({
                           </p>
                         </div>
                       )} */}
-                      {!item.isAvailable && (
-                        <div className="bd-product__availability">
-                          <span className="out-of-stock">Out of Stock</span>
-                        </div>
-                      )}
-                    </div>
+                {!item.isAvailable && (
+                  <div className="bd-product__availability">
+                    <span className="out-of-stock">Out of Stock</span>
                   </div>
-                </div>
-              );
-            })
-          ) : (
-            <div className="col-12">
-              <p className="text-center">No Products Found</p>
+                )}
+              </div>
             </div>
-          )}
-        </>
-      )}
+          </div>
+        );
+      })}
     </>
   );
 };

@@ -1,17 +1,7 @@
-
 import RegistarMain from "@/components/register/RegistarMain";
-import Wrapper from "@/layout/DefaultWrapper";
 
 const SignUp = () => {
-    return (
-        <>
-            <Wrapper>
-                <main>
-                    <RegistarMain />
-                </main>
-            </Wrapper>
-        </>
-    );
-}
+  return <RegistarMain />;
+};
 
-export default SignUp
+export default SignUp;
