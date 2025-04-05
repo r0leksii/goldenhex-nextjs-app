@@ -8,6 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { HeaderThree, FooterThree } from "@/layout";
 import { BacktoTop } from "@/components/common";
 import HeaderThreeServer from "@/layout/headers/header-three-server";
+import ReduxProvider from "@/redux/provider";
 const jost = Jost({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "900"],
@@ -33,15 +34,16 @@ export default function RootLayout({ children }: childrenType) {
 
       <body suppressHydrationWarning={true}>
         <SpeedInsights />
-
-        <AppProvider>
-          <BacktoTop />
-          <main>
-            <HeaderThreeServer />
-            {children}
-            <FooterThree />
-          </main>
-        </AppProvider>
+        <ReduxProvider>
+          <AppProvider>
+            <BacktoTop />
+            <main>
+              <HeaderThreeServer />
+              {children}
+              <FooterThree />
+            </main>
+          </AppProvider>
+        </ReduxProvider>
         <ToastContainer
           position="top-left"
           autoClose={1000}
