@@ -4,7 +4,6 @@ import { childrenType } from "@/interFace/interFace";
 import { ToastContainer } from "react-toastify";
 import { Jost } from "next/font/google";
 import AppProvider from "@/contextApi/AppProvider";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { HeaderThree, FooterThree } from "@/layout";
 import { BacktoTop } from "@/components/common";
 import HeaderThreeServer from "@/layout/headers/header-three-server";
@@ -33,7 +32,6 @@ export default function RootLayout({ children }: childrenType) {
       </head>
 
       <body suppressHydrationWarning={true}>
-        <SpeedInsights />
         <ReduxProvider>
           <AppProvider>
             <BacktoTop />
