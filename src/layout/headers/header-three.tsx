@@ -230,7 +230,10 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
                         }
                       >
                         <div className="category-item">
-                          <CategoryItem categories={categories} />
+                          <CategoryItem
+                            categories={categories}
+                            onClose={() => setCatMenuOpen(false)}
+                          />
                         </div>
                       </div>
                     </div>

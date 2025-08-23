@@ -20,10 +20,11 @@ interface SanitizedCategory {
 // Define props interface
 interface CategoryItemProps {
   categories: CategoryGroup[];
+  onClose?: () => void;
 }
 
 // Make it a regular component accepting props
-const CategoryItem: React.FC<CategoryItemProps> = ({ categories }) => {
+const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
   const [openGroup, setOpenGroup] = useState<number | null>(null);
   const [openSub, setOpenSub] = useState<string | null>(null);
 
@@ -36,6 +37,13 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories }) => {
   const toggleSub = (groupIdx: number, subIdx: number) => {
     const key = `${groupIdx}-${subIdx}`;
     setOpenSub((prev) => (prev === key ? null : key));
+  };
+
+  const handleNavigate = () => {
+    // collapse internal state and let parent close the panel
+    setOpenGroup(null);
+    setOpenSub(null);
+    onClose?.();
   };
 
   return (
@@ -69,6 +77,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories }) => {
                     <Link
                       className="item-link text-capitalize p-3 d-flex align-items-center justify-content-between"
                       href={`/shop?category=${createSlug(category.groupName)}`}
+                      onClick={handleNavigate}
                     >
                       <span className="label">{category.groupName}</span>
                     </Link>
@@ -105,6 +114,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories }) => {
                               <Link
                                 className="item-link text-capitalize p-3 d-flex align-items-center justify-content-between"
                                 href={`/shop?category=${createSlug(category.groupName)}&subcategory=${createSlug(subCategory.name)}`}
+                                onClick={handleNavigate}
                               >
                                 <span className="label">{subCategory.name}</span>
                               </Link>
@@ -118,6 +128,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories }) => {
                                   <Link
                                     className="item-link text-capitalize p-3 d-block"
                                     href={`/shop?category=${createSlug(category.groupName)}&subcategory=${createSlug(subCategory.name)}&thirdlevel=${createSlug(thirdLevel.name)}`}
+                                    onClick={handleNavigate}
                                   >
                                     {thirdLevel.name}
                                   </Link>
