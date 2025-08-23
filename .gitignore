@@ -40,4 +40,10 @@ next-env.d.ts
 #cursor
 .cursor
 
+#codeium
+.codeium
+
+#windsurf
+.windsurf
+
 

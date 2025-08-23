@@ -342,44 +342,7 @@
 	}
 }
 
-.style-2 {
-	.bd-treak {
-		&__right {
-			a {
-				color: var(--clr-common-white);
-
-				&:hover {
-					color: var(--clr-common-heading);
-				}
-			}
-
-			select {
-				z-index: 110;
-
-				span {
-					color: var(--clr-common-white);
-				}
-
-				&::after {
-					border-bottom: 1px solid var(--clr-common-white);
-					border-right: 1px solid var(--clr-common-white);
-				}
-
-				.option {
-					&.selected {
-						font-weight: var(--bd-fw-sbold);
-					}
-				}
-			}
-
-			.border-left {
-				&::before {
-					background: var(--clr-border-5);
-				}
-			}
-		}
-	}
-}
+/* header-style-2 removed (deprecated) */
 
 // Header Action
 .bd-action {
@@ -868,10 +831,57 @@
 			z-index: 10;
 			@include box-shadow (0 0 60px 0 rgba(53, 57, 69, 0.15));
 
-			
+			/* keep dropdown panel styling */
+			.category-nav {
+				display: flex;
+				flex-direction: column;
+			}
+
+			/* migrated from component's style jsx */
+			.root { display: flex; flex-direction: column; gap: 0; }
+			.item-row { display: flex; align-items: stretch; }
+			.toggle-btn { background: transparent; border: 0; display: flex; align-items: center; width: 100%; }
+
+			.group, .sub { position: relative; }
+
+			.item-btn, .item-link {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 12px 20px;
+				border: 0;
+				background: transparent;
+				border-radius: 6px;
+				text-align: left;
+			}
+
+			.item-btn:hover, .item-link:hover { background: var(--clr-bg-grey); }
+
+			.label { flex: 1 1 auto; }
+
+			.chev { transition: transform .2s ease; }
+			/* rotate when parent open or when explicit .rot class present */
+			.open > .item-row .chev { transform: rotate(90deg); }
+			.chev.rot { transform: rotate(90deg); }
+
+			/* vertical reveal */
+			.submenu { display: none; padding-left: 0; }
+			.open > .submenu { display: flex; flex-direction: column; }
+
+			/* open state visuals */
+			.group.open > .item-row .item-btn,
+			.sub.open > .item-row .item-btn { background: var(--clr-bg-grey); color: var(--clr-theme-1); }
+
+			.group.open > .item-row .label,
+			.sub.open > .item-row .label { font-weight: var(--bd-fw-sbold); }
+
+			/* leaf links indentation */
+			.leaf { display: block; }
+			.leaf .item-link { padding-left: 28px; }
 		}
 
-		&:not(items-open) {
+		&:not(.items-open) {
 			.category__items {
 				display: none;
 			}
@@ -1139,98 +1149,7 @@
 	}
 }
 
-// Header style-2
-.logo-black {
-	display: none;
-}
-
-.bd-header {
-	&__area-2 .container {
-		max-width: 1750px;
-	}
-
-	&__logo-bg {
-		position: absolute;
-		left: -92px;
-		top: -67px;
-		z-index: -1;
-
-		@media #{$xl,$lg} {
-			left: -150px;
-		}
-
-		@media #{$xs,$sm,$md} {
-			left: -200px;
-			top: -100px;
-		}
-
-		@media #{$xxs} {
-			top: -80px;
-		}
-	}
-
-	&__main-content {
-		@include flexbox();
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	&__left-2 {
-		@include flexbox();
-		align-items: center;
-	}
-
-	&__right.header__right-2 {
-		@include flexbox();
-		align-items: center;
-		gap: 60px;
-
-		@media #{$xl} {
-			gap: 40px;
-		}
-
-		@media #{$lg} {
-			gap: 25px;
-		}
-
-		@media #{$md,$sm,$xs} {
-			gap: 20px;
-		}
-
-		@media #{$xxs} {
-			gap: 10px;
-		}
-	}
-
-	&__logo-2 {
-		position: relative;
-		z-index: 55;
-		margin-right: 180px;
-
-		@media #{$xl} {
-			margin-right: 125px;
-		}
-
-		@media #{$lg} {
-			margin-right: 125px;
-		}
-
-		@media #{$xs,$sm,$md} {
-			margin-right: 0;
-		}
-
-		@media #{$xxs} {
-			max-width: 120px;
-
-			img {
-				width: 100%;
-				height: auto;
-			}
-		}
-	}
-}
-
-// Header-style-3
+// Header style-3
 .bd-top__bar-area-3 {
 	.container {
 		max-width: 1650px;
