@@ -342,8 +342,6 @@
 	}
 }
 
-/* header-style-2 removed (deprecated) */
-
 // Header Action
 .bd-action {
 	&__cart {
@@ -854,13 +852,14 @@
 				background: transparent;
 				border-radius: 6px;
 				text-align: left;
+				transition: background-color .15s ease, color .15s ease;
 			}
 
 			.item-btn:hover, .item-link:hover { background: var(--clr-bg-grey); }
 
-			.label { flex: 1 1 auto; }
+			.label { flex: 1 1 auto; transition: none; }
 
-			.chev { transition: transform .2s ease; }
+			.chev { transition: transform .15s ease; }
 			/* rotate when parent open or when explicit .rot class present */
 			.open > .item-row .chev { transform: rotate(90deg); }
 			.chev.rot { transform: rotate(90deg); }
@@ -1010,144 +1009,11 @@
 	}
 }
 
-// Header category
-.category-item {
-	ul {
-		li {
-			a {
-				@include flexbox();
-				color: var(--clr-common-heading);
-				align-items: center;
-				gap: 10px;
-				padding: 6px 20px;
-				line-height: 1;
+// Header category (legacy ul/li styles removed)
 
-				&:hover {
-					padding-left: 27px;
-					color: var(--clr-theme-1);
-				}
-			}
+/* .category__items legacy ul/li submenu styles removed */
 
-			.category-submenu {
-				li {
-					a {
-						&:hover {
-							padding-right: 7px;
-							color: var(--clr-theme-1);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	.has-dropdown {
-		position: relative;
-
-		// &::after {
-		// 	position: absolute;
-		// 	content: "\f105";
-		// 	-webkit-transform: translateY(1px);
-		// 	-moz-transform: translateY(1px);
-		// 	-ms-transform: translateY(1px);
-		// 	-o-transform: translateY(1px);
-		// 	transform: translateY(1px);
-		// 	font-size: 14px;
-		// 	color: var(--clr-common-black);
-		// 	font-family: var(--bd-ff-fontawesome);
-		// 	font-weight: 400;
-		// 	margin-left: 5px;
-		// 	display: inline-block;
-		// 	top: 0;
-		// 	right: 20px;
-		// 	color: var(--clr-common-white);
-		// }
-	}
-}
-
-.category__items {
-	.category-item {
-		padding: 25px 0;
-	}
-
-	ul {
-		li {
-			position: relative;
-
-			/* First level menu */
-			&.has-dropdown {
-				> .category-submenu {
-					position: absolute;
-					top: 0;
-					left: 100%;
-					min-width: 240px;
-					background: var(--clr-common-white);
-					opacity: 0;
-					visibility: hidden;
-					transition: .3s;
-					padding: 25px 0;
-					box-shadow: 0 0 60px 0 rgba(53, 57, 69, 0.15);
-					z-index: 1000;
-				}
-
-				&:hover > .category-submenu {
-					opacity: 1;
-					visibility: visible;
-				}
-			}
-
-			/* Second level menu */
-			.category-submenu {
-				li {
-					&.has-dropdown {
-						> .category-submenu {
-							left: 100%;
-							top: 0;
-							opacity: 0;
-							visibility: hidden;
-							z-index: 1001;
-						}
-
-						&:hover > .category-submenu {
-							opacity: 1;
-							visibility: visible;
-						}
-					}
-				}
-			}
-
-			a {
-				display: flex;
-				align-items: center;
-				padding: 8px 20px;
-				transition: all 0.3s;
-				white-space: nowrap;
-
-				&:hover {
-					color: var(--clr-theme-1);
-					padding-left: 27px;
-				}
-			}
-		}
-	}
-}
-
-/* Arrow indicators for submenus */
-.has-dropdown {
-	> a {
-		position: relative;
-		
-		// &::after {
-		// 	content: "\f105";
-		// 	font-family: "Font Awesome 5 Free";
-		// 	font-weight: 900;
-		// 	position: absolute;
-		// 	right: 15px;
-		// 	top: 50%;
-		// 	transform: translateY(-50%);
-		// }
-	}
-}
+/* global has-dropdown arrow rules (legacy) removed */
 
 // Header style-3
 .bd-top__bar-area-3 {
@@ -1437,51 +1303,5 @@
 	@media #{$xxs} {
 		width: 100%;
 		height: auto;
-	}
-}
-
-.category-item {
-	ul {
-		li {
-			a {
-				position: relative;
-				padding-right: 25px;
-				
-				.submenu-arrow {
-					font-size: 12px;
-					position: absolute;
-					right: 15px;
-					top: 50%;
-					transform: translateY(-50%);
-					color: #666;
-					transition: all 0.3s ease;
-				}
-
-				&:hover {
-					.submenu-arrow {
-						color: var(--clr-theme-1);
-						transform: translateY(-50%) translateX(5px);
-					}
-				}
-			}
-		}
-	}
-}
-
-.has-dropdown {
-	> a {
-		position: relative;
-		display: flex !important;
-		align-items: center;
-		justify-content: space-between;
-		
-		.submenu-arrow {
-			margin-left: 10px;
-		}
-	}
-
-	&:hover > a .submenu-arrow {
-		color: var(--clr-theme-1);
-		transform: translateY(-50%) translateX(5px);
 	}
 }
