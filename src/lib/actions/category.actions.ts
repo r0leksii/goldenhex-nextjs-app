@@ -37,6 +37,17 @@ const sanitizeCategory = (category: CategoryType): SanitizedCategory => {
   };
 };
 
+// Sort categories by numeric value of _id (ascending), recursively including children
+function sortCategoriesById(categories: SanitizedCategory[]): SanitizedCategory[] {
+  const sorted = [...categories].sort(
+    (a, b) => Number(a._id) - Number(b._id)
+  );
+  return sorted.map((cat) => ({
+    ...cat,
+    children: cat.children ? sortCategoriesById(cat.children) : undefined,
+  }));
+}
+
 export async function getCategories(): Promise<SanitizedCategory[]> {
   try {
     const categoriesUrl = `${process.env.NEXT_PUBLIC_EPOS_URL}/Category`;
@@ -52,7 +63,7 @@ export async function getCategories(): Promise<SanitizedCategory[]> {
       // Filter out root categories (where ParentId is null or 0, depending on API) before mapping
       // Assuming root categories might not be needed directly or handled differently
       // If root categories ARE needed, adjust this logic.
-      return (
+      return sortCategoriesById(
         categoriesResData
           // .filter(category => category.ParentId !== null && category.ParentId !== 0) // Example filter, adjust as needed
           .map((category) => sanitizeCategory(category))
