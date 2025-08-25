@@ -7,6 +7,7 @@ import "swiper/css/bundle";
 import { CategoryType } from "@/interFace/api-interFace";
 import Image from "next/image";
 import { productsPreloader } from "@/data/preloader-data";
+import { createSlug } from "@/utils";
 
 const CategorySlider = () => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -65,7 +66,7 @@ const CategorySlider = () => {
                             <div className="swiper-slides">
                               <div className="bd-singel__category category_div_height text-center mb-30">
                                 <div className="bd-category__img">
-                                  <Link href="/shop">
+                                  <Link href={`/category/${createSlug(item.categoryName)}`}>
                                     <Image
                                       src={item.categoryThumb}
                                       alt="cateegory-img"
@@ -77,7 +78,7 @@ const CategorySlider = () => {
                                 </div>
                                 <div className="bd-category__text">
                                   <span className="bd-category__title">
-                                    <Link href="/shop">
+                                    <Link href={`/category/${createSlug(item.categoryName)}`}>
                                       {item.categoryName}
                                     </Link>
                                   </span>

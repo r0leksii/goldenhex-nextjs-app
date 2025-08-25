@@ -3,30 +3,20 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { CategoryGroup } from "@/lib/actions/combine-categories";
-
-// import { getCategories } from "@/lib/actions/category.actions";
 import { createSlug } from "@/utils";
-
-interface SanitizedCategory {
-  _id: string;
-  name: string;
-  description?: string;
-  imageUrl?: string;
-  parentId?: number;
-  children?: SanitizedCategory[];
-}
+import type { SanitizedCategory } from "@/lib/actions/category.actions";
 
 // Define props interface
 interface CategoryItemProps {
-  categories: CategoryGroup[];
+  categories: SanitizedCategory[];
   onClose?: () => void;
 }
 
-// Make it a regular component accepting props
 const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
   const [openGroup, setOpenGroup] = useState<number | null>(null);
   const [openSub, setOpenSub] = useState<string | null>(null);
+
+
 
   const toggleGroup = (idx: number) => {
     setOpenGroup((prev) => (prev === idx ? null : idx));
@@ -51,11 +41,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
       <div className="root">
         {categories && categories.length > 0 ? (
           categories.map((category, i) => {
-            const hasGroupChildren = !!category.categories && category.categories.length > 0;
+            const hasGroupChildren = !!category.children && category.children.length > 0;
             const groupIsOpen = openGroup === i;
             return (
               <div
-                key={category.groupName}
+                key={category._id}
                 className={`group ${hasGroupChildren ? "has-dropdown" : ""} ${groupIsOpen ? "open" : ""}`}
               >
                 <div className="item-row">
@@ -63,11 +53,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                     <button
                       type="button"
                       className="toggle-btn item-btn p-3"
-                      aria-label={`Toggle ${category.groupName}`}
+                      aria-label={`Toggle ${category.name}`}
                       aria-expanded={groupIsOpen}
                       onClick={() => toggleGroup(i)}
                     >
-                      <span className="label text-capitalize">{category.groupName}</span>
+                      <span className="label text-capitalize">{category.name}</span>
                       <FontAwesomeIcon
                         icon={faChevronRight}
                         className={`chev ${groupIsOpen ? "rot" : ""}`}
@@ -76,23 +66,23 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                   ) : (
                     <Link
                       className="item-link text-capitalize p-3 d-flex align-items-center justify-content-between"
-                      href={`/shop?category=${createSlug(category.groupName)}`}
+                      href={`/category/${createSlug(category.name)}`}
                       onClick={handleNavigate}
                     >
-                      <span className="label">{category.groupName}</span>
+                      <span className="label">{category.name}</span>
                     </Link>
                   )}
                 </div>
 
                 {hasGroupChildren && (
                   <div className="submenu">
-                    {category.categories.map((subCategory, j) => {
+                    {category.children!.map((subCategory, j) => {
                       const subKey = `${i}-${j}`;
                       const hasChildren = !!subCategory.children?.length;
                       const subIsOpen = openSub === subKey;
                       return (
                         <div
-                          key={subCategory.id}
+                          key={subCategory._id}
                           className={`sub ${hasChildren ? "has-dropdown" : ""} ${subIsOpen ? "open" : ""}`}
                         >
                           <div className="item-row">
@@ -113,7 +103,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                             ) : (
                               <Link
                                 className="item-link text-capitalize p-3 d-flex align-items-center justify-content-between"
-                                href={`/shop?category=${createSlug(category.groupName)}&subcategory=${createSlug(subCategory.name)}`}
+                                href={`/category/${createSlug(category.name)}/${createSlug(subCategory.name)}`}
                                 onClick={handleNavigate}
                               >
                                 <span className="label">{subCategory.name}</span>
@@ -124,10 +114,10 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                           {hasChildren && (
                             <div className="submenu">
                               {subCategory.children!.map((thirdLevel) => (
-                                <div key={thirdLevel.id} className="leaf">
+                                <div key={thirdLevel._id} className="leaf">
                                   <Link
                                     className="item-link text-capitalize p-3 d-block"
-                                    href={`/shop?category=${createSlug(category.groupName)}&subcategory=${createSlug(subCategory.name)}&thirdlevel=${createSlug(thirdLevel.name)}`}
+                                    href={`/category/${createSlug(category.name)}/${createSlug(subCategory.name)}/${createSlug(thirdLevel.name)}`}
                                     onClick={handleNavigate}
                                   >
                                     {thirdLevel.name}

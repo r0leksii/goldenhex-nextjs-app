@@ -2,6 +2,7 @@
 
 import { components } from "@/types/schema.type";
 import { fetchData } from "@/utils/fetchData";
+import { createSlug } from "@/utils";
 
 type CategoryType = components["schemas"]["Category"];
 
@@ -72,4 +73,40 @@ export async function getCategories(): Promise<SanitizedCategory[]> {
       { cause: error }
     );
   }
+}
+
+/**
+ * Recursively search for a category by hierarchical slug path.
+ * Example: ["dairy", "cheeses"] => matches category "DAIRY" -> child "Cheeses".
+ */
+function resolveCategoryBySlugs(
+  categories: SanitizedCategory[] | undefined,
+  slugs: string[],
+  level: number = 0
+): SanitizedCategory | null {
+  if (!categories || slugs.length === 0) return null;
+  const current = slugs[level];
+  for (const cat of categories) {
+    if (createSlug(cat.name) === current) {
+      if (level === slugs.length - 1) {
+        return cat;
+      }
+      const found = resolveCategoryBySlugs(cat.children, slugs, level + 1);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+/**
+ * Fetch categories and find a category by a hierarchical slug path.
+ * Returns null if not found.
+ */
+export async function getCategoryBySlugPath(
+  slugs: string[]
+): Promise<SanitizedCategory | null> {
+  const normalized = (slugs || []).map((s) => createSlug(s));
+  if (normalized.length === 0) return null;
+  const allCategories = await getCategories();
+  return resolveCategoryBySlugs(allCategories, normalized);
 }

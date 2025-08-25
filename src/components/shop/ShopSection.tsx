@@ -12,6 +12,7 @@ const ShopSection = ({
   search,
   limit,
   categoryId,
+  omitCategoryIdQuery,
 }: ShopSharedProps) => {
   const router = useRouter();
 
@@ -19,7 +20,7 @@ const ShopSection = ({
     const params = new URLSearchParams();
     params.set("page", newPage.toString());
     params.set("limit", limit.toString());
-    if (categoryId) {
+    if (!omitCategoryIdQuery && categoryId) {
       params.set("categoryId", categoryId.toString());
     }
     if (search) {

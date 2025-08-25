@@ -9,6 +9,7 @@ const ShopMain = ({
   search,
   limit,
   categoryId,
+  omitCategoryIdQuery,
 }: ShopSharedProps) => {
   return (
     <ShopSection
@@ -19,6 +20,7 @@ const ShopMain = ({
       search={search}
       limit={limit}
       categoryId={categoryId}
+      omitCategoryIdQuery={omitCategoryIdQuery}
     />
   );
 };

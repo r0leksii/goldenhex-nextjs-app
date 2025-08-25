@@ -20,13 +20,11 @@ import SidebarCart from "./SidebarCart";
 // } from "@/hooks/useCartQuantity";
 import { usePathname } from "next/navigation";
 import { SanitizedCategory } from "@/lib/actions/category.actions";
-import { CategoryGroup } from "@/lib/actions/combine-categories";
 // import SidebarWishlist from "./SidebarWishlist";
 
 // Define props for HeaderThree
 interface HeaderThreeProps {
-  // categories: SanitizedCategory[];
-  categories: CategoryGroup[];
+  categories: SanitizedCategory[];
 }
 
 const HeaderThree = ({ categories }: HeaderThreeProps) => {

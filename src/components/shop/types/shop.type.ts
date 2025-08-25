@@ -8,4 +8,5 @@ export interface ShopSharedProps {
   categoryId: number | null;
   search: string;
   limit: number;
+  omitCategoryIdQuery?: boolean;
 }
