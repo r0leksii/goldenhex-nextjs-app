@@ -4,14 +4,14 @@ import React, { ReactNode } from "react";
 import HeaderThree from "./headers/header-three";
 import FooterThree from "./footers/footer-three";
 import BacktoTop from "@/components/common/backToTop/BacktoTop";
-import { CategoryGroup } from "@/lib/actions/combine-categories";
+import type { SanitizedCategory } from "@/lib/actions/category.actions";
 
 const Wrapper = ({
   children,
   categories,
 }: {
   children: ReactNode;
-  categories: CategoryGroup[];
+  categories: SanitizedCategory[];
 }) => {
   return (
     <>

@@ -37,7 +37,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
   };
 
   return (
-    <nav className="category-nav">
+    <nav className="category-nav" style={{ overflowY: "scroll", height: "400px" }}>
       <div className="root">
         {categories && categories.length > 0 ? (
           categories.map((category, i) => {
