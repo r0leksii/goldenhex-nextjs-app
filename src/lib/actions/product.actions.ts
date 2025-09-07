@@ -115,7 +115,6 @@ function transformToProductType(
   const productId = webProduct?.Id ?? catalogueProduct?.Id;
   if (productId == null) {
     // Cannot create a product without an ID from either source
-    console.warn("Missing product ID during transformation.");
     return null;
   }
 
@@ -200,10 +199,6 @@ export async function getProducts(
     );
 
     if (!catalogueData?.Data || !catalogueData.Metadata) {
-      console.warn("[getProducts] catalogueData missing Data or Metadata", {
-        hasData: Boolean(catalogueData?.Data),
-        hasMetadata: Boolean(catalogueData?.Metadata),
-      });
       return { products: [], totalPages: 1, currentPage: 1 };
     }
     const catalogueProducts = Array.isArray(catalogueData.Data)
@@ -290,7 +285,7 @@ export async function getProducts(
         }
         debugLog("[getProducts] fetched raw Product batch", Object.keys(productRawMap).length);
       } catch (e) {
-        console.warn("[getProducts] failed batch /Product/List", e);
+        debugLog("[getProducts] failed batch /Product/List", e);
       }
     }
 
@@ -352,7 +347,7 @@ export async function getProducts(
             }
           }
           if (!webProduct) {
-            console.warn(
+            debugLog(
               `Web product details not found for catalogue product ID: ${productId}`,
               {
                 attemptedSku: catalogueProduct.Sku ?? null,
@@ -376,7 +371,6 @@ export async function getProducts(
     debugLog("[getProducts] final products count", products.length);
     return { products, totalPages, currentPage };
   } catch (error) {
-    console.error(`Error in getProducts:`, error);
     throw new Error(
       `Failed to fetch products: ${
         error instanceof Error ? error.message : "Unknown error"
@@ -394,7 +388,6 @@ export async function getProducts(
 export async function getProductById(id: string): Promise<ProductType | null> {
   if (!id || isNaN(parseInt(id, 10))) {
     // Also check if id is a valid number string
-    console.error("Invalid ID provided for getProductById");
     return null;
   }
   const productIdNum = parseInt(id, 10);
@@ -411,7 +404,7 @@ export async function getProductById(id: string): Promise<ProductType | null> {
         ...withCacheTtl(300),
       });
     } catch (err) {
-      console.warn(`[getProductById] /Product/{id} fetch failed for ${id}:`, err);
+      debugLog(`[getProductById] /Product/{id} fetch failed for ${id}:`, err);
     }
 
     // --- 2. Fallback: search WebProducts list (only returns web-enabled products) ---
@@ -427,9 +420,6 @@ export async function getProductById(id: string): Promise<ProductType | null> {
       const webProducts = Array.isArray(webProductsData) ? webProductsData : [];
       webProduct = webProducts.find((p) => p.Id === productIdNum) ?? null;
       if (!webProduct) {
-        console.warn(
-          `Product not found via /Product/{id} or WebProducts for ID: ${id}.`
-        );
         return null;
       }
     }
@@ -455,12 +445,10 @@ export async function getProductById(id: string): Promise<ProductType | null> {
     );
 
     if (!finalProductData) {
-      console.warn(`Failed to transform product data for ID: ${id}`);
       return null;
     }
     return finalProductData;
   } catch (error) {
-    console.error(`Error fetching product with ID ${id}:`, error);
     return null;
   }
 }
@@ -472,7 +460,6 @@ export async function getStockByProductId(
   productId: number
 ): Promise<IProductStock[] | null> {
   if (productId == null || productId <= 0) {
-    console.error("Invalid productId provided for getStockByProductId");
     return null;
   }
 
@@ -490,7 +477,6 @@ export async function getStockByProductId(
     // Ensure the response is an array, even if it's empty
     return Array.isArray(stockData) ? stockData : [];
   } catch (error) {
-    console.error(`Error fetching stock for product ID ${productId}:`, error);
     // Return null or rethrow based on application needs
     return null;
   }

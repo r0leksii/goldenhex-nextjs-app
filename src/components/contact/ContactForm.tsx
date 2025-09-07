@@ -55,12 +55,8 @@ const ContactForm = () => {
           `${process.env.EMAIL_PUBLIC_KEY}`
         )
         .then(
-          function (response) {
-            console.info("SUCCESS!", response.status, response.text);
-          },
-          function (error) {
-            console.log("FAILED...", error);
-          }
+          function (_response) {},
+          function (_error) {}
         );
     };
 

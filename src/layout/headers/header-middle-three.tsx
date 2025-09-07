@@ -11,14 +11,11 @@ const locationIcon = (
 
 const HeaderMiddleThree = () => {
   return (
-    <div className="d-none d-lg-flex" style={{ height: "40px" }}>
-      <div className="container d-flex gap-3 align-items-center py-2">
-        <ul className="d-flex gap-3 align-items-center py-2">
+    <div className="bd-header__topbar">
+      <div className="container">
+        <ul className="bd-header__toplist">
           <li>
-            <Link
-              href="tel:+19199462649"
-              className="d-flex gap-2 align-items-center hover-primary"
-            >
+            <Link href="tel:+19199462649" className="bd-header__toplink">
               {phoneIcon}
               (919) 946-2649
             </Link>
@@ -27,7 +24,7 @@ const HeaderMiddleThree = () => {
             <Link
               href="https://g.co/kgs/egQkRSZ"
               target="_blank"
-              className="d-flex gap-2 align-items-center hover-primary"
+              className="bd-header__toplink"
             >
               {locationIcon}
               1200 NW Maynard Rd Cary, North Carolina

@@ -23,8 +23,8 @@ const FooterOne = () => {
     <footer>
       <section className="bd-footer__area grey-bg pt-100 pb-40">
         <div className="container">
-          <div className="row">
-            <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div className="bd-footer__grid">
+            <div className="bd-footer__cell">
               <div className="bd-footer__widget footer-col-1 mb-60">
                 <div className="bd-footer__info">
                   <div className="bd-footer__logo">
@@ -52,7 +52,7 @@ const FooterOne = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div className="bd-footer__cell">
               <div className="bd-footer__widget footer-col-2 mb-60">
                 <div className="bd-footer__widget-title">
                   <h4>Quick Links</h4>
@@ -81,7 +81,7 @@ const FooterOne = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div className="bd-footer__cell">
               <div className="bd-footer__widget footer-col-3 mb-60">
                 <div className="bd-footer__widget-title">
                   <h4>Categories</h4>
@@ -108,7 +108,7 @@ const FooterOne = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div className="bd-footer__cell">
               <div className="bd-footer__widget mb-60">
                 <div className="bd-footer__widget-title">
                   <h4>Newsletter</h4>
@@ -139,8 +139,8 @@ const FooterOne = () => {
       </section>
       <div className="bd-sub__fotter">
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-xl-6 col-lg-6">
+          <div className="bd-sub__footer-grid">
+            <div className="bd-sub__footer-left">
               <div className="bd-footer__copyright">
                 <ul>
                   <li>All Rights Reserved</li>
@@ -155,7 +155,7 @@ const FooterOne = () => {
                 </ul>
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="bd-sub__footer-right">
               <div className="bd-footer__payment">
                 <ul>
                   <li>

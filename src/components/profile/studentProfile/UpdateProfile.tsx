@@ -30,7 +30,7 @@ const UpdateProfile = () => {
       // }
       // setProfilePic(imageUrl);
     } catch (error: any) {
-      console.log(error.message);
+      // suppressed client console logging
     }
   };
 

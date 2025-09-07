@@ -31,17 +31,6 @@ const Home = async ({ searchParams }: HomePageProps) => {
   })();
   const search = typeof sp.search === "string" ? sp.search : "";
 
-  // Server debug: log derived params
-  try {
-    console.log("[Home] derived params", {
-      page,
-      limit,
-      search,
-      categoryId,
-    });
-  } catch (e) {
-    console.error("[Home] failed to log params", e);
-  }
 
   // Fetch initial products based on URL parameters
   let products: Awaited<ReturnType<typeof getProducts>>["products"] = [];
@@ -53,19 +42,9 @@ const Home = async ({ searchParams }: HomePageProps) => {
     totalPages = result.totalPages;
     currentPage = result.currentPage;
   } catch (e) {
-    console.error("[Home] getProducts failed:", e);
+    // suppressed server console logging
   }
 
-  // Server debug: log fetch results summary
-  try {
-    console.log("[Home] getProducts result", {
-      productsCount: products?.length ?? 0,
-      totalPages,
-      currentPage,
-    });
-  } catch (e) {
-    console.error("[Home] failed to log getProducts result", e);
-  }
 
   return (
     <ShopMain

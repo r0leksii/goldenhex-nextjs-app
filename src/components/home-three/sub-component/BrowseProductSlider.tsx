@@ -75,7 +75,7 @@ const BrowseProductSlider = () => {
         // );
         // setTabProduct(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
-        console.error(error);
+        // suppressed client console logging
         setTabProduct([]);
       } finally {
         setLoading(false);

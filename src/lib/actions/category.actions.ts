@@ -74,7 +74,6 @@ export async function getCategories(): Promise<SanitizedCategory[]> {
 
     return [];
   } catch (error) {
-    console.error("Error fetching categories:", error);
     // Rethrow the error caught by fetchData or other potential issues
     throw new Error(
       error instanceof Error

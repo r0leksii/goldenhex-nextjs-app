@@ -43,8 +43,8 @@ export function getDefaultHeaders(extra?: HeadersInit): HeadersInit {
 
 export function debugLog(...args: any[]) {
   if (process.env.NEXT_PUBLIC_DEBUG_API === "true") {
-    // eslint-disable-next-line no-console
-    console.log(...args);
+    const sink = (globalThis as any).__DEBUG_SINK__;
+    if (typeof sink === "function") sink(...args);
   }
 }
 
@@ -93,7 +93,7 @@ export async function fetchData<T>(
       const response = await fetch(url, options as any);
       if (!response.ok) {
         const errorBody = await response.text();
-        console.error(
+        debugLog(
           `Fetch error ${response.status}: ${response.statusText}`,
           errorBody
         );
@@ -118,7 +118,7 @@ export async function fetchData<T>(
   const response = await fetch(url, options as any);
   if (!response.ok) {
     const errorBody = await response.text();
-    console.error(
+    debugLog(
       `Fetch error ${response.status}: ${response.statusText}`,
       errorBody
     );

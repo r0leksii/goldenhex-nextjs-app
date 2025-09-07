@@ -3,7 +3,7 @@
 // import ShopPreloader from "@/preloaders/ShopPreloader";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { ProductType } from "@/types/product/product.type";
 import { createSlug } from "@/utils";
 
@@ -18,25 +18,7 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
   // No need to slice products here as pagination is handled by the API
   // const displayProducts = Array.isArray(products) ? products : [];
 
-  // Debug: log products on mount/update in the browser
-  useEffect(() => {
-    try {
-      console.log("[GridViewProduct] render", {
-        productsLength: products?.length ?? 0,
-      });
-      if (Array.isArray(products) && products.length > 0) {
-        const p = products[0];
-        console.log("[GridViewProduct] first product sample", {
-          _id: p?._id,
-          title: p?.title,
-          price: p?.price,
-          isAvailable: p?.isAvailable,
-        });
-      }
-    } catch (e) {
-      console.error("[GridViewProduct] logging failed", e);
-    }
-  }, [products]);
+  
 
   // const handleMoldalData = (id: string) => {
   //   // First set the ID
@@ -86,9 +68,6 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
   };
 
   if (!products || products.length === 0) {
-    console.warn("[GridViewProduct] No products to display", {
-      productsType: typeof products,
-    });
     return <div>No products to display</div>;
   }
 
@@ -103,10 +82,7 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
         const stock = getStock(item);
 
         return (
-          <div
-            className="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4 col-xxl-2"
-            key={item._id}
-          >
+          <div className="bd-shop__product" key={item._id}>
             <div className="bd-trending__item text-center mb-30 position-relative">
               <div className="bd-trending__product-thumb border-5">
                 <Link href={href} className="ratio ratio-1x1 d-block">

@@ -6,6 +6,18 @@
 
 //  Trending style
 .bd-trending {
+    /* Responsive grid replacing Bootstrap cols for TrendingProducts */
+    &__grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+        @media (min-width: 1200px) {
+            grid-template-columns: 2fr 1fr; /* left content / right sidebar */
+        }
+    }
+    &__left { width: 100%; }
+    &__right { width: 100%; }
+    &__right-item { margin-bottom: 30px; &:last-child { margin-bottom: 0; } }
 	&__banner {
 		&-thumb {
 			object-fit: cover;

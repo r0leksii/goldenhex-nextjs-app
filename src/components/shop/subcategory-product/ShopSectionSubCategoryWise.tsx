@@ -105,7 +105,7 @@ const ShopSectionSubCategoryWise = ({ id }: propsType) => {
         // setProducts(response.data);
         setProdcutLoadding(false);
       } catch (error) {
-        console.error(error);
+        // suppressed client console logging
       } finally {
         setProdcutLoadding(false);
       }
@@ -116,7 +116,6 @@ const ShopSectionSubCategoryWise = ({ id }: propsType) => {
 
   const selectHandler = () => {};
 
-  console.log(products);
 
   return (
     <>

@@ -73,11 +73,7 @@ const UserReviews = () => {
         //   toast.success("Review Deleted");
         // }
       } catch (error: any) {
-        if (error.response.status === 403) {
-          console.error("Unauthorized access");
-        } else {
-          console.error("Unauthorized access");
-        }
+        // suppressed client console logging
       }
     };
 

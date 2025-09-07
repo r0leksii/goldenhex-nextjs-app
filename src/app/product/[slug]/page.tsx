@@ -34,7 +34,6 @@ export default async function ShopDetailsPage({ params }: PageProps) {
   const productId = extractIdFromSlug(slug);
 
   if (!productId) {
-    console.warn(`Could not extract product ID from slug: ${slug}`);
     notFound();
   }
 

@@ -40,7 +40,7 @@ const ProductModal = () => {
           setProduct(data.products[0]);
         }
       } catch (error) {
-        console.error("Error fetching product:", error);
+        // suppressed client console logging
       }
     };
 

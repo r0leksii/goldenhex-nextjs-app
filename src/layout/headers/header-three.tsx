@@ -79,8 +79,8 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
         <div className="bd-header__border">
           <div id="header-sticky" className="bd-header__middle-inner">
             <div className="container">
-              <div className="row align-items-center">
-                <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-6">
+              <div className="bd-header__middle-grid">
+                <div className="bd-header__middle-left">
                   <div className="bd-header__logo-3">
                     <Link href="/">
                       <Image
@@ -93,15 +93,15 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
                     </Link>
                   </div>
                 </div>
-                <div className="col-xxl-6 col-xl-6 col-lg-6 d-none d-lg-block">
-                  <div className="main-menu d-none d-none d-lg-flex justify-content-center">
+                <div className="bd-header__middle-center">
+                  <div className="main-menu">
                     <nav id="mobile-menu">
                       <NavMenu />
                     </nav>
                   </div>
                 </div>
-                <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-6">
-                  <div className="bd-header__right d-flex align-items-center justify-content-end">
+                <div className="bd-header__middle-right">
+                  <div className="bd-header__right">
                     {/* <div className="bd-action__cart-list">
                       <div className="bd-action__item">
                         <div className="bd-action__cart">
@@ -178,7 +178,7 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
                         )}
                       </div>
                     </div> */}
-                    <div className="header__hamburger d-flex ml-25">
+                    <div className="header__hamburger">
                       <button
                         type="button"
                         className="hamburger-btn"
@@ -199,8 +199,8 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
 
           <div className="bd-header__buttom">
             <div className="container">
-              <div className="row align-items-center">
-                <div className="col-xxl-8 col-xl-8 col-md-8 col-sm-6">
+              <div className="bd-header__bottom-grid">
+                <div className="bd-header__bottom-left">
                   <div className="bd-header__butttom-left">
                     <div className="bd-header__category-nav p-relative">
                       <div
@@ -235,7 +235,7 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
                         </div>
                       </div>
                     </div>
-                    <div className="bd-header__filterbar d-none d-md-block">
+                    <div className="bd-header__filterbar">
                       <form className="bd-filter__input" action="#">
                         <input
                           type="text"
@@ -250,8 +250,8 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xxl-4 col-xl-4 col-md-4 col-sm-6  d-none d-sm-block">
-                  <div className="bd-action__support d-flex justify-content-end">
+                <div className="bd-header__bottom-right">
+                  <div className="bd-action__support">
                     <div className="bd-support__inner">
                       <div className="bd-support__icon">
                         <Image
