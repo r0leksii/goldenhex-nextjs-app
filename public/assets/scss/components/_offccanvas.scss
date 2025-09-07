@@ -8,6 +8,18 @@
 /*----------------------------------------*/
 
 // sidebar
+.side-info-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modals-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
 .offcanvas{
     &__area{
 
@@ -44,6 +56,11 @@
            padding: 0px;
         }
     }
+    &__content{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
     &__close{
         &-btn{
             display: inline-block;
@@ -63,6 +80,11 @@
         }
     }
     &__top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
         padding-bottom: 20px;
         border-bottom: 1px solid var(--clr-border-18);
     }

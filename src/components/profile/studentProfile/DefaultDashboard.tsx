@@ -8,7 +8,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
 const DefaultDashboard = () => {
-  const { user, header, setDynamicId, settotalProduct } = useGlobalContext();
+  const { user, header, setDynamicId, settotalProduct, setOpenOrderTrack } = useGlobalContext();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -206,14 +206,13 @@ const DefaultDashboard = () => {
                                                 <td className="product-subtotal">
                                                   <div className="bd-banner__btn">
                                                     <button
-                                                      onClick={() =>
-                                                        setDynamicId(item?._id)
-                                                      }
+                                                      onClick={() => {
+                                                        setDynamicId(item?._id);
+                                                        setOpenOrderTrack(true);
+                                                      }}
                                                       data-toggle="tooltip"
                                                       data-placement="top"
                                                       title="Quick View"
-                                                      data-bs-toggle="modal"
-                                                      data-bs-target="#orderTrackModal"
                                                       className="bd-bn__btn-2"
                                                     >
                                                       {item?.shipmentStatus ==

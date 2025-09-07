@@ -1,9 +1,9 @@
-// "use client";
+"use client";
 // import useGlobalContext from "@/hooks/use-context";
 // import ShopPreloader from "@/preloaders/ShopPreloader";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { ProductType } from "@/types/product/product.type";
 import { createSlug } from "@/utils";
 
@@ -17,6 +17,26 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
 
   // No need to slice products here as pagination is handled by the API
   // const displayProducts = Array.isArray(products) ? products : [];
+
+  // Debug: log products on mount/update in the browser
+  useEffect(() => {
+    try {
+      console.log("[GridViewProduct] render", {
+        productsLength: products?.length ?? 0,
+      });
+      if (Array.isArray(products) && products.length > 0) {
+        const p = products[0];
+        console.log("[GridViewProduct] first product sample", {
+          _id: p?._id,
+          title: p?.title,
+          price: p?.price,
+          isAvailable: p?.isAvailable,
+        });
+      }
+    } catch (e) {
+      console.error("[GridViewProduct] logging failed", e);
+    }
+  }, [products]);
 
   // const handleMoldalData = (id: string) => {
   //   // First set the ID
@@ -66,6 +86,9 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
   };
 
   if (!products || products.length === 0) {
+    console.warn("[GridViewProduct] No products to display", {
+      productsType: typeof products,
+    });
     return <div>No products to display</div>;
   }
 

@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import ContactForm from "../contact/ContactForm";
 import RefundForm from "./RefundForm";
 
 const PrivacyPolicyMain = () => {
+  const [activeTab, setActiveTab] = useState<string>("tab_privacy_policy");
+  const onSelect = useCallback((tab: string) => setActiveTab(tab), []);
+
   return (
     <>
       <section className="terms_conditions_section section_space_lg pt-120">
@@ -16,12 +19,11 @@ const PrivacyPolicyMain = () => {
               >
                 <li role="presentation">
                   <button
-                    className="active"
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab_privacy_policy"
+                    className={activeTab === "tab_privacy_policy" ? "active" : ""}
+                    onClick={() => onSelect("tab_privacy_policy")}
                     type="button"
                     role="tab"
-                    aria-selected="false"
+                    aria-selected={activeTab === "tab_privacy_policy"}
                   >
                     <i className="fas fa-circle"></i>
                     <span>Policy & Privacy</span>
@@ -29,11 +31,11 @@ const PrivacyPolicyMain = () => {
                 </li>
                 <li role="presentation">
                   <button
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab_terms_conditions"
+                    className={activeTab === "tab_terms_conditions" ? "active" : ""}
+                    onClick={() => onSelect("tab_terms_conditions")}
                     type="button"
                     role="tab"
-                    aria-selected="true"
+                    aria-selected={activeTab === "tab_terms_conditions"}
                   >
                     <i className="fas fa-circle"></i>
                     <span>Terms & Conditions</span>
@@ -42,11 +44,11 @@ const PrivacyPolicyMain = () => {
 
                 <li role="presentation">
                   <button
-                    data-bs-toggle="tab"
-                    data-bs-target="#product_refund_policy"
+                    className={activeTab === "product_refund_policy" ? "active" : ""}
+                    onClick={() => onSelect("product_refund_policy")}
                     type="button"
                     role="tab"
-                    aria-selected="true"
+                    aria-selected={activeTab === "product_refund_policy"}
                   >
                     <i className="fas fa-circle"></i>
                     <span> Refund Policy</span>
@@ -57,7 +59,7 @@ const PrivacyPolicyMain = () => {
             <div className="col-lg-9">
               <div className="tab-content mb-60">
                 <div
-                  className="tab-pane fade show active"
+                  className={`tab-pane fade${activeTab === "tab_privacy_policy" ? " show active" : ""}`}
                   id="tab_privacy_policy"
                   role="tabpanel"
                 >
@@ -138,7 +140,7 @@ const PrivacyPolicyMain = () => {
                   </div>
                 </div>
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane fade${activeTab === "tab_terms_conditions" ? " show active" : ""}`}
                   id="tab_terms_conditions"
                   role="tabpanel"
                 >
@@ -314,7 +316,7 @@ const PrivacyPolicyMain = () => {
                 </div>
 
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane fade${activeTab === "product_refund_policy" ? " show active" : ""}`}
                   id="product_refund_policy"
                   role="tabpanel"
                 >

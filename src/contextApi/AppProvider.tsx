@@ -14,12 +14,13 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [totalProduct, settotalProduct] = useState<number>(0);
+  const [dynamicId, setDynamicId] = useState<string>("");
+  const [openOrderTrack, setOpenOrderTrack] = useState<boolean>(false);
 
   // const token = localStorage.getItem("accessToken");
   const header = useMemo(
     () => ({
       headers: {
-        Authorization: "Basic " + process.env.NEXT_PUBLIC_EPOS_TOKEN,
         "Content-Type": "application/json",
       },
     }),
@@ -59,6 +60,10 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     setOpenModal,
     modalId,
     setModalId,
+    dynamicId,
+    setDynamicId,
+    openOrderTrack,
+    setOpenOrderTrack,
     paymentSuccess,
     setPaymentSuccess,
     totalProduct,

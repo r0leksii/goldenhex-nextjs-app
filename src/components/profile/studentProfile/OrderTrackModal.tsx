@@ -6,7 +6,7 @@ import { PaymentInfoType } from "@/interFace/interFace";
 import React, { useState, useEffect } from "react";
 
 const OrderTrackModal = () => {
-  const { dynamicId } = useGlobalContext();
+  const { dynamicId, openOrderTrack, setOpenOrderTrack } = useGlobalContext();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfoType[]>([]);
   // useEffect(() => {
   //   axios
@@ -17,24 +17,44 @@ const OrderTrackModal = () => {
   //     })
   //     .catch((e) => {});
   // }, [dynamicId]);
+
+  // Lock body scroll and enable ESC to close while open
+  useEffect(() => {
+    if (!openOrderTrack) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenOrderTrack(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [openOrderTrack, setOpenOrderTrack]);
   return (
     <>
       <div
-        className="product__modal-sm modal fade"
+        className={`product__modal-sm modal fade${openOrderTrack ? " show" : ""}`}
         id="orderTrackModal"
-        //   tabIndex="-1"
         role="dialog"
-        aria-hidden="true"
+        aria-hidden={!openOrderTrack}
+        tabIndex={-1}
+        onClick={() => setOpenOrderTrack(false)}
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
+        <div
+          className="modal-dialog modal-dialog-centered"
+          role="document"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="modal-content">
             <div className="product__modal">
               <div className="product__modal-wrapper p-relative">
                 <button
                   type="button"
                   className="close product__modal-close"
-                  data-bs-dismiss="modal"
                   aria-label="Close"
+                  onClick={() => setOpenOrderTrack(false)}
                 >
                   <i className="fal fa-times"></i>
                 </button>

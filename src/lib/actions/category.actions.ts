@@ -1,15 +1,12 @@
 "use server";
 
 import { components } from "@/types/schema.type";
-import { fetchData } from "@/utils/fetchData";
 import { createSlug } from "@/utils";
+import { buildApiUrl, getDefaultHeaders, debugLog, withCacheTtl, fetchData } from "@/lib/http";
 
 type CategoryType = components["schemas"]["Category"];
 
-const headers = {
-  Authorization: `Basic ${process.env.API_AUTH_TOKEN}`,
-  "Content-Type": "application/json",
-};
+const headers = getDefaultHeaders();
 
 export interface SanitizedCategory {
   _id: string;
@@ -50,11 +47,13 @@ function sortCategoriesById(categories: SanitizedCategory[]): SanitizedCategory[
 
 export async function getCategories(): Promise<SanitizedCategory[]> {
   try {
-    const categoriesUrl = `${process.env.NEXT_PUBLIC_EPOS_URL}/Category`;
+    const categoriesUrl = buildApiUrl("Category");
+    debugLog("[getCategories] url", categoriesUrl);
     // Use the fetchData helper
     const categoriesResData = await fetchData<CategoryType[]>(categoriesUrl, {
       method: "GET",
       headers,
+      ...withCacheTtl(1800),
       // Add Next.js cache/revalidation options if needed
       // cache: 'force-cache', // Example: Default Next.js fetch cache behavior
     });
@@ -117,6 +116,7 @@ export async function getCategoryBySlugPath(
   slugs: string[]
 ): Promise<SanitizedCategory | null> {
   const normalized = (slugs || []).map((s) => createSlug(s));
+  debugLog("[getCategoryBySlugPath] normalized slugs", normalized);
   if (normalized.length === 0) return null;
   const allCategories = await getCategories();
   return resolveCategoryBySlugs(allCategories, normalized);

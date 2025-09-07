@@ -19,7 +19,7 @@ const Sidebar = () => {
             <div className="modals-content">
               <div className="offcanvas__wrapper">
                 <div className="offcanvas__content">
-                  <div className="offcanvas__top mb-40 d-flex justify-content-between align-items-center">
+                  <div className="offcanvas__top mb-40">
                     <div className="offcanvas__logo logo">
                       <Link href="/">
                         <Image src={logo} alt="logo" width={180} height={70} />

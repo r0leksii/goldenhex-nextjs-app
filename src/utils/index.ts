@@ -1,3 +1,3 @@
 export { createSlug } from "./createSlug";
-export { fetchData } from "./fetchData";
+export { fetchData } from "@/lib/http";
 export { parseNumericParam } from "./parseNumericParam";

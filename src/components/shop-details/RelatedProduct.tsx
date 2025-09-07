@@ -25,8 +25,8 @@ const RelatedProduct = ({ category, productID }: any) => {
 
   const handleMoldalData = (id: string) => {
     if (id) {
-      setOpenModal(!openModal);
       setModalId(id);
+      setOpenModal(true);
     }
   };
   // useEffect(() => {
@@ -151,11 +151,7 @@ const RelatedProduct = ({ category, productID }: any) => {
                                         <i className="fal fa-cart-arrow-down"></i>
                                       </span>
                                       <span
-                                        data-toggle="tooltip"
-                                        data-placement="top"
                                         title="Quick View"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#productmodal"
                                         onClick={() =>
                                           handleMoldalData(item._id)
                                         }
@@ -180,8 +176,6 @@ const RelatedProduct = ({ category, productID }: any) => {
                                         data-toggle="tooltip"
                                         data-placement="top"
                                         title="Quick View"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#productmodal"
                                         onClick={() =>
                                           handleMoldalData(item._id)
                                         }

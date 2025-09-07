@@ -1,0 +1,240 @@
+// Minimal grid and modal CSS to replace Bootstrap usage
+@use "sass:math";
+
+// Breakpoints
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;
+
+/* Container */
+.container,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+/* Responsive container max-widths (Bootstrap-like) */
+@media (min-width: $sm) { .container { max-width: 540px; } }
+@media (min-width: $md) { .container { max-width: 720px; } }
+@media (min-width: $lg) { .container { max-width: 960px; } }
+@media (min-width: $xl) { .container { max-width: 1140px; } }
+@media (min-width: $xxl) { .container { max-width: 1320px; } }
+
+/* Grid */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -12px;
+  margin-left: -12px;
+}
+
+[class^="col-"],
+[class*=" col-"] {
+  position: relative;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+/* Simple utilities */
+.d-block { display: block; }
+.d-inline { display: inline; }
+.d-inline-block { display: inline-block; }
+.d-none { display: none !important; }
+.d-flex { display: flex; }
+.ratio { display: block; }
+.ratio-1x1 { aspect-ratio: 1 / 1; }
+.justify-content-start { justify-content: flex-start; }
+.justify-content-center { justify-content: center; }
+.justify-content-end { justify-content: flex-end; }
+.align-items-start { align-items: flex-start; }
+.align-items-center { align-items: center; }
+.align-items-end { align-items: flex-end; }
+
+/* Gap utilities (0-5) */
+.gap-0 { gap: 0; }
+.gap-1 { gap: .25rem; }
+.gap-2 { gap: .5rem; }
+.gap-3 { gap: 1rem; }
+.gap-4 { gap: 1.5rem; }
+.gap-5 { gap: 3rem; }
+
+/* Spacing utilities (Bootstrap-like scale 0..5) */
+.p-0 { padding: 0 !important; }
+.p-1 { padding: .25rem !important; }
+.p-2 { padding: .5rem !important; }
+.p-3 { padding: 1rem !important; }
+.p-4 { padding: 1.5rem !important; }
+.p-5 { padding: 3rem !important; }
+
+.px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+.px-1 { padding-left: .25rem !important; padding-right: .25rem !important; }
+.px-2 { padding-left: .5rem !important; padding-right: .5rem !important; }
+.px-3 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.px-4 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+.px-5 { padding-left: 3rem !important; padding-right: 3rem !important; }
+
+.py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
+.py-1 { padding-top: .25rem !important; padding-bottom: .25rem !important; }
+.py-2 { padding-top: .5rem !important; padding-bottom: .5rem !important; }
+.py-3 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+.py-4 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+.py-5 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+
+/* One-off spacing helper used in header */
+.ml-25 { margin-left: 25px !important; }
+
+/* Hover helpers */
+.hover-primary:hover { color: var(--clr-theme-1); }
+
+/* Responsive display utilities */
+@media (min-width: $sm) {
+  .d-sm-none { display: none !important; }
+  .d-sm-block { display: block !important; }
+  .d-sm-flex { display: flex !important; }
+  .d-sm-inline { display: inline !important; }
+  .d-sm-inline-block { display: inline-block !important; }
+}
+@media (min-width: $md) {
+  .d-md-none { display: none !important; }
+  .d-md-block { display: block !important; }
+  .d-md-flex { display: flex !important; }
+  .d-md-inline { display: inline !important; }
+  .d-md-inline-block { display: inline-block !important; }
+}
+@media (min-width: $lg) {
+  .d-lg-none { display: none !important; }
+  .d-lg-block { display: block !important; }
+  .d-lg-flex { display: flex !important; }
+  .d-lg-inline { display: inline !important; }
+  .d-lg-inline-block { display: inline-block !important; }
+}
+@media (min-width: $xl) {
+  .d-xl-none { display: none !important; }
+  .d-xl-block { display: block !important; }
+  .d-xl-flex { display: flex !important; }
+  .d-xl-inline { display: inline !important; }
+  .d-xl-inline-block { display: inline-block !important; }
+}
+@media (min-width: $xxl) {
+  .d-xxl-none { display: none !important; }
+  .d-xxl-block { display: block !important; }
+  .d-xxl-flex { display: flex !important; }
+  .d-xxl-inline { display: inline !important; }
+  .d-xxl-inline-block { display: inline-block !important; }
+}
+
+@function span($i) { @return math.div($i, 12) * 100%; }
+
+/* Base columns 1..12 */
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    flex: 0 0 auto;
+    width: span($i);
+    max-width: span($i);
+  }
+}
+
+/* sm */
+@media (min-width: $sm) {
+  @for $i from 1 through 12 {
+    .col-sm-#{$i} {
+      flex: 0 0 auto;
+      width: span($i);
+      max-width: span($i);
+    }
+  }
+}
+/* md */
+@media (min-width: $md) {
+  @for $i from 1 through 12 {
+    .col-md-#{$i} {
+      flex: 0 0 auto;
+      width: span($i);
+      max-width: span($i);
+    }
+  }
+}
+/* lg */
+@media (min-width: $lg) {
+  @for $i from 1 through 12 {
+    .col-lg-#{$i} {
+      flex: 0 0 auto;
+      width: span($i);
+      max-width: span($i);
+    }
+  }
+}
+/* xl */
+@media (min-width: $xl) {
+  @for $i from 1 through 12 {
+    .col-xl-#{$i} {
+      flex: 0 0 auto;
+      width: span($i);
+      max-width: span($i);
+    }
+  }
+}
+/* xxl */
+@media (min-width: $xxl) {
+  @for $i from 1 through 12 {
+    .col-xxl-#{$i} {
+      flex: 0 0 auto;
+      width: span($i);
+      max-width: span($i);
+    }
+  }
+}
+
+/* Minimal modal implementation */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 1050; // Above most content
+}
+
+.modal.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 600px;
+  margin: 1.75rem auto;
+}
+
+.modal-dialog-centered {
+  min-height: calc(100% - 3.5rem);
+  display: flex;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  color: inherit;
+  border-radius: 6px;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Optional fade helper (kept for compatibility) */
+.modal.fade { transition: opacity 0.2s ease; }

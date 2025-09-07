@@ -3,19 +3,73 @@
 import { components } from "@/types/schema.type";
 import { components as stockComponents } from "@/types/stock/stock.type";
 import { ProductType } from "@/types/product/product.type";
-import { fetchData } from "@/utils/fetchData";
 import { DEFAULT_PAGE, DEFAULT_LIMIT } from "@/lib/consts";
+import { fetchData, API_BASE_URL, buildApiUrl, getDefaultHeaders, debugLog, withCacheTtl } from "@/lib/http";
 type WebProductType = components["schemas"]["WebProduct"];
 type CatalogueProductType = components["schemas"]["IProductGrid"];
 type CatalogueResponse = components["schemas"]["IProductGridPagedResponse"];
 type IProductStock = stockComponents["schemas"]["IProductStock"];
+type ProductRawType = components["schemas"]["Product"];
 
-const headers = {
-  Authorization: `Basic ${process.env.API_AUTH_TOKEN}`,
-  "Content-Type": "application/json",
-};
+const headers = getDefaultHeaders();
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_EPOS_URL;
+/**
+ * Normalizes SKU/Barcode-like codes for robust matching.
+ * - Converts to string
+ * - Trims whitespace
+ * - Removes internal spaces and hyphens
+ */
+function normalizeCode(raw: unknown): string | null {
+  if (raw == null) return null;
+  let s = String(raw).trim();
+  if (!s) return null;
+  // Remove common formatting characters
+  s = s.replace(/[\s-]+/g, "");
+  return s;
+}
+
+/**
+ * Extracts one or more candidate codes from a potentially comma/semicolon/pipe-separated value.
+ */
+function extractCodes(raw: unknown): string[] {
+  if (raw == null) return [];
+  const s = String(raw);
+  const parts = s.split(/[|,;]+/g);
+  const out: string[] = [];
+  for (const part of parts) {
+    const n = normalizeCode(part);
+    if (n) out.push(n);
+  }
+  return out;
+}
+
+/** Best-effort price resolution across different schema shapes */
+function resolvePrice(source: any): number | null {
+  if (!source) return null;
+  // Direct field first
+  if (typeof source.SalePrice === "number") return source.SalePrice;
+  // Pricing object (present on WebProduct and IProductGrid)
+  const p = source.SalePricing || source.Price || undefined;
+  if (p && typeof p.Price === "number") return p.Price;
+  if (p && typeof p.PriceIncTax === "number") return p.PriceIncTax;
+  if (p && typeof p.PriceExTax === "number") return p.PriceExTax;
+  return null;
+}
+
+/** Prefer main image if flagged, else first image */
+function extractImageUrls(source: any): { main: string; all: string[] } {
+  const imgs: any[] = Array.isArray(source?.ProductImages)
+    ? (source.ProductImages as any[])
+    : [];
+  const urls = imgs
+    .map((img) => (typeof img?.ImageUrl === "string" ? img.ImageUrl : ""))
+    .filter(Boolean);
+  const main =
+    (imgs.find((i) => i?.MainImage)?.ImageUrl as string | undefined) ||
+    urls[0] ||
+    "";
+  return { main, all: urls };
+}
 
 /** Helper function to calculate stock details from IProductStock[] */
 function calculateStockDetails(stockData: IProductStock[] | null): {
@@ -54,7 +108,7 @@ function calculateStockDetails(stockData: IProductStock[] | null): {
  * Transforms raw API product data into the application's ProductType format.
  */
 function transformToProductType(
-  webProduct: WebProductType | undefined | null,
+  webProduct: WebProductType | ProductRawType | undefined | null,
   catalogueProduct: CatalogueProductType | undefined | null,
   stockInfo: { currentStock: number; minStock: number }
 ): ProductType | null {
@@ -66,24 +120,30 @@ function transformToProductType(
   }
 
   const idString = productId.toString();
-  const title =
-    webProduct?.Name ?? catalogueProduct?.Name ?? "Untitled Product";
-  const imageUrl = webProduct?.ProductImages?.[0]?.ImageUrl ?? "";
-  const imageURLs =
-    webProduct?.ProductImages?.map((img) => img.ImageUrl ?? "").filter(
-      Boolean
-    ) ?? [];
+  const title = webProduct?.Name ?? catalogueProduct?.Name ?? "Untitled Product";
+
+  // Images from whichever detailed source is available
+  const imgFromDetailed = extractImageUrls(webProduct as any);
+  const imageUrl = imgFromDetailed.main;
+  const imageURLs = imgFromDetailed.all;
+
   const tags =
-    webProduct?.ProductTags?.map((tag) => tag.Name ?? "").filter(Boolean) ?? [];
-  const price = webProduct?.SalePrice ?? 0;
-  const description = webProduct?.Description ?? "";
+    (webProduct as any)?.ProductTags?.map((tag: any) => tag?.Name ?? "").filter(Boolean) ?? [];
+
+  // Price: try detailed first, then catalogue
+  const priceFromDetailed = resolvePrice(webProduct as any);
+  const priceFromCatalogue = resolvePrice(catalogueProduct as any);
+  const price = (priceFromDetailed ?? priceFromCatalogue ?? 0) as number;
+
+  const description =
+    (webProduct as any)?.Description ?? catalogueProduct?.Description ?? "";
   // Prefer catalogue category name if available, fallback to web product category ID
   const categoryName =
     catalogueProduct?.CategoryName ??
     webProduct?.CategoryId?.toString() ??
     "Unknown Category";
   const productDescription =
-    webProduct?.ProductDetails?.DetailedDescription ?? "";
+    (webProduct as any)?.ProductDetails?.DetailedDescription ?? "";
 
   return {
     _id: idString,
@@ -115,24 +175,35 @@ export async function getProducts(
   products: ProductType[];
   totalPages: number;
   currentPage: number;
-}> {
+}>{
   try {
+    // Top-level diagnostics
+    debugLog("[getProducts] called with", { page, limit, categoryId, search });
+    debugLog("[getProducts] env present", {
+      API_BASE_URL_present: Boolean(API_BASE_URL),
+      API_AUTH_TOKEN_present: Boolean(process.env.API_AUTH_TOKEN),
+    });
     // --- 1. Fetch PAGINATED Catalogue Products ---
-    const catalogueUrl = new URL(`${API_BASE_URL}/Catalogue/products`);
-    catalogueUrl.searchParams.append("SellOnWeb", "true");
-    catalogueUrl.searchParams.append("Page", page.toString());
-    catalogueUrl.searchParams.append("Limit", limit.toString());
-    if (categoryId) {
-      catalogueUrl.searchParams.append("CategoryId", categoryId.toString());
-    }
-    if (search) catalogueUrl.searchParams.append("Search", search);
+    // Use the exact casing from swagger: /catalogue/Products
+    const catalogueUrl = buildApiUrl("catalogue/Products", {
+      SellOnWeb: true,
+      Page: page,
+      Limit: limit,
+      CategoryId: categoryId ?? undefined,
+      Search: search ?? undefined,
+    });
+    debugLog("[getProducts] catalogueUrl", catalogueUrl);
 
     const catalogueData = await fetchData<CatalogueResponse>(
-      catalogueUrl.toString(),
-      { method: "GET", headers }
+      catalogueUrl,
+      { method: "GET", headers, ...withCacheTtl(120) }
     );
 
     if (!catalogueData?.Data || !catalogueData.Metadata) {
+      console.warn("[getProducts] catalogueData missing Data or Metadata", {
+        hasData: Boolean(catalogueData?.Data),
+        hasMetadata: Boolean(catalogueData?.Metadata),
+      });
       return { products: [], totalPages: 1, currentPage: 1 };
     }
     const catalogueProducts = Array.isArray(catalogueData.Data)
@@ -140,6 +211,11 @@ export async function getProducts(
       : [];
     const totalPages = catalogueData.Metadata.TotalPages ?? 1;
     const currentPage = catalogueData.Metadata.Page ?? 1;
+    debugLog("[getProducts] catalogue counts", {
+      catalogueProductsCount: catalogueProducts.length,
+      totalPages,
+      currentPage,
+    });
 
     if (catalogueProducts.length === 0) {
       return { products: [], totalPages, currentPage };
@@ -148,12 +224,14 @@ export async function getProducts(
     // --- 2. Fetch ALL Relevant Web Products (needed for details like images, tags) ---
     // Optimization: Fetch only web products corresponding to the catalogue IDs if possible.
     // If not, fetching all is the fallback (as implemented currently).
-    const webProductsUrlObj = new URL(`${API_BASE_URL}/Product/WebProducts`);
+    const webProductsUrl = buildApiUrl("Product/WebProducts");
+    debugLog("[getProducts] webProductsUrl", webProductsUrl);
     const webProductsData = await fetchData<WebProductType[]>(
-      webProductsUrlObj.toString(),
-      { method: "GET", headers }
+      webProductsUrl,
+      { method: "GET", headers, ...withCacheTtl(300) }
     );
     const webProducts = Array.isArray(webProductsData) ? webProductsData : [];
+    debugLog("[getProducts] webProducts count", webProducts.length);
     const webProductsMap = webProducts.reduce<Record<string, WebProductType>>(
       (map, product) => {
         if (product.Id != null) map[product.Id.toString()] = product;
@@ -161,27 +239,88 @@ export async function getProducts(
       },
       {}
     );
+    // Additional matching indexes (normalized and tokenized)
+    const webProductsSkuIndex: Record<string, WebProductType> = {};
+    const webProductsBarcodeIndex: Record<string, WebProductType> = {};
+    for (const product of webProducts) {
+      // Index SKUs (some systems store multiple SKUs separated by commas)
+      const skuCandidates = extractCodes((product as any)?.Sku);
+      for (const code of skuCandidates) {
+        if (!webProductsSkuIndex[code]) webProductsSkuIndex[code] = product;
+      }
+      // Index Barcodes (also can be comma-separated or formatted)
+      const barcodeCandidates = extractCodes((product as any)?.Barcode);
+      for (const code of barcodeCandidates) {
+        if (!webProductsBarcodeIndex[code]) webProductsBarcodeIndex[code] = product;
+      }
+    }
+
+    // Build a stock summary map from WebProducts to avoid per-product stock requests
+    const webStocksById = webProducts.reduce<
+      Record<number, { currentStock: number; minStock: number }>
+    >((acc, p) => {
+      const pid = p.Id;
+      const sum = (p as any)?.StockSummary;
+      if (pid != null && sum) {
+        const current = Number((sum as any)?.CurrentStock ?? 0) || 0;
+        const min = Number((sum as any)?.MinStock ?? 0) || 0;
+        acc[pid] = { currentStock: current, minStock: min };
+      }
+      return acc;
+    }, {});
 
     // --- 3. Fetch Stock for Products on Current Page ---
     const productIds = catalogueProducts
       .map((p) => p.Id)
       .filter((id): id is number => id != null);
-    const stockPromises = productIds.map((id) => getStockByProductId(id));
-    const stockResults = await Promise.allSettled(stockPromises);
+    debugLog("[getProducts] productIds for stock", productIds);
 
+    // Build fallback raw Product details for items not present in WebProducts page using batch endpoint
+    const missingFromWeb = productIds.filter((id) => !webProductsMap[id.toString()]);
+    const productRawMap: Record<number, ProductRawType> = {};
+    if (missingFromWeb.length > 0) {
+      const listUrl = buildApiUrl("Product/List", { ids: missingFromWeb, showDeleted: false });
+      debugLog("[getProducts] batch product list url", listUrl);
+      try {
+        const listData = await fetchData<ProductRawType[]>(listUrl, { method: "GET", headers, ...withCacheTtl(180) });
+        const arr = Array.isArray(listData) ? listData : [];
+        for (const pr of arr) {
+          const pid = (pr as any)?.Id;
+          if (typeof pid === "number") productRawMap[pid] = pr;
+        }
+        debugLog("[getProducts] fetched raw Product batch", Object.keys(productRawMap).length);
+      } catch (e) {
+        console.warn("[getProducts] failed batch /Product/List", e);
+      }
+    }
+
+    // Identify which products still need stock lookup (not present in WebProducts page)
+    const needsStockFetch = productIds.filter((id) => webStocksById[id] === undefined);
+    debugLog("[getProducts] products needing explicit stock fetch", needsStockFetch.length);
+    let fetchedStockMap: Record<number, { currentStock: number; minStock: number }> = {};
+    if (needsStockFetch.length > 0) {
+      const stockPromises = needsStockFetch.map((id) => getStockByProductId(id));
+      const stockResults = await Promise.allSettled(stockPromises);
+      const fulfilled = stockResults.filter((r) => r.status === "fulfilled").length;
+      const rejected = stockResults.filter((r) => r.status === "rejected").length;
+      debugLog("[getProducts] explicit stock fetch summary", { fulfilled, rejected });
+      fetchedStockMap = needsStockFetch.reduce<
+        Record<number, { currentStock: number; minStock: number }>
+      >((map, id, idx) => {
+        const res = stockResults[idx];
+        if (res?.status === "fulfilled") {
+          map[id] = calculateStockDetails(res.value);
+        } else {
+          // Default on error
+          map[id] = { currentStock: 0, minStock: 0 };
+        }
+        return map;
+      }, {});
+    }
     const stockMap = productIds.reduce<
       Record<number, { currentStock: number; minStock: number }>
-    >((map, id, index) => {
-      const result = stockResults[index];
-      if (result?.status === "fulfilled") {
-        map[id] = calculateStockDetails(result.value);
-      } else {
-        console.error(
-          `Failed to fetch stock for product ID ${id}:`,
-          result?.reason
-        );
-        map[id] = { currentStock: 0, minStock: 0 }; // Default on error
-      }
+    >((map, id) => {
+      map[id] = webStocksById[id] ?? fetchedStockMap[id] ?? { currentStock: 0, minStock: 0 };
       return map;
     }, {});
 
@@ -190,13 +329,37 @@ export async function getProducts(
       .map((catalogueProduct: CatalogueProductType) => {
         const productId = catalogueProduct.Id;
         if (productId == null) return null;
-
-        const webProduct = webProductsMap[productId.toString()];
+        let webProduct = webProductsMap[productId.toString()];
+        let productRaw: ProductRawType | undefined = productRawMap[productId];
         if (!webProduct) {
-          console.warn(
-            `Web product details not found for catalogue product ID: ${productId}`
-          );
-          return null;
+          // Try matching by SKU or Barcode as a fallback
+          const skuCandidates = extractCodes((catalogueProduct as any)?.Sku);
+          for (const code of skuCandidates) {
+            if (webProductsSkuIndex[code]) {
+              webProduct = webProductsSkuIndex[code];
+              break;
+            }
+          }
+          if (!webProduct) {
+            const barcodeCandidates = extractCodes(
+              (catalogueProduct as any)?.Barcode
+            );
+            for (const code of barcodeCandidates) {
+              if (webProductsBarcodeIndex[code]) {
+                webProduct = webProductsBarcodeIndex[code];
+                break;
+              }
+            }
+          }
+          if (!webProduct) {
+            console.warn(
+              `Web product details not found for catalogue product ID: ${productId}`,
+              {
+                attemptedSku: catalogueProduct.Sku ?? null,
+                attemptedBarcode: catalogueProduct.Barcode ?? null,
+              }
+            );
+          }
         }
 
         const stockInfo = stockMap[productId] ?? {
@@ -204,10 +367,13 @@ export async function getProducts(
           minStock: 0,
         };
 
-        // Use the transformer function
-        return transformToProductType(webProduct, catalogueProduct, stockInfo);
+        // Use whichever detailed source we have first: raw Product, then WebProduct.
+        const detailed = (productRaw as any) ?? (webProduct as any) ?? undefined;
+        // Use the transformer function (can handle missing detailed by using catalogue fallback)
+        return transformToProductType(detailed, catalogueProduct, stockInfo);
       })
       .filter((product): product is ProductType => product !== null);
+    debugLog("[getProducts] final products count", products.length);
     return { products, totalPages, currentPage };
   } catch (error) {
     console.error(`Error in getProducts:`, error);
@@ -222,8 +388,8 @@ export async function getProducts(
 
 /**
  * Fetches a single product by its ID.
- * NOTE: This currently fetches the entire list of web products and filters.
- * This is inefficient. Ideally, use an API endpoint like /Product/{id} if available.
+ * Prefers the direct endpoint /Product/{id} and falls back to searching the
+ * WebProducts list (which only returns web-enabled products) if needed.
  */
 export async function getProductById(id: string): Promise<ProductType | null> {
   if (!id || isNaN(parseInt(id, 10))) {
@@ -234,46 +400,62 @@ export async function getProductById(id: string): Promise<ProductType | null> {
   const productIdNum = parseInt(id, 10);
 
   try {
-    // --- 1. Fetch Web Product Details ---
-    // Optimization: Ideally use an endpoint like /Product/{id} if it exists
-    const webProductsUrl = `${API_BASE_URL}/Product/WebProducts`; // Current inefficient method
-    const webProductsData = await fetchData<WebProductType[]>(webProductsUrl, {
-      method: "GET",
-      headers,
-    });
-    const webProducts = Array.isArray(webProductsData) ? webProductsData : [];
-    const webProduct = webProducts.find((p) => p.Id === productIdNum); // Compare numbers
-
-    if (!webProduct) {
-      console.warn(`Web product not found for ID: ${id}`);
-      // Optionally, try fetching from catalogue as a fallback?
-      return null;
+    // --- 1. Prefer direct Product endpoint by ID ---
+    const productUrl = buildApiUrl(`Product/${productIdNum}`);
+    debugLog("[getProductById] productUrl", productUrl);
+    let product: ProductRawType | null = null;
+    try {
+      product = await fetchData<ProductRawType>(productUrl, {
+        method: "GET",
+        headers,
+        ...withCacheTtl(300),
+      });
+    } catch (err) {
+      console.warn(`[getProductById] /Product/{id} fetch failed for ${id}:`, err);
     }
 
-    // --- 2. Fetch Stock Details using getStockByProductId ---
-    const stockData = await getStockByProductId(productIdNum);
-    const stockInfo = calculateStockDetails(stockData);
+    // --- 2. Fallback: search WebProducts list (only returns web-enabled products) ---
+    let webProduct: WebProductType | null = null;
+    if (!product) {
+      const webProductsUrl = buildApiUrl("Product/WebProducts");
+      debugLog("[getProductById] fallback webProductsUrl", webProductsUrl);
+      const webProductsData = await fetchData<WebProductType[]>(webProductsUrl, {
+        method: "GET",
+        headers,
+        ...withCacheTtl(300),
+      });
+      const webProducts = Array.isArray(webProductsData) ? webProductsData : [];
+      webProduct = webProducts.find((p) => p.Id === productIdNum) ?? null;
+      if (!webProduct) {
+        console.warn(
+          `Product not found via /Product/{id} or WebProducts for ID: ${id}.`
+        );
+        return null;
+      }
+    }
 
-    // --- 3. Combine Data using the transformer ---
-    // Pass both webProduct and potentially fetched catalogueProduct
-    // If webProduct is null/undefined, the transformer will try to use catalogueProduct data.
-    // If catalogueProduct wasn't fetched, pass undefined or null.
+    // --- 3. Resolve Stock Details ---
+    let stockInfo: { currentStock: number; minStock: number } = { currentStock: 0, minStock: 0 };
+    const stockSummary = (webProduct as any)?.StockSummary;
+    if (stockSummary) {
+      stockInfo = {
+        currentStock: Number((stockSummary as any)?.CurrentStock ?? 0) || 0,
+        minStock: Number((stockSummary as any)?.MinStock ?? 0) || 0,
+      };
+    } else {
+      const stockData = await getStockByProductId(productIdNum);
+      stockInfo = calculateStockDetails(stockData);
+    }
+
+    // --- 4. Combine Data using the transformer ---
     const finalProductData = transformToProductType(
-      webProduct,
+      product ?? webProduct ?? undefined,
       undefined /* or catalogueProduct */,
       stockInfo
     );
 
-    if (!finalProductData && !webProduct) {
-      // If transformation failed AND we never found a web product, it's likely not found.
-      console.warn(`Product not found for ID: ${id}`);
-      return null;
-    } else if (!finalProductData && webProduct) {
-      // If transformation failed but we had a webProduct, log it but maybe return partial?
-      // Or handle as error depending on requirements. For now, returning null.
-      console.error(
-        `Failed to transform product data for ID: ${id} despite finding web product.`
-      );
+    if (!finalProductData) {
+      console.warn(`Failed to transform product data for ID: ${id}`);
       return null;
     }
     return finalProductData;
@@ -295,12 +477,15 @@ export async function getStockByProductId(
   }
 
   try {
-    const stockUrl = `${API_BASE_URL}/ProductStock/Product/${productId}`;
+    const stockUrl = buildApiUrl(`ProductStock/Product/${productId}`);
+    debugLog("[getStockByProductId] url", stockUrl);
 
     const stockData = await fetchData<IProductStock[]>(stockUrl, {
       method: "GET",
       headers,
+      ...withCacheTtl(60),
     });
+    debugLog("[getStockByProductId] received batches", Array.isArray(stockData) ? stockData.length : 0);
 
     // Ensure the response is an array, even if it's empty
     return Array.isArray(stockData) ? stockData : [];

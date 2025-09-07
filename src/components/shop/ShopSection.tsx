@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Pagination } from "@/components/elements/product";
 import GridViewProduct from "./GridViewProduct";
 import { ShopSharedProps } from "./types/shop.type";
+import { useEffect } from "react";
 
 const ShopSection = ({
   products,
@@ -15,6 +16,32 @@ const ShopSection = ({
   omitCategoryIdQuery,
 }: ShopSharedProps) => {
   const router = useRouter();
+
+  // Debug: log ShopSection props in the browser console
+  useEffect(() => {
+    try {
+      console.log("[ShopSection] props", {
+        productsLength: products?.length ?? 0,
+        totalPages,
+        currentPage,
+        search,
+        limit,
+        categoryId,
+        omitCategoryIdQuery,
+      });
+      if (Array.isArray(products) && products.length > 0) {
+        const p = products[0];
+        console.log("[ShopSection] first product sample", {
+          _id: p?._id,
+          title: p?.title,
+          price: p?.price,
+          isAvailable: p?.isAvailable,
+        });
+      }
+    } catch (err) {
+      console.error("[ShopSection] logging error", err);
+    }
+  }, [products, totalPages, currentPage, search, limit, categoryId, omitCategoryIdQuery]);
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams();

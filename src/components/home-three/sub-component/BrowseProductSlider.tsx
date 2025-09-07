@@ -205,8 +205,6 @@ const BrowseProductSlider = () => {
                                               data-toggle="tooltip"
                                               data-placement="top"
                                               title="Quick View"
-                                              data-bs-toggle="modal"
-                                              data-bs-target="#productmodal"
                                               onClick={() =>
                                                 handleMoldalData(item?._id)
                                               }
@@ -370,8 +368,6 @@ const BrowseProductSlider = () => {
                                           data-toggle="tooltip"
                                           data-placement="top"
                                           title="Quick View"
-                                          data-bs-toggle="modal"
-                                          data-bs-target="#productmodal"
                                           onClick={() =>
                                             handleMoldalData(item?._id)
                                           }

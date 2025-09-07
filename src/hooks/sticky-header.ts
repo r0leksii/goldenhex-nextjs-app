@@ -1,19 +1,17 @@
-import { AppContext } from "@/contextApi/AppProvider";
-import { AppContextType } from "@/interFace/interFace";
-import { useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const useScrollDirection = (element: HTMLElement | null) => {
-  const {scrollDirection, setScrollDirection} =  useContext(AppContext) as AppContextType
-  
+  const [scrollDirection, setScrollDirection] = useState("up");
+
   useEffect(() => {
     let prevScrollY = window.scrollY;
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       if (scrollTop > prevScrollY) {
-        setScrollDirection?.("down");
+        setScrollDirection("down");
       } else {
-        setScrollDirection?.("up");
+        setScrollDirection("up");
       }
       prevScrollY = scrollTop;
     };
@@ -30,7 +28,7 @@ const useScrollDirection = (element: HTMLElement | null) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [element,setScrollDirection]);
+  }, [element]);
 
   return scrollDirection;
 };

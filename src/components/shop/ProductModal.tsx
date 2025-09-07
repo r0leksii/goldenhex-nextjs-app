@@ -11,13 +11,12 @@ import masterCard from "../../../public/assets/img/icon/mastercard.png";
 import papyle from "../../../public/assets/img/icon/paypal.png";
 import visa from "../../../public/assets/img/icon/visa.png";
 import { ProductType } from "@/types/product/product.type";
-import { Modal } from "bootstrap";
+// no external UI libs
 
 const ProductModal = () => {
-  const { modalId, openModal } = useGlobalContext();
+  const { modalId, openModal, setOpenModal } = useGlobalContext();
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   const [product, setProduct] = useState<ProductType | null>(null);
-  const [modal, setModal] = useState<Modal | null>(null);
 
   // const cartProducts = useSelector(
   //   (state: RootState) => state.cart.cartProducts
@@ -48,30 +47,28 @@ const ProductModal = () => {
     fetchProduct();
   }, [modalId]);
 
-  // Second: Initialize the modal after product is loaded
+  // Manage body scroll lock and ESC to close when modal is open
   useEffect(() => {
-    if (!product) return; // Only initialize modal after product is loaded
-
-    const modalElement = document.getElementById("productmodal");
-    if (modalElement) {
-      const bootstrapModal = new Modal(modalElement, {
-        backdrop: true,
-        keyboard: true,
-      });
-      setModal(bootstrapModal);
-
-      // Show modal if we have both product and openModal is true
-      if (openModal) {
-        bootstrapModal.show();
-      }
+    if (openModal && product) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          // Close on ESC
+          try { setOpenModal(false); } catch {}
+        }
+      };
+      window.addEventListener("keydown", onKeyDown);
+      return () => {
+        document.body.style.overflow = prevOverflow;
+        window.removeEventListener("keydown", onKeyDown);
+      };
     }
+  }, [openModal, product, setOpenModal]);
 
-    return () => {
-      if (modal) {
-        modal.dispose();
-      }
-    };
-  }, [product, openModal, modalId, modal]); // Dependencies include product and openModal
+  const handleClose = () => {
+    setOpenModal(false);
+  };
 
   // const handleAddToCart = (product: CartProductType) => {
   //   dispatch(cart_product(product));
@@ -95,26 +92,54 @@ const ProductModal = () => {
   // }
 
   if (!product) {
+    // Show minimal loading overlay if modal is requested but product isn't loaded yet
+    if (openModal) {
+      return (
+        <div
+          className={`product__modal-sm modal fade show`}
+          id="productmodal"
+          role="dialog"
+          aria-hidden={false}
+          tabIndex={-1}
+          onClick={handleClose}
+        >
+          <div
+            className="modal-dialog modal-dialog-centered "
+            role="document"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-content">
+              <div className="text-center p-4">Loading...</div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return null;
   }
 
   return (
     <div
-      className="product__modal-sm modal fade"
+      className={`product__modal-sm modal fade${openModal ? " show" : ""}`}
       id="productmodal"
       role="dialog"
-      aria-hidden="true"
+      aria-hidden={!openModal}
       tabIndex={-1}
+      onClick={handleClose}
     >
-      <div className="modal-dialog modal-dialog-centered " role="document">
+      <div
+        className="modal-dialog modal-dialog-centered "
+        role="document"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-content">
           <div className="product__modal">
             <div className="product__modal-wrapper p-relative">
               <button
                 type="button"
                 className="close product__modal-close"
-                data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={handleClose}
               >
                 <i className="fal fa-times"></i>
               </button>

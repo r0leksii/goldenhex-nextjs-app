@@ -1,4 +1,3 @@
-import "./globals.css";
 import "../style/index.scss";
 import { childrenType } from "@/interFace/interFace";
 import { ToastContainer } from "react-toastify";

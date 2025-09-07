@@ -18,7 +18,7 @@ const ListViewProduct: React.FC<ListViewProductProps> = ({
   products,
   limit,
 }) => {
-  const { openModal, setOpenModal, setModalId } = useGlobalContext();
+  const { setOpenModal, setModalId } = useGlobalContext();
   const dispatch = useDispatch();
 
   // Ensure products is an array and handle slicing safely
@@ -36,8 +36,8 @@ const ListViewProduct: React.FC<ListViewProductProps> = ({
 
   const handleMoldalData = (id: string) => {
     if (id) {
-      setOpenModal(!openModal);
       setModalId(id);
+      setOpenModal(true);
     }
   };
 
@@ -123,11 +123,7 @@ const ListViewProduct: React.FC<ListViewProductProps> = ({
 
                             <span
                               className="bd-cart__btn bd-add__cart-btn"
-                              data-toggle="tooltip"
-                              data-placement="top"
                               title="Quick View"
-                              data-bs-toggle="modal"
-                              data-bs-target="#productmodal"
                               onClick={() => handleMoldalData(item?._id)}
                             >
                               <i className="fal fa-eye"></i>

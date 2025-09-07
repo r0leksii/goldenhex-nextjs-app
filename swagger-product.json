@@ -1,0 +1,6497 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "EposNow Products",
+    "version": "v4"
+  },
+  "paths": {
+    "/api/v4/catalogue/Categories": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get paged Categories and Metadata",
+        "description": "Use this method to get all categories with metadata.\r\n- Supports pagination via <strong>page</strong> parameter. Default 50 categories per page.\r\n- Not providing <strong>page</strong> will return categories for page 1.",
+        "parameters": [
+          {
+            "name": "Search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "CategoryName",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ParentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ReportingCategoryId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "PrinterTypeId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "CourseId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ShowOnTill",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "IsWet",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "PopupNoteID",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "NominalCode",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ButtonColourId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "SortingField",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "SortingType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICategoryGridPagedResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICategoryGridPagedResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICategoryGridPagedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Category": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Get all Categories",
+        "description": "Use this method to get all parent categories and all their children. \r\n            - Supports pagination via <strong>page</strong> parameter. 200 response items per page.\r\n            - Not providing <strong>page</strong> will return items for page 1.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Category/{id}": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Get Category by id",
+        "description": "Use this method to find a single category. If the category is a parent at the root, all the children is returned.\r\n            If the category is a parent as well as a child to another category, parent of the search category is not returned.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Category/List": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Get Categories by id list.",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/CategoryImage/UploadStatus/{uploadTransactionId}": {
+      "get": {
+        "tags": [
+          "CategoryImage"
+        ],
+        "parameters": [
+          {
+            "name": "uploadTransactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageUploadResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageUploadResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageUploadResult"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/CategoryReferenceCode": {
+      "get": {
+        "tags": [
+          "CategoryReferenceCode"
+        ],
+        "summary": "Get all CategoryReferenceCodes",
+        "description": "Use this method to get all the category reference codes.\r\n            - Supports pagination via <strong>page</strong> parameter. 200 response items per page.\r\n            - Not providing <strong>page</strong> will return items for page 1.\r\n            Reference codes are convenient way of storing the reference of an entity from an another system that is related to an EposNow entity. \r\n            Reference code methods always deal with the Reference codes registered with the authorizing token.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryReferenceCode"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryReferenceCode"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryReferenceCode"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/CategoryReferenceCode/{id}": {
+      "get": {
+        "tags": [
+          "CategoryReferenceCode"
+        ],
+        "summary": "Get a CategoryReferenceCode by id",
+        "description": "Use this method to get a category reference code.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryReferenceCode"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryReferenceCode"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryReferenceCode"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/CategoryReferenceCode/Category/{id}": {
+      "get": {
+        "tags": [
+          "CategoryReferenceCode"
+        ],
+        "summary": "Get a CategoryReferenceCode by category id",
+        "description": "Use this method to get a category reference code by Category id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryReferenceCode"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryReferenceCode"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryReferenceCode"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ContainerFee": {
+      "get": {
+        "tags": [
+          "ContainerFee"
+        ],
+        "summary": "Get all Container Fee List",
+        "description": "Use this method to get all the Container Fee List",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContainerFee"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContainerFee"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContainerFee"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ContainerFee/{id}": {
+      "get": {
+        "tags": [
+          "ContainerFee"
+        ],
+        "summary": "Get a Container Fee Details by Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerFee"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerFee"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerFee"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/catalogue/ContainerFees": {
+      "get": {
+        "tags": [
+          "ContainerFees"
+        ],
+        "summary": "Get paged Container Fees",
+        "description": "Use this method to get all container fees.\r\n- Supports pagination via <strong>page</strong> parameter. Default 50 container fees per page.\r\n- Not providing <strong>page</strong> will return container fees for page 1.",
+        "parameters": [
+          {
+            "name": "SortingField",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "SortingType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/IContainerFeeGridPagedResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IContainerFeeGridPagedResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IContainerFeeGridPagedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/PriceSchedule/PriceBands": {
+      "get": {
+        "tags": [
+          "PriceSchedule"
+        ],
+        "summary": "Get all Price Bands",
+        "description": "Use this method to get all the price bands",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceBand"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceBand"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceBand"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/PriceSchedule": {
+      "get": {
+        "tags": [
+          "PriceSchedule"
+        ],
+        "summary": "Get all Price Schedules for the given location",
+        "description": "Use this method to get all the price schedules for the given location",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceSchedule"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceSchedule"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceSchedule"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get all Products",
+        "description": "Use this method to get all products.\r\n- Supports pagination via <strong>page</strong> parameter. 200 response items per page.\r\n- Not providing <strong>page</strong> will return items for page 1.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/WebProducts": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get all Web Products",
+        "description": "Use this method to get all products that are marked SellOnWeb = true or they have a ProductReferenceCode set for your app. \r\nThis will make it possible to resolve which products have been extrenally synced already and any those that have since been set to SellOnWeb = false.\r\n- Supports pagination via <strong>page</strong> parameter. 200 response items per page.\r\n- Not providing <strong>page</strong> will return items for page 1.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebProduct"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebProduct"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebProduct"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/WebProducts/Count": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get all Web Products",
+        "description": "Use this method to get all products that are marked SellOnWeb = true or they have a ProductReferenceCode set for your app. \r\nThis will make it possible to resolve which products have been extrenally synced already and any those that have since been set to SellOnWeb = false.\r\n- Supports pagination via <strong>page</strong> parameter. 200 response items per page.\r\n- Not providing <strong>page</strong> will return items for page 1.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebProduct"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebProduct"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebProduct"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get a Product by Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "showDeleted",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "boolean",
+              "description": "",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/Stats": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get referenced Product statistics",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCount"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCount"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCount"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/{id}/TransactionItem/CostPrice": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get cost price for transaction item by product id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "locationId",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "isCorporateAndFranchise",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "boolean",
+              "description": ""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/List": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get Products by id list.",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "nullable": true
+            }
+          },
+          {
+            "name": "showDeleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/ListByReferenceCodes": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get Products by reference code list.",
+        "parameters": [
+          {
+            "name": "referenceCodes",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/{productId}/CustomerProductPricing": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get Customer Specific Pricing By ProductId",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerProductPricing"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerProductPricing"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerProductPricing"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/unavailableProducts": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get all unavailable products for the current Till",
+        "description": "Use this method to get all unavailable products for the location stored on the user context.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/{productId}/availability": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get the product availability information for the current Till",
+        "description": "Returns the availability status for that product in the current location.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "Product ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Product ID",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductAvailability"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductAvailability"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductAvailability"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/unavailableProductsForLocation/{locationId}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get all unavailable products for a location",
+        "description": "Use this method to get all unavailable products for the location stored on the user context.",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "Till's location ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Till's location ID",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/Product/{productId}/availabilityForLocation/{locationId}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get the product availability information for a location",
+        "description": "Returns the availability status for that product in the current location.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "Product ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Product ID",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "Till's location ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Till's location ID",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductAvailability"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductAvailability"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductAvailability"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductComposition": {
+      "get": {
+        "tags": [
+          "ProductComposition"
+        ],
+        "summary": "Get all ProductCompositions.",
+        "description": "Include/excluded deleted products with showDeleted=true/false.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "showDeleted",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "boolean",
+              "description": "",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductComposition"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductComposition"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductComposition"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductComposition/{id}": {
+      "get": {
+        "tags": [
+          "ProductComposition"
+        ],
+        "summary": "Get a ProductComposition by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductComposition"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductComposition"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductComposition"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductComposition/GetByProductId/{id}": {
+      "get": {
+        "tags": [
+          "ProductComposition"
+        ],
+        "summary": "Get all ProductCompositions for a product.",
+        "description": "Include/excluded deleted products with showDeleted=true/false.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "showDeleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductComposition"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductComposition"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductComposition"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductGroup": {
+      "get": {
+        "tags": [
+          "ProductGroup"
+        ],
+        "summary": "Get all Product Groups",
+        "description": "Use this method to get all product groups.",
+        "parameters": [
+          {
+            "name": "checkIfMultiSiteManagerIsEnabled",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "includeProducts",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductGroup"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductGroup"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductGroup"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductImage": {
+      "get": {
+        "tags": [
+          "ProductImage"
+        ],
+        "summary": "Get all Products Images",
+        "description": "Use this method to get all the Products Images.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductImageDetails"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductImageDetails"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductImageDetails"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductImage/UploadStatus/{uploadTransactionId}": {
+      "get": {
+        "tags": [
+          "ProductImage"
+        ],
+        "parameters": [
+          {
+            "name": "uploadTransactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageUploadResult"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageUploadResult"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageUploadResult"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductImage/{id}": {
+      "get": {
+        "tags": [
+          "ProductImage"
+        ],
+        "summary": "Get Product Images by product id",
+        "description": "Use this method to find images for a single product.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductImageDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductImageDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductImageDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductReferenceCode": {
+      "get": {
+        "tags": [
+          "ProductReferenceCode"
+        ],
+        "summary": "Get all ProductReferenceCodes",
+        "description": "Use this method to get all the product reference codes.\r\n            - Supports pagination via <strong>page</strong> parameter. 200 response items per page.\r\n            - Not providing <strong>page</strong> will return items for page 1.\r\n            Reference codes are convenient way of storing the reference of an entity from an another system that is related to an EposNow entity. \r\n            Reference code methods always deal with the Reference codes registered with the authorizing token.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductReferenceCode"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductReferenceCode"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductReferenceCode"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductReferenceCode/{id}": {
+      "get": {
+        "tags": [
+          "ProductReferenceCode"
+        ],
+        "summary": "Get a ProductReferenceCode by id",
+        "description": "Use this method to get a product reference code.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReferenceCode"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReferenceCode"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReferenceCode"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/ProductReferenceCode/ProductReferenceCode/Product/{id}": {
+      "get": {
+        "tags": [
+          "ProductReferenceCode"
+        ],
+        "summary": "Get a ProductReferenceCode by product id",
+        "description": "Use this method to get a product reference code by product id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReferenceCode"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReferenceCode"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReferenceCode"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/catalogue/Products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get paged Products and Metadata",
+        "description": "Use this method to get all products with metadata.\r\n- Supports pagination via <strong>page</strong> parameter. Default 50 products per page.\r\n- Not providing <strong>page</strong> will return products for page 1.\r\n- Not providing <strong>archived</strong> will return non archived products.\r\n- Providing <strong>archived</strong> with value 'true' will return only archived products.",
+        "parameters": [
+          {
+            "name": "Search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ProductName",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Barcode",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "CategoryId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "TaxRateGroupId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "EatOutTaxRateId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ContainerFeeId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ButtonColourId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "BrandId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "SupplierId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "VariantId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "VariantGroupId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ColourId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "VariablePrice",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "TaxExempt",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ExcludeFromPointGain",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "SellOnTill",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "SellOnWeb",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "SortingField",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "SortingType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Archived",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "ProductGroupId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "StockTracked",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProductGridPagedResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProductGridPagedResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProductGridPagedResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/catalogue/Products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get product by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProductGrid"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProductGrid"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProductGrid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/VariantMap": {
+      "get": {
+        "tags": [
+          "VariantMap"
+        ],
+        "summary": "Get all VariantMaps",
+        "description": "VariantMaps are used as part of variant products. Use this method to get all VariantMaps. \r\n            - Supports pagination via <strong>page</strong> parameter. 200 response items per page.\r\n            - Not providing <strong>page</strong> will return items for page 1.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VariantMap"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VariantMap"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VariantMap"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v4/VariantMap/{id}": {
+      "get": {
+        "tags": [
+          "VariantMap"
+        ],
+        "summary": "Get VariantMap by id",
+        "description": "VariantMaps are used as part of variant products. Use this method to find a single VariantMap.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VariantMap"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VariantMap"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VariantMap"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Basic": [ ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ICategoryGrid": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentCategoryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "parentCategoryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "courseId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "courseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "buttonColourId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "buttonColourName": {
+            "type": "string",
+            "nullable": true
+          },
+          "reportingCategoryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "reportingCategoryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "orderPrinterId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orderPrinterName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isWet": {
+            "type": "boolean"
+          },
+          "popupNoteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "popupNoteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "tillOrder": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "showOnTill": {
+            "type": "boolean"
+          },
+          "nominalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaginationMetadata": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentPageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "baseURL": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "firstPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "nextPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "previousPage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ICategoryGridPagedResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ICategoryGrid"
+            },
+            "nullable": true
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginationMetadata"
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryGridRequest": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "parentCategoryID": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "courseID": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "buttonColourID": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "reportingCategoryID": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orderPrinterID": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isWet": {
+            "type": "boolean"
+          },
+          "popupNoteID": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tillOrder": {
+            "maximum": 99999,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "showOnTill": {
+            "type": "boolean"
+          },
+          "nominalCode": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "OperationType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Operation": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "object",
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "operationType": {
+            "$ref": "#/components/schemas/OperationType"
+          },
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "op": {
+            "type": "string",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PopupNote": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayOncePerTransaction": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rootParentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isWet": {
+            "type": "boolean"
+          },
+          "showOnTill": {
+            "type": "boolean"
+          },
+          "referenceCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "popupNote": {
+            "$ref": "#/components/schemas/PopupNote"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "nullable": true
+          },
+          "sortPosition": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "reportingCategoryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nominalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "printerTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "courseId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "buttonColourId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryCreateRequest": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isWet": {
+            "type": "boolean"
+          },
+          "showOnTill": {
+            "type": "boolean"
+          },
+          "referenceCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "reportingCategoryId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "printerTypeId": {
+            "maximum": 7,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "courseId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sortPosition": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "buttonColourId": {
+            "maximum": 14,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nominalCode": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeleteRequest": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryUpdateRequest": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "parentId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isWet": {
+            "type": "boolean"
+          },
+          "showOnTill": {
+            "type": "boolean"
+          },
+          "reportingCategoryId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "printerTypeId": {
+            "maximum": 7,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "courseId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sortPosition": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "buttonColourId": {
+            "maximum": 14,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nominalCode": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryImageUpsertRequest": {
+        "required": [
+          "categoryId",
+          "fileType"
+        ],
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fileType": {
+            "type": "string"
+          },
+          "fileHash": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreSignedCategoryImageResponse": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "preSignedUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreSignedCategoryImageTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreSignedCategoryImageResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageUploadResult": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryReferenceCode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "appId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "referenceCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryReferenceCodeCreateRequest": {
+        "required": [
+          "categoryId",
+          "referenceCode"
+        ],
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "referenceCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryReferenceCodeUpdateRequest": {
+        "required": [
+          "id",
+          "referenceCode"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "referenceCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContainerFee": {
+        "type": "object",
+        "properties": {
+          "bottleDepositItemID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContainerFeeRequest": {
+        "required": [
+          "feeValue",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "feeValue": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContainerFeeUpdateRequest": {
+        "required": [
+          "containerFeeId",
+          "feeValue",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "containerFeeId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "feeValue": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IContainerFeeGrid": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "containerFeeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "feeValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "isTaxExempt": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IContainerFeeGridPagedResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IContainerFeeGrid"
+            },
+            "nullable": true
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginationMetadata"
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContainerFeesRequest": {
+        "required": [
+          "feeValue",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "feeValue": {
+            "minimum": 0,
+            "pattern": "^(-)?(\\d){1,7}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "isTaxExempt": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriceBandProduct": {
+        "type": "object",
+        "properties": {
+          "priceBandID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "eatOutPrice": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriceBand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PriceBandProduct"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriceSchedule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "deviceGroup": {
+            "$ref": "#/components/schemas/DeviceGroup"
+          },
+          "startTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "endTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "daysEnabled": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "allProducts": {
+            "type": "boolean"
+          },
+          "priceBand": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductMeasurementDetails": {
+        "type": "object",
+        "properties": {
+          "salePriceMeasurementSchemeItemId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salePriceMeasurementUnitVolume": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salePriceFactor": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salePriceUnit": {
+            "type": "string",
+            "nullable": true
+          },
+          "costPriceMeasurementSchemeItemId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "costPriceMeasurementUnitVolume": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "costPriceFactor": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "costPriceUnit": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Supplier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine1": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "town": {
+            "type": "string",
+            "nullable": true
+          },
+          "county": {
+            "type": "string",
+            "nullable": true
+          },
+          "postCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactNumber2": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "referenceCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxGroupRate": {
+        "type": "object",
+        "properties": {
+          "taxGroupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "taxRateId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "locationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "percentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxRates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaxGroupRate"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Udf": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LocationAreaPrice": {
+        "type": "object",
+        "properties": {
+          "locationAreaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "costPriceExcTax": {
+            "type": "number",
+            "format": "double"
+          },
+          "eatOutPrice": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductImage": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productImageId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "mainImage": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerProductPricing": {
+        "type": "object",
+        "properties": {
+          "priceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "typeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "eatOutPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductDetails": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detailedDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "costPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "isCostPriceIncTax": {
+            "type": "boolean"
+          },
+          "salePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "isSalePriceIncTax": {
+            "type": "boolean"
+          },
+          "eatOutPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "isEatOutPriceIncTax": {
+            "type": "boolean"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "barcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "salePriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eatOutPriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "brandId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "supplierId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "unitOfSale": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "volumeOfSale": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "variantGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "multipleChoiceNoteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "size": {
+            "type": "string",
+            "nullable": true
+          },
+          "sku": {
+            "type": "string",
+            "nullable": true
+          },
+          "sellOnWeb": {
+            "type": "boolean"
+          },
+          "sellOnTill": {
+            "type": "boolean"
+          },
+          "orderCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortPosition": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rrPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tareWeight": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "articleCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "isTaxExemptable": {
+            "type": "boolean"
+          },
+          "referenceCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "isVariablePrice": {
+            "type": "boolean"
+          },
+          "excludeFromLoyaltyPointsGain": {
+            "type": "boolean"
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "colourId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "measurementDetails": {
+            "$ref": "#/components/schemas/ProductMeasurementDetails"
+          },
+          "supplier": {
+            "$ref": "#/components/schemas/Supplier"
+          },
+          "salePriceTaxGroup": {
+            "$ref": "#/components/schemas/TaxGroup"
+          },
+          "eatOutPriceTaxGroup": {
+            "$ref": "#/components/schemas/TaxGroup"
+          },
+          "costPriceTaxGroup": {
+            "$ref": "#/components/schemas/TaxGroup"
+          },
+          "productTags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            },
+            "nullable": true
+          },
+          "productUdfs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Udf"
+            },
+            "nullable": true
+          },
+          "additionalSuppliersIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "productLocationAreaPrices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationAreaPrice"
+            },
+            "nullable": true
+          },
+          "productImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductImage"
+            },
+            "nullable": true
+          },
+          "isMultipleChoiceProductOptional": {
+            "type": "boolean"
+          },
+          "customerProductPricingDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerProductPricing"
+            },
+            "nullable": true
+          },
+          "containerFeeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "buttonColourId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "productDetails": {
+            "$ref": "#/components/schemas/ProductDetails"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductMeasurementDetailsRequest": {
+        "type": "object",
+        "properties": {
+          "salePriceMeasurementSchemeItemId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "salePriceMeasurementUnitVolume": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "costPriceMeasurementSchemeItemId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "costPriceMeasurementUnitVolume": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TagRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UdfRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerTypePrices": {
+        "type": "object",
+        "properties": {
+          "customerTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "eatOutPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductCreateRequest": {
+        "required": [
+          "costPrice",
+          "eatOutPrice",
+          "name",
+          "salePrice"
+        ],
+        "type": "object",
+        "properties": {
+          "referenceCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 4000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "isCostPriceIncTax": {
+            "type": "boolean"
+          },
+          "isSalePriceIncTax": {
+            "type": "boolean"
+          },
+          "isEatOutPriceIncTax": {
+            "type": "boolean"
+          },
+          "costPrice": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "salePrice": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "eatOutPrice": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "categoryId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "barcode": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "brandId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "supplierId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "unitOfSale": {
+            "maximum": 19,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "volumeOfSale": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sku": {
+            "maxLength": 34,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "sellOnWeb": {
+            "type": "boolean"
+          },
+          "sellOnTill": {
+            "type": "boolean"
+          },
+          "orderCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "rrPrice": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tareWeight": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "articleCode": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "salePriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eatOutPriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isTaxExemptable": {
+            "type": "boolean"
+          },
+          "isVariablePrice": {
+            "type": "boolean"
+          },
+          "excludeFromLoyaltyPointsGain": {
+            "type": "boolean"
+          },
+          "variantGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "multipleChoiceNoteId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "size": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "sortPosition": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "colourId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "measurementDetails": {
+            "$ref": "#/components/schemas/ProductMeasurementDetailsRequest"
+          },
+          "productTags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagRequest"
+            },
+            "nullable": true
+          },
+          "productUdfs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UdfRequest"
+            },
+            "nullable": true
+          },
+          "additionalSuppliersIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "customerProductPricingDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerTypePrices"
+            },
+            "nullable": true
+          },
+          "isMultipleChoiceProductOptional": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "containerFeeId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "locationAreaPrices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationAreaPrice"
+            },
+            "nullable": true
+          },
+          "buttonColourId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "productDetails": {
+            "$ref": "#/components/schemas/ProductDetails"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductUpdateRequest": {
+        "required": [
+          "costPrice",
+          "eatOutPrice",
+          "id",
+          "name",
+          "salePrice"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 4000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "isCostPriceIncTax": {
+            "type": "boolean"
+          },
+          "isSalePriceIncTax": {
+            "type": "boolean"
+          },
+          "isEatOutPriceIncTax": {
+            "type": "boolean"
+          },
+          "costPrice": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "salePrice": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "eatOutPrice": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "categoryId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "barcode": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "brandId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "supplierId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "unitOfSale": {
+            "maximum": 19,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "volumeOfSale": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sku": {
+            "maxLength": 34,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "sellOnWeb": {
+            "type": "boolean"
+          },
+          "sellOnTill": {
+            "type": "boolean"
+          },
+          "orderCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "rrPrice": {
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tareWeight": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "articleCode": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "salePriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eatOutPriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isTaxExemptable": {
+            "type": "boolean"
+          },
+          "isVariablePrice": {
+            "type": "boolean"
+          },
+          "excludeFromLoyaltyPointsGain": {
+            "type": "boolean"
+          },
+          "variantGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "multipleChoiceNoteId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "size": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "sortPosition": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "colourId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "measurementDetails": {
+            "$ref": "#/components/schemas/ProductMeasurementDetailsRequest"
+          },
+          "productTags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagRequest"
+            },
+            "nullable": true
+          },
+          "productUdfs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UdfRequest"
+            },
+            "nullable": true
+          },
+          "additionalSuppliersIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "customerProductPricingDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerTypePrices"
+            },
+            "nullable": true
+          },
+          "isMultipleChoiceProductOptional": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "containerFeeId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "locationAreaPrices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationAreaPrice"
+            },
+            "nullable": true
+          },
+          "buttonColourId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "productDetails": {
+            "$ref": "#/components/schemas/ProductDetails"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductStockSummary": {
+        "type": "object",
+        "properties": {
+          "minStock": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentStock": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentVolume": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WebProduct": {
+        "type": "object",
+        "properties": {
+          "stockSummary": {
+            "$ref": "#/components/schemas/ProductStockSummary"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "costPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "isCostPriceIncTax": {
+            "type": "boolean"
+          },
+          "salePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "isSalePriceIncTax": {
+            "type": "boolean"
+          },
+          "eatOutPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "isEatOutPriceIncTax": {
+            "type": "boolean"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "barcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "salePriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eatOutPriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "brandId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "supplierId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "unitOfSale": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "volumeOfSale": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "variantGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "multipleChoiceNoteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "size": {
+            "type": "string",
+            "nullable": true
+          },
+          "sku": {
+            "type": "string",
+            "nullable": true
+          },
+          "sellOnWeb": {
+            "type": "boolean"
+          },
+          "sellOnTill": {
+            "type": "boolean"
+          },
+          "orderCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortPosition": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rrPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tareWeight": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "articleCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "isTaxExemptable": {
+            "type": "boolean"
+          },
+          "referenceCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "isVariablePrice": {
+            "type": "boolean"
+          },
+          "excludeFromLoyaltyPointsGain": {
+            "type": "boolean"
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "colourId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "measurementDetails": {
+            "$ref": "#/components/schemas/ProductMeasurementDetails"
+          },
+          "supplier": {
+            "$ref": "#/components/schemas/Supplier"
+          },
+          "salePriceTaxGroup": {
+            "$ref": "#/components/schemas/TaxGroup"
+          },
+          "eatOutPriceTaxGroup": {
+            "$ref": "#/components/schemas/TaxGroup"
+          },
+          "costPriceTaxGroup": {
+            "$ref": "#/components/schemas/TaxGroup"
+          },
+          "productTags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            },
+            "nullable": true
+          },
+          "productUdfs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Udf"
+            },
+            "nullable": true
+          },
+          "additionalSuppliersIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "productLocationAreaPrices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationAreaPrice"
+            },
+            "nullable": true
+          },
+          "productImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductImage"
+            },
+            "nullable": true
+          },
+          "isMultipleChoiceProductOptional": {
+            "type": "boolean"
+          },
+          "customerProductPricingDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerProductPricing"
+            },
+            "nullable": true
+          },
+          "containerFeeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "buttonColourId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "productDetails": {
+            "$ref": "#/components/schemas/ProductDetails"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductCount": {
+        "type": "object",
+        "properties": {
+          "totalProducts": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalProductsWithReferenceCodes": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductDuplicateByColourRequest": {
+        "required": [
+          "colourId"
+        ],
+        "type": "object",
+        "properties": {
+          "colourId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "generateBarcode": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductGenerateVariantsRequest": {
+        "required": [
+          "variantMapId"
+        ],
+        "type": "object",
+        "properties": {
+          "variantMapId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "generateBarcodes": {
+            "type": "boolean"
+          },
+          "createSubCategory": {
+            "type": "boolean"
+          },
+          "colourIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductCreatByNameRequest": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductAvailability": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "locationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isAvailable": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductUpdateAvailabilityRequest": {
+        "required": [
+          "isAvailable"
+        ],
+        "type": "object",
+        "properties": {
+          "isAvailable": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductComposition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "masterProductId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductCompositionUpdateRequest": {
+        "required": [
+          "amount",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductCompositionCreateRequest": {
+        "required": [
+          "amount",
+          "masterProductId",
+          "productId"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "masterProductId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductGroupProduct": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductGroupProduct"
+            },
+            "nullable": true
+          },
+          "locationAreas": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductImageUpsertRequest": {
+        "required": [
+          "imageName",
+          "mainImage",
+          "productId"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageName": {
+            "type": "string"
+          },
+          "mainImage": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreSignedProductImageResponse": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "preSignedUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "mainImage": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreSignedProductImageTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "productImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreSignedProductImageResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductImageDetails": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductImage"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageUrlRequest": {
+        "required": [
+          "imageUrl",
+          "mainImage"
+        ],
+        "type": "object",
+        "properties": {
+          "imageUrl": {
+            "type": "string"
+          },
+          "mainImage": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductImageUrlRequest": {
+        "required": [
+          "imageUrls",
+          "productId"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageUrlRequest"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductReferenceCode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "appId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "referenceCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductReferenceCodeCreateRequest": {
+        "required": [
+          "productId",
+          "referenceCode"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "referenceCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductReferenceCodeUpdateRequest": {
+        "required": [
+          "id",
+          "referenceCode"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "referenceCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductPricing": {
+        "type": "object",
+        "properties": {
+          "isPriceIncludingTax": {
+            "type": "boolean"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxGroup": {
+            "$ref": "#/components/schemas/TaxGroup"
+          },
+          "priceIncTax": {
+            "type": "number",
+            "format": "double"
+          },
+          "priceExTax": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IProductGrid": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "costPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "costPricing": {
+            "$ref": "#/components/schemas/ProductPricing"
+          },
+          "isCostPriceIncTax": {
+            "type": "boolean"
+          },
+          "costPriceIncTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "costPriceExTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "costPriceTaxGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "costPriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "salePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "salePricing": {
+            "$ref": "#/components/schemas/ProductPricing"
+          },
+          "isSalePriceIncTax": {
+            "type": "boolean"
+          },
+          "salePriceIncTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "salePriceExTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "salePriceTaxGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "salePriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eatOutPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "eatOutPricing": {
+            "$ref": "#/components/schemas/ProductPricing"
+          },
+          "isEatOutPriceIncTax": {
+            "type": "boolean"
+          },
+          "eatOutPriceIncTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "eatOutPriceExTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "eatOutPriceTaxGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "eatOutPriceTaxGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "categoryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "buttonColourId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "buttonColourName": {
+            "type": "string",
+            "nullable": true
+          },
+          "barcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "unitOfSale": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "volumeOfSale": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "measurementSchemeItemID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "measurementUnitVolume": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceMeasurementSchemeItemID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceMeasurementUnitVolume": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isVariablePrice": {
+            "type": "boolean"
+          },
+          "taxExemptEligible": {
+            "type": "boolean"
+          },
+          "excludeFromLoyaltyPointsGain": {
+            "type": "boolean"
+          },
+          "containerFeeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "containerFeeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "containerFeeValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "brandId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "brandName": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplierId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "supplierName": {
+            "type": "string",
+            "nullable": true
+          },
+          "variantGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "variantId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "variantItemId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "variantDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "colourId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "colourName": {
+            "type": "string",
+            "nullable": true
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sellOnTill": {
+            "type": "boolean"
+          },
+          "sellOnWeb": {
+            "type": "boolean"
+          },
+          "tillOrder": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rrPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "orderCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "articleCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "popupNoteShortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "multiChoiceNoteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "multiChoiceNoteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "tareWeight": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "size": {
+            "type": "string",
+            "nullable": true
+          },
+          "sku": {
+            "type": "string",
+            "nullable": true
+          },
+          "magentoAttributeSetId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "magentoAttributeSetName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ageRestriction": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "margin": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "scannableOnly": {
+            "type": "boolean"
+          },
+          "orderQuantityLimit": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isStockTracked": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IProductGridPagedResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IProductGrid"
+            },
+            "nullable": true
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginationMetadata"
+          },
+          "links": {
+            "$ref": "#/components/schemas/PaginationLinks"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductStockRequest": {
+        "required": [
+          "alerts",
+          "currentStock",
+          "locationId"
+        ],
+        "type": "object",
+        "properties": {
+          "currentStock": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "locationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maximumStock": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "minimumStock": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "alerts": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductGridRequest": {
+        "required": [
+          "costPrice",
+          "eatOutPrice",
+          "name",
+          "salePrice"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 4000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "isCostPriceIncTax": {
+            "type": "boolean"
+          },
+          "isSalePriceIncTax": {
+            "type": "boolean"
+          },
+          "isEatOutPriceIncTax": {
+            "type": "boolean"
+          },
+          "costPrice": {
+            "minimum": 0,
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "salePrice": {
+            "minimum": 0,
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "eatOutPrice": {
+            "minimum": 0,
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double"
+          },
+          "salePriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eatOutPriceTaxGroupId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "categoryId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "barcode": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "buttonColourId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "isVariablePrice": {
+            "type": "boolean"
+          },
+          "taxExemptEligible": {
+            "type": "boolean"
+          },
+          "excludeFromLoyaltyPointsGain": {
+            "type": "boolean"
+          },
+          "containerFeeId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "brandId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "supplierId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "variantItemId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "colourId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "productType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sellOnTill": {
+            "type": "boolean",
+            "default": true
+          },
+          "sellOnWeb": {
+            "type": "boolean",
+            "default": false
+          },
+          "tillOrder": {
+            "maximum": 99999,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rrPrice": {
+            "minimum": 0,
+            "pattern": "^(-)?(\\d){1,12}(\\.\\d{0,5})?$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "orderCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "articleCode": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "popupNoteId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "multiChoiceNoteId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tareWeight": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sku": {
+            "maxLength": 34,
+            "minLength": 1,
+            "type": "string",
+            "nullable": true
+          },
+          "magentoAttributeSetId": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "unitOfSale": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "volumeOfSale": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "measurementSchemeItemID": {
+            "maximum": 32767,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "measurementUnitVolume": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceMeasurementSchemeItemID": {
+            "maximum": 32767,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "costPriceMeasurementUnitVolume": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ageRestriction": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "scannableOnly": {
+            "type": "boolean",
+            "default": false
+          },
+          "orderQuantityLimit": {
+            "maximum": 32767,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "generateBarcode": {
+            "type": "boolean"
+          },
+          "trackStock": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductStockRequest"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GenerateBarcodeReponse": {
+        "required": [
+          "barcode"
+        ],
+        "type": "object",
+        "properties": {
+          "barcode": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VariantMapItemCreateRequest": {
+        "required": [
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VariantMapCreateRequest": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VariantMapItemCreateRequest"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VariantItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "variantMapId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VariantMap": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "variantItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VariantItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VariantMapItemUpdateRequest": {
+        "required": [
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "description": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VariantMapUpdateRequest": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VariantMapItemUpdateRequest"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Basic": {
+        "type": "apiKey",
+        "description": "The Epos Now API uses Location specific API keys to authenticate requests. You can view and manage your API keys from the Epos Now Back Office under the API Device located in the App Store.\r\n\r\nMake sure to read the documentation for each endpoint as some APIs are location specific, meaning that endpoints will only return information specific to the Location the API Device is associated with.\r\n\r\nAll API requests must be made over HTTPS. Requests made over plain HTTP will fail. API requests without authentication will also fail.\r\n\r\nEpos Now APIs use Basic access authentication. When authenticating construct your key as follows - **Basic {{API_KEY}}**.",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  }
+}

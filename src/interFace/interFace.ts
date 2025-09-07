@@ -14,7 +14,7 @@ export interface IUser {
 interface HeaderType {
   headers: {
     "Content-Type": string;
-    Authorization: string;
+    Authorization?: string;
   };
 }
 
@@ -56,6 +56,8 @@ export interface AppContextType {
   setModalId: React.Dispatch<React.SetStateAction<string>>;
   modalId: string;
   setOpenCart: React.Dispatch<React.SetStateAction<boolean>>;
+  openOrderTrack: boolean;
+  setOpenOrderTrack: React.Dispatch<React.SetStateAction<boolean>>;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   totalPages: number;

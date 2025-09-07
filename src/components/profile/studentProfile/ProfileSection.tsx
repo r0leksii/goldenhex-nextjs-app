@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useCallback } from "react";
 import Image from "next/image";
 import ProfileSidebar from "./ProfileSidebar";
 import DashboardCounter from "./DashboardCounter";
@@ -13,8 +13,11 @@ import UserReviews from "./UserReviews";
 import UserComments from "./UserComments";
 import PaymentInfo from "./PaymentInfo";
 import CancelOrderTrack from "./CancelOrderTrack";
+import OrderTrackModal from "./OrderTrackModal";
 const ProfileSection = () => {
   const { user } = useGlobalContext();
+  const [activeTab, setActiveTab] = useState<string>("home");
+  const onSelectTab = useCallback((tab: string) => setActiveTab(tab), []);
 
   return (
     <div className="course-details-area pt-120 pb-100">
@@ -43,12 +46,12 @@ const ProfileSection = () => {
           </div>
         </div>
         <div className="row">
-          <ProfileSidebar />
+          <ProfileSidebar activeTab={activeTab} onSelectTab={onSelectTab} />
           <div className="col-xl-9 col-lg-8">
             <div className="student-profile-content">
               <div className="tab-content" id="myTabContent">
                 <div
-                  className="tab-pane fade show active"
+                  className={`tab-pane ${activeTab === "home" ? "show active" : "fade"}`}
                   id="home"
                   role="tabpanel"
                   aria-labelledby="home-tab"
@@ -66,7 +69,7 @@ const ProfileSection = () => {
                   </div>
                 </div>
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane ${activeTab === "profile" ? "show active" : "fade"}`}
                   id="profile"
                   role="tabpanel"
                   aria-labelledby="profile-tab"
@@ -78,7 +81,7 @@ const ProfileSection = () => {
                
 
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane ${activeTab === "wishlist" ? "show active" : "fade"}`}
                   id="wishlist"
                   role="tabpanel"
                   aria-labelledby="wishlist-tab"
@@ -92,7 +95,7 @@ const ProfileSection = () => {
                 </div>
 
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane ${activeTab === "reviews" ? "show active" : "fade"}`}
                   id="reviews"
                   role="tabpanel"
                   aria-labelledby="reviews-tab"
@@ -102,7 +105,7 @@ const ProfileSection = () => {
                 </div>
 
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane ${activeTab === "comments" ? "show active" : "fade"}`}
                   id="comments"
                   role="tabpanel"
                   aria-labelledby="comments-tab"
@@ -112,7 +115,7 @@ const ProfileSection = () => {
                 </div>
 
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane ${activeTab === "history" ? "show active" : "fade"}`}
                   id="history"
                   role="tabpanel"
                   aria-labelledby="history-tab"
@@ -121,7 +124,7 @@ const ProfileSection = () => {
                   <OrderHistory/>
                 </div>
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane ${activeTab === "cancel" ? "show active" : "fade"}`}
                   id="cancel"
                   role="tabpanel"
                   aria-labelledby="cancel-tab"
@@ -131,7 +134,7 @@ const ProfileSection = () => {
                 </div>
 
                 <div
-                  className="tab-pane fade"
+                  className={`tab-pane ${activeTab === "setting" ? "show active" : "fade"}`}
                   id="setting"
                   role="tabpanel"
                   aria-labelledby="setting-tab"
@@ -144,6 +147,7 @@ const ProfileSection = () => {
           </div>
         </div>
       </div>
+      <OrderTrackModal />
     </div>
   );
 };

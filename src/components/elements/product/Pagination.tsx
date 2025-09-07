@@ -17,28 +17,76 @@ const Pagination = ({
 }: paginationType) => {
   const searchParams = useSearchParams();
 
-  const paginationItems = [];
+  const paginationItems: React.ReactNode[] = [];
 
-  // Loop through totalPages and generate pagination elements
-  for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
-    // Create a new URLSearchParams object based on the current ones
+  // Helper to build a page <li>
+  const makePageItem = (pageNumber: number) => {
     const newParams = new URLSearchParams(searchParams.toString());
-    // Set the 'page' parameter for this specific link
     newParams.set("page", pageNumber.toString());
-
-    // Construct the href for the Link
     const href = `?${newParams.toString()}`;
-
-    paginationItems.push(
-      <li
-        className={pageNumber === currentPage ? "active" : ""}
-        key={pageNumber}
-      >
+    return (
+      <li className={pageNumber === currentPage ? "active" : ""} key={pageNumber}>
         <Link href={href} onClick={() => setPage(pageNumber)}>
           {pageNumber < 10 ? "0" + pageNumber : pageNumber}
         </Link>
       </li>
     );
+  };
+
+  // Dynamic condensed pagination
+  // Patterns:
+  // - Early pages (<=3): 1 2 3 4 5 ... last
+  // - Middle pages: 1 ... (p-1) p (p+1) ... last
+  // - Late pages (>= total-2): 1 ... last-4 last-3 last-2 last-1 last
+  const headCount = 3; // how many pages to show at the start/end block
+  const showAllThreshold = 5; // for small totals, just show everything
+
+  const pushDots = (key: string) =>
+    paginationItems.push(
+      <li className="dots" key={key}>
+        <span>...</span>
+      </li>
+    );
+
+  if (totalPages <= showAllThreshold) {
+    // Small page counts: show all
+    for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+      paginationItems.push(makePageItem(pageNumber));
+    }
+  } else if (currentPage <= 3) {
+    // Early range: include up to currentPage+1 to show the next neighbor
+    const end = Math.min(Math.max(headCount, currentPage + 1), totalPages - 1);
+    for (let pageNumber = 1; pageNumber <= end; pageNumber++) {
+      paginationItems.push(makePageItem(pageNumber));
+    }
+    if (end < totalPages - 1) {
+      pushDots("dots-right");
+    }
+    paginationItems.push(makePageItem(totalPages));
+  } else if (currentPage >= totalPages - 2) {
+    // Late range
+    const start =
+      currentPage === totalPages - 2
+        ? Math.max(totalPages - (headCount + 1) + 1, 1) // show one extra page on the left when on last-2
+        : Math.max(totalPages - headCount + 1, 1);
+    paginationItems.push(makePageItem(1));
+    if (start > 2) {
+      pushDots("dots-left");
+    }
+    for (let pageNumber = start; pageNumber <= totalPages; pageNumber++) {
+      paginationItems.push(makePageItem(pageNumber));
+    }
+  } else {
+    // Middle range
+    paginationItems.push(makePageItem(1));
+    pushDots("dots-left");
+    const startMid = Math.max(currentPage - 1, 2);
+    const endMid = Math.min(currentPage + 1, totalPages - 1);
+    for (let pageNumber = startMid; pageNumber <= endMid; pageNumber++) {
+      paginationItems.push(makePageItem(pageNumber));
+    }
+    pushDots("dots-right");
+    paginationItems.push(makePageItem(totalPages));
   }
 
   return (
