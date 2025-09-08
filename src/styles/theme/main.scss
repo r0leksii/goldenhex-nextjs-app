@@ -1,15 +1,15 @@
 /* Load existing public theme (incremental migration) */
-@use '../../../public/assets/scss/main' as publicTheme;
+@use './main-core' as core;
 
 /* Theme utilities indirection (so local layout files can @use '../utils') */
 @use './utils/index' as themeUtils;
 
 /* Placeholder for future overrides: when we migrate a layout file, we'll @use it here after publicTheme to let it override */
 /* Example:
-@use 'layout/header';
-@use 'layout/footer';
 @use 'layout/trending';
 */
 
-/* Live override: custom shop grid */
+/* Local overrides: load after core so they take precedence */
+@use 'layout/header';
 @use 'layout/shop';
+@use 'layout/footer';

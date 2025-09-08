@@ -19,26 +19,19 @@ const FooterThree = () => {
                       <Image
                         src={footerlogo}
                         alt="footer-logo"
-                        width={150}
-                        height={57}
+                        width={220}
+                        height={84}
                       />
                     </Link>
                   </div>
                 </div>
                 <div className="bd-footer__widget text-center mb-40">
                   <div className="bd-footer__link">
-                    <ul>
-                      <li>
-                        <Link href="/about">About Our Company</Link>
-                      </li>
-                      <li>
-                        <Link href="/about">Awards Winnings</Link>
-                      </li>
-
-                      <li>
-                        <Link href="#">Flash Offers</Link>
-                      </li>
-                    </ul>
+                    <div className="bd-footer__link-row">
+                      <Link href="/about">About Our Company</Link>
+                      <Link href="/about">Awards Winnings</Link>
+                      <Link href="#">Flash Offers</Link>
+                    </div>
                   </div>
                 </div>
                 <div className="bd-footer__widget text-center mb-40">
@@ -69,11 +62,11 @@ const FooterThree = () => {
           <div className="row align-items-center">
             <div className="col-12">
               <div className="bd-footer__copyright text-center">
-                <ul>
-                  <li>All Rights Reserved</li>
-                  <li>|</li>
-                  <li>Copyrighted by ©{year} GoldenHex</li>
-                </ul>
+                <div className="bd-footer__copyright-row">
+                  <span>All Rights Reserved</span>
+                  <span className="sep">|</span>
+                  <span>Copyrighted by ©{year} GoldenHex</span>
+                </div>
               </div>
             </div>
           </div>

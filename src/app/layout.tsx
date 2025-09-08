@@ -1,9 +1,9 @@
-import "../style/index.scss";
+import "../styles/index.scss";
 import { childrenType } from "@/interFace/interFace";
 import { ToastContainer } from "react-toastify";
 import { Jost } from "next/font/google";
 import AppProvider from "@/contextApi/AppProvider";
-import { HeaderThree, FooterThree } from "@/layout";
+import { FooterThree } from "@/layout";
 import { BacktoTop } from "@/components/common";
 import HeaderThreeServer from "@/layout/headers/header-three-server";
 import ReduxProvider from "@/redux/provider";
@@ -28,6 +28,12 @@ export default function RootLayout({ children }: childrenType) {
         />
         <title>East European Food Store | Cary, NC | Goldenhex.com</title>
         <link rel="icon" href="/favicon.png" />
+        {/* Vendor CSS from public */}
+        <link rel="stylesheet" href="/assets/css/font-awesome-pro.css" />
+        <link rel="stylesheet" href="/assets/css/flaticon.css" />
+        <link rel="stylesheet" href="/assets/css/spacing.css" />
+        <link rel="stylesheet" href="/assets/css/backtotop.css" />
+        <link rel="stylesheet" href="/assets/css/nice-select.css" />
       </head>
 
       <body suppressHydrationWarning={true}>

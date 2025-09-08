@@ -1,0 +1,51 @@
+/* Local core theme forwards (migrated from public/assets/scss/main.scss)
+   Note: header, shop, footer are intentionally excluded here so that
+   our local overrides in src/styles/theme/layout/_header.scss,
+   _shop.scss and _footer.scss can load after core in main.scss.
+*/
+
+/* Components */
+@forward 'components/theme';
+@forward 'components/background';
+@forward 'components/buttons';
+@forward 'components/carousel';
+@forward 'components/section-title';
+@forward 'components/offccanvas';
+@forward 'components/breadcrumb';
+@forward 'components/animation';
+@forward 'components/preloader';
+
+/* Layout (core) */
+@forward 'layout/banner';
+@forward 'layout/step';
+@forward 'layout/about';
+@forward 'layout/product';
+@forward 'layout/choose';
+@forward 'layout/counter';
+@forward 'layout/news';
+@forward 'layout/features';
+@forward 'layout/trending';
+@forward 'layout/category';
+@forward 'layout/subcribe';
+@forward 'layout/brand';
+@forward 'layout/page-title';
+@forward 'layout/testimonial';
+@forward 'layout/team';
+@forward 'layout/error';
+@forward 'layout/contact';
+@forward 'layout/map';
+@forward 'layout/gallery';
+@forward 'layout/product-details';
+@forward 'layout/accordion';
+@forward 'layout/login';
+@forward 'layout/meanmenu';
+@forward 'layout/mobile-menu';
+
+/* New css in template */
+@forward 'layout/custome';
+@forward 'layout/user-contact-info.scss';
+@forward 'layout/user-profile';
+@forward 'layout/counter-dashboard';
+@forward 'layout/order-step';
+@forward 'layout/search-product';
+@forward 'layout/trems-and-condition';

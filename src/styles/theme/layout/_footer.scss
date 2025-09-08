@@ -1,0 +1,74 @@
+/* Footer theme overrides for better visibility */
+
+.bd-footer__area {
+  /* Trim excessive vertical whitespace from utility classes */
+  &.pt-100 { padding-top: 64px; }
+  &.pb-60 { padding-bottom: 40px; }
+}
+
+/* Centered style footer (used by FooterThree) */
+.bd-footer__style-2 {
+  .bd-footer__logo {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    img {
+      max-height: 90px; /* allow bigger logo */
+      width: auto;
+      height: auto;
+    }
+  }
+
+  .bd-footer__link {
+    .bd-footer__link-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 16px 36px; /* a bit tighter than 25/50 */
+
+      a {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: none; /* keep labels readable */
+        letter-spacing: .02em;
+        color: var(--clr-common-heading);
+      }
+    }
+  }
+
+  .bd-footer__social {
+    gap: 12px;
+    a {
+      height: 44px;
+      width: 44px;
+      border-color: var(--clr-border-4);
+      color: var(--clr-common-heading);
+      background: var(--clr-common-white);
+
+      /* Remove faint decorative lines */
+      &::before, &::after { display: none; }
+
+      &:hover {
+        background: var(--clr-theme-1);
+        color: var(--clr-common-white);
+        border-color: var(--clr-theme-1);
+      }
+    }
+  }
+}
+
+/* Copyright row: improve spacing and readability */
+.bd-footer__copyright {
+  .bd-footer__copyright-row {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    .sep { opacity: .6; }
+    span { color: var(--clr-common-body-text); }
+  }
+}
+
+/* Grey area background should be slightly stronger for contrast on very light screens */
+.grey-bg { background: var(--clr-bg-grey-2); }
+
