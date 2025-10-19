@@ -26,11 +26,11 @@ const CategorySlugPage = async ({ params, searchParams }: CategorySlugPageProps)
 
   // Resolve slug path to a numeric CategoryId
   const category = await getCategoryBySlugPath(slug);
-  if (!category || !category._id) {
+  if (!category || category.Id == null) {
     return notFound();
   }
 
-  const categoryId = Number(category._id);
+  const categoryId = Number(category.Id);
 
   const { products, totalPages, currentPage } = await getProducts(
     page,

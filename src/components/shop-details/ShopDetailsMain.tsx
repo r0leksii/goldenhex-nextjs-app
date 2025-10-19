@@ -5,12 +5,18 @@ import "swiper/css/bundle";
 import Breadcrumb from "../common/breadcrumb/Breadcrumb";
 import Image from "next/image";
 import { ProductType } from "@/types/product/product.type";
+import { useSelector } from "react-redux";
 
 interface ShopDetailsMainProps {
   product: ProductType;
 }
 
 const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
+  const stockMap = useSelector((state: any) => state?.webStock || {});
+  const stockFromState = stockMap?.[product?._id];
+  const currentStock = (typeof stockFromState?.currentStock === "number" ? stockFromState.currentStock : product?.currentStock) ?? 0;
+  const minStock = (typeof stockFromState?.minStock === "number" ? stockFromState.minStock : product?.minStock) ?? 0;
+  const isAvailable = currentStock > minStock;
   return (
     <>
       {/* <Breadcrumb breadHome={"Home"} breadMenu={"Shop Details"} /> */}
@@ -46,14 +52,14 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
                         <span>${product.price}</span>
                       </div>
 
-                      {product?.isAvailable && (
+                      {isAvailable && (
                         <div className="modal-product-meta bd__product-details-menu-1">
                           <ul>
                             <li>
                               <strong>Products:</strong>
                               <span>
                                 {" "}
-                                {product?.currentStock} Pieces Available{" "}
+                                {currentStock} Pieces Available{" "}
                               </span>
                             </li>
                           </ul>
@@ -98,7 +104,7 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
                           </>
                         )} */}
 
-                        {!product?.isAvailable && (
+                        {!isAvailable && (
                           <span className="text-danger">
                             This Product Is Out Of Stock
                           </span>

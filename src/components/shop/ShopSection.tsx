@@ -31,16 +31,27 @@ const ShopSection = ({
     router.push(`?${params.toString()}`);
   };
 
+  const filtered = Array.isArray(products)
+    ? products.filter((p) => {
+        const byCategory = categoryId ? p.categoryId === categoryId : true;
+        if (!byCategory) return false;
+        const q = (search || "").trim().toLowerCase();
+        if (!q) return true;
+        const hay = `${p.title || ""} ${p.description || ""}`.toLowerCase();
+        return hay.includes(q);
+      })
+    : [];
+
   return (
     <section className="bd-shop__area pt-45 pb-85">
       <div className="container">
         <div className="bd-shop__grid">
           <div className="bd-shop__grid-full">
             <div className="bd-shop__wrapper">
-              {products && products.length > 0 ? (
+              {filtered && filtered.length > 0 ? (
                 <div className="bd-trending__item-wrapper">
                   <div className="bd-shop__products">
-                    <GridViewProduct products={products} />
+                    <GridViewProduct products={filtered} />
                   </div>
                 </div>
               ) : (
@@ -53,7 +64,7 @@ const ShopSection = ({
               )}
             </div>
 
-            {products?.length > 0 && totalPages > 1 && (
+            {filtered?.length > 0 && totalPages > 1 && (
               <div className="bd-shop__pagination">
                 <Pagination
                   totalPages={totalPages}

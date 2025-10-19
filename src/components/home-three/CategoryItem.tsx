@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { createSlug } from "@/utils";
-import type { SanitizedCategory } from "@/lib/actions/category.actions";
+import type { components } from "@/types/schema.type";
+
+type CategoryType = components["schemas"]["Category"];
 
 // Define props interface
 interface CategoryItemProps {
-  categories: SanitizedCategory[];
+  categories: CategoryType[];
   onClose?: () => void;
 }
 
@@ -41,11 +43,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
       <div className="root">
         {categories && categories.length > 0 ? (
           categories.map((category, i) => {
-            const hasGroupChildren = !!category.children && category.children.length > 0;
+            const hasGroupChildren = Array.isArray(category.Children) && category.Children.length > 0;
             const groupIsOpen = openGroup === i;
             return (
               <div
-                key={category._id}
+                key={category.Id ?? i}
                 className={`group ${hasGroupChildren ? "has-dropdown" : ""} ${groupIsOpen ? "open" : ""}`}
               >
                 <div className="item-row">
@@ -53,11 +55,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                     <button
                       type="button"
                       className="toggle-btn item-btn p-3"
-                      aria-label={`Toggle ${category.name}`}
+                      aria-label={`Toggle ${category.Name || ""}`}
                       aria-expanded={groupIsOpen}
                       onClick={() => toggleGroup(i)}
                     >
-                      <span className="label text-capitalize">{category.name}</span>
+                      <span className="label text-capitalize">{category.Name}</span>
                       <FontAwesomeIcon
                         icon={faChevronRight}
                         className={`chev ${groupIsOpen ? "rot" : ""}`}
@@ -66,23 +68,23 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                   ) : (
                     <Link
                       className="item-link text-capitalize p-3 d-flex align-items-center justify-content-between"
-                      href={`/category/${createSlug(category.name)}`}
+                      href={`/category/${createSlug(category.Name || "")}`}
                       onClick={handleNavigate}
                     >
-                      <span className="label">{category.name}</span>
+                      <span className="label">{category.Name}</span>
                     </Link>
                   )}
                 </div>
 
                 {hasGroupChildren && (
                   <div className="submenu">
-                    {category.children!.map((subCategory, j) => {
+                    {category.Children!.map((subCategory, j) => {
                       const subKey = `${i}-${j}`;
-                      const hasChildren = !!subCategory.children?.length;
+                      const hasChildren = Array.isArray(subCategory.Children) && subCategory.Children.length > 0;
                       const subIsOpen = openSub === subKey;
                       return (
                         <div
-                          key={subCategory._id}
+                          key={subCategory.Id ?? subKey}
                           className={`sub ${hasChildren ? "has-dropdown" : ""} ${subIsOpen ? "open" : ""}`}
                         >
                           <div className="item-row">
@@ -90,11 +92,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                               <button
                                 type="button"
                                 className="toggle-btn item-btn p-3"
-                                aria-label={`Toggle ${subCategory.name}`}
+                                aria-label={`Toggle ${subCategory.Name || ""}`}
                                 aria-expanded={subIsOpen}
                                 onClick={() => toggleSub(i, j)}
                               >
-                                <span className="label text-capitalize">{subCategory.name}</span>
+                                <span className="label text-capitalize">{subCategory.Name}</span>
                                 <FontAwesomeIcon
                                   icon={faChevronRight}
                                   className={`chev ${subIsOpen ? "rot" : ""}`}
@@ -103,24 +105,24 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                             ) : (
                               <Link
                                 className="item-link text-capitalize p-3 d-flex align-items-center justify-content-between"
-                                href={`/category/${createSlug(category.name)}/${createSlug(subCategory.name)}`}
+                                href={`/category/${createSlug(category.Name || "")}/${createSlug(subCategory.Name || "")}`}
                                 onClick={handleNavigate}
                               >
-                                <span className="label">{subCategory.name}</span>
+                                <span className="label">{subCategory.Name}</span>
                               </Link>
                             )}
                           </div>
 
                           {hasChildren && (
                             <div className="submenu">
-                              {subCategory.children!.map((thirdLevel) => (
-                                <div key={thirdLevel._id} className="leaf">
+                              {subCategory.Children!.map((thirdLevel, k) => (
+                                <div key={thirdLevel.Id ?? k} className="leaf">
                                   <Link
                                     className="item-link text-capitalize p-3 d-block"
-                                    href={`/category/${createSlug(category.name)}/${createSlug(subCategory.name)}/${createSlug(thirdLevel.name)}`}
+                                    href={`/category/${createSlug(category.Name || "")}/${createSlug(subCategory.Name || "")}/${createSlug(thirdLevel.Name || "")}`}
                                     onClick={handleNavigate}
                                   >
-                                    {thirdLevel.name}
+                                    {thirdLevel.Name}
                                   </Link>
                                 </div>
                               ))}

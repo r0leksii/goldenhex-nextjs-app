@@ -44,7 +44,20 @@ export function getDefaultHeaders(extra?: HeadersInit): HeadersInit {
 export function debugLog(...args: any[]) {
   if (process.env.NEXT_PUBLIC_DEBUG_API === "true") {
     const sink = (globalThis as any).__DEBUG_SINK__;
-    if (typeof sink === "function") sink(...args);
+    if (typeof sink === "function") {
+      try {
+        sink(...args);
+        return;
+      } catch {}
+    }
+    try {
+      // Fallback to console when no sink is registered
+      if (typeof console !== "undefined" && typeof (console as any).debug === "function") {
+        (console as any).debug(...args);
+      } else if (typeof console !== "undefined" && typeof (console as any).log === "function") {
+        (console as any).log(...args);
+      }
+    } catch {}
   }
 }
 
@@ -90,20 +103,47 @@ export async function fetchData<T>(
     }
 
     const p = (async () => {
+      const start = Date.now();
+      try {
+        debugLog("[fetchData][request]", {
+          method,
+          url,
+          headers: sanitizeHeaders((options as any).headers),
+          cache: (options as any).cache,
+          next: (options as any).next,
+          cacheTtlSeconds: (options as any).cacheTtlSeconds,
+        });
+      } catch {}
+
       const response = await fetch(url, options as any);
+      const durationMs = Date.now() - start;
       if (!response.ok) {
         const errorBody = await response.text();
-        debugLog(
-          `Fetch error ${response.status}: ${response.statusText}`,
-          errorBody
-        );
+        debugLog("[fetchData][response][error]", {
+          method,
+          url,
+          status: response.status,
+          statusText: response.statusText,
+          durationMs,
+          errorBody,
+        });
         throw new Error(
           `HTTP error! status: ${response.status}, message: ${
             errorBody || response.statusText
           }`
         );
       }
-      return (await response.json()) as T;
+      const data = (await response.json()) as T;
+      try {
+        debugLog("[fetchData][response][ok]", {
+          method,
+          url,
+          status: response.status,
+          durationMs,
+          preview: previewBody(data),
+        });
+      } catch {}
+      return data;
     })();
 
     inflightJson.set(key, p);
@@ -115,18 +155,88 @@ export async function fetchData<T>(
   }
 
   // Non-GET path (no dedupe)
+  const start = Date.now();
+  try {
+    debugLog("[fetchData][request]", {
+      method,
+      url,
+      headers: sanitizeHeaders((options as any).headers),
+      cache: (options as any).cache,
+      next: (options as any).next,
+      cacheTtlSeconds: (options as any).cacheTtlSeconds,
+    });
+  } catch {}
+
   const response = await fetch(url, options as any);
+  const durationMs = Date.now() - start;
   if (!response.ok) {
     const errorBody = await response.text();
-    debugLog(
-      `Fetch error ${response.status}: ${response.statusText}`,
-      errorBody
-    );
+    debugLog("[fetchData][response][error]", {
+      method,
+      url,
+      status: response.status,
+      statusText: response.statusText,
+      durationMs,
+      errorBody,
+    });
     throw new Error(
       `HTTP error! status: ${response.status}, message: ${
         errorBody || response.statusText
       }`
     );
   }
-  return (await response.json()) as T;
+  const data = (await response.json()) as T;
+  try {
+    debugLog("[fetchData][response][ok]", {
+      method,
+      url,
+      status: response.status,
+      durationMs,
+      preview: previewBody(data),
+    });
+  } catch {}
+  return data;
+}
+
+// Helpers
+function sanitizeHeaders(h?: HeadersInit): Record<string, string> | undefined {
+  try {
+    if (!h) return undefined;
+    const entries: Array<[string, string]> = [];
+    const add = (k: string, v: any) => entries.push([k, String(v)]);
+    if (Array.isArray(h)) {
+      for (const [k, v] of h) add(k, v);
+    } else if (typeof Headers !== "undefined" && h instanceof Headers) {
+      (h as Headers).forEach((v, k) => add(k, v));
+    } else {
+      for (const [k, v] of Object.entries(h as any)) add(k, v as any);
+    }
+    const redacted: Record<string, string> = {};
+    for (const [k, v] of entries) {
+      const lower = k.toLowerCase();
+      if (lower === "authorization") redacted[k] = "***REDACTED***";
+      else redacted[k] = v;
+    }
+    return redacted;
+  } catch {
+    return undefined;
+  }
+}
+
+function previewBody(data: any): any {
+  try {
+    if (Array.isArray(data)) {
+      return {
+        type: "array",
+        length: data.length,
+        firstItemKeys: data.length > 0 && data[0] && typeof data[0] === "object" ? Object.keys(data[0]).slice(0, 10) : [],
+      };
+    }
+    if (data && typeof data === "object") {
+      return { type: "object", keys: Object.keys(data).slice(0, 15) };
+    }
+    return { type: typeof data, value: data };
+  } catch {
+    return { type: typeof data };
+  }
 }

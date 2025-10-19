@@ -33,6 +33,20 @@ const Pagination = ({
     );
   };
 
+  // Helper to build Prev/Next
+  const makeNavItem = (label: string, targetPage: number, disabled: boolean, key: string) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("page", targetPage.toString());
+    const href = `?${newParams.toString()}`;
+    return (
+      <li className={disabled ? "disabled" : ""} key={key}>
+        <Link href={href} onClick={(e) => { if (disabled) { e.preventDefault(); return; } setPage(targetPage); }}>
+          {label}
+        </Link>
+      </li>
+    );
+  };
+
   // Dynamic condensed pagination
   // Patterns:
   // - Early pages (<=3): 1 2 3 4 5 ... last
@@ -47,6 +61,11 @@ const Pagination = ({
         <span>...</span>
       </li>
     );
+
+  // Add Prev
+  const hasPrev = currentPage > 1;
+  const prevPage = hasPrev ? currentPage - 1 : 1;
+  paginationItems.push(makeNavItem("Prev", prevPage, !hasPrev, "prev"));
 
   if (totalPages <= showAllThreshold) {
     // Small page counts: show all

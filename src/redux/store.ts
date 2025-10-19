@@ -1,5 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import { cartSlice } from "./slices/cartSlice";
+import { webStockSlice } from "./slices/webStockSlice";
 import {
   persistStore,
   persistReducer,
@@ -45,6 +46,7 @@ const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
     cart: cartSlice.reducer,
+    webStock: webStockSlice.reducer,
     // wishlist: wishlistSlice.reducer,
   })
 );

@@ -3,9 +3,11 @@
 // import ShopPreloader from "@/preloaders/ShopPreloader";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { ProductType } from "@/types/product/product.type";
 import { createSlug } from "@/utils";
+import { useDispatch } from "react-redux";
+import { upsertStocks } from "@/redux/slices/webStockSlice";
 
 interface GridViewProductProps {
   products: ProductType[];
@@ -18,7 +20,21 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
   // No need to slice products here as pagination is handled by the API
   // const displayProducts = Array.isArray(products) ? products : [];
 
-  
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!Array.isArray(products)) return;
+    const map: Record<string, { currentStock: number; minStock: number }> = {};
+    for (const p of products) {
+      if (!p?._id) continue;
+      map[p._id] = {
+        currentStock: p.currentStock ?? 0,
+        minStock: p.minStock ?? 0,
+      };
+    }
+    if (Object.keys(map).length > 0) {
+      dispatch(upsertStocks(map));
+    }
+  }, [dispatch, products]);
 
   // const handleMoldalData = (id: string) => {
   //   // First set the ID
@@ -59,8 +75,8 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
     return 0;
   };
 
-  const getStock = (product: any): number => {
-    return product.productQuantity;
+  const getStock = (product: ProductType): number => {
+    return product.currentStock ?? 0;
   };
 
   const getProductDescription = (product: any): string => {
@@ -80,6 +96,7 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
         const href = `/product/${slug}-${item._id}`;
         const description = getDescription(item);
         const stock = getStock(item);
+        const isAvailable = (item.currentStock ?? 0) > (item.minStock ?? 0);
 
         return (
           <div className="bd-shop__product" key={item._id}>
@@ -116,11 +133,16 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
                           </p>
                         </div>
                       )} */}
-                {!item.isAvailable && (
-                  <div className="bd-product__availability">
+                <div className="bd-product__availability">
+                  {isAvailable ? (
+                    <span>In Stock</span>
+                  ) : (
                     <span className="out-of-stock">Out of Stock</span>
-                  </div>
-                )}
+                  )}
+                  <span className="ms-2">
+                    ({item.currentStock ?? 0})
+                  </span>
+                </div>
               </div>
             </div>
           </div>

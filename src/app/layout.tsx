@@ -4,8 +4,8 @@ import { ToastContainer } from "react-toastify";
 import { Jost } from "next/font/google";
 import AppProvider from "@/contextApi/AppProvider";
 import { FooterThree } from "@/layout";
-import { BacktoTop } from "@/components/common";
 import HeaderThreeServer from "@/layout/headers/header-three-server";
+import { BacktoTop } from "@/components/common";
 import ReduxProvider from "@/redux/provider";
 const jost = Jost({
   subsets: ["latin"],

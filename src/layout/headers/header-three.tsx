@@ -19,12 +19,13 @@ import SidebarCart from "./SidebarCart";
 //   useTotalProductWishlistCount,
 // } from "@/hooks/useCartQuantity";
 import { usePathname } from "next/navigation";
-import { SanitizedCategory } from "@/lib/actions/category.actions";
+import type { components } from "@/types/schema.type";
 // import SidebarWishlist from "./SidebarWishlist";
 
-// Define props for HeaderThree
+type CategoryType = components["schemas"]["Category"];
+
 interface HeaderThreeProps {
-  categories: SanitizedCategory[];
+  categories: CategoryType[];
 }
 
 const HeaderThree = ({ categories }: HeaderThreeProps) => {
