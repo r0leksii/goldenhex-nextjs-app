@@ -6,6 +6,7 @@ import { DEFAULT_PAGE, DEFAULT_LIMIT } from "@/lib/consts";
 import { fetchData, buildApiUrl, getDefaultHeaders, debugLog, withCacheTtl } from "@/lib/http";
 type WebProductType = components["schemas"]["WebProduct"];
 type ProductRawType = components["schemas"]["Product"];
+type ProductGridType = components["schemas"]["IProductGrid"];
 
 const headers = getDefaultHeaders();
 
@@ -44,7 +45,7 @@ function extractImageUrls(source: any): { main: string; all: string[] } {
  * Transforms a WebProduct or Product into the application's ProductType format.
  */
 function transformToProductType(
-  source: WebProductType | ProductRawType | undefined | null,
+  source: WebProductType | ProductRawType | ProductGridType | undefined | null,
   stockInfo: { currentStock: number; minStock: number }
 ): ProductType | null {
   const productId = (source as any)?.Id;
@@ -113,6 +114,61 @@ export async function getProducts(
     const startIndexGlobal = (safePage - 1) * safeLimit;
     const remotePage = Math.floor(startIndexGlobal / REMOTE_PAGE_SIZE) + 1;
     const offsetInRemote = startIndexGlobal % REMOTE_PAGE_SIZE;
+
+    const hasSearch = typeof search === "string" && search.trim().length > 0;
+    if (hasSearch) {
+      const params: Record<string, any> = {
+        Search: search,
+        Page: safePage,
+        Limit: safeLimit,
+        Archived: false,
+        SellOnWeb: true,
+      };
+      if (categoryId && Number.isFinite(categoryId)) params.CategoryId = categoryId;
+      const catalogueUrl = buildApiUrl("catalogue/Products", params);
+      debugLog("[getProducts] catalogueUrl", catalogueUrl);
+      const resp = await fetchData<components["schemas"]["IProductGridPagedResponse"]>(
+        catalogueUrl,
+        { method: "GET", headers, ...withCacheTtl(120) }
+      );
+      const items = Array.isArray((resp as any)?.Data) ? ((resp as any).Data as ProductGridType[]) : [];
+      const ids = items
+        .map((it) => (it as any)?.Id)
+        .filter((v) => Number.isFinite(v)) as number[];
+
+      let products: ProductType[] = [];
+      if (ids.length > 0) {
+        try {
+          const listUrl = buildApiUrl("Product/List", { ids });
+          debugLog("[getProducts] listUrl", listUrl);
+          const fulls = await fetchData<ProductRawType[]>(listUrl, {
+            method: "GET",
+            headers,
+            ...withCacheTtl(120),
+          });
+          const byId = new Map<number, ProductRawType>();
+          if (Array.isArray(fulls)) {
+            for (const f of fulls) {
+              const id = (f as any)?.Id;
+              if (Number.isFinite(id)) byId.set(id as number, f);
+            }
+          }
+          products = items
+            .map((it) => {
+              const id = (it as any)?.Id as number | undefined;
+              const full = id != null ? byId.get(id) ?? it : it;
+              return transformToProductType(full as any, { currentStock: 0, minStock: 0 });
+            })
+            .filter((p): p is ProductType => p != null);
+        } catch {
+          products = items
+            .map((it) => transformToProductType(it, { currentStock: 0, minStock: 0 }))
+            .filter((p): p is ProductType => p != null);
+        }
+      }
+      const totalPagesRemote = Number((resp as any)?.Metadata?.TotalPages) || 1;
+      return { products, totalPages: Math.max(1, totalPagesRemote), currentPage: safePage };
+    }
 
     const webProductsUrl = buildApiUrl("Product/WebProducts", { page: remotePage });
     debugLog("[getProducts] webProductsUrl", webProductsUrl);

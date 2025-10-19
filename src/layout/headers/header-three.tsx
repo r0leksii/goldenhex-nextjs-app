@@ -18,7 +18,7 @@ import SidebarCart from "./SidebarCart";
 //   useTotalProductCount,
 //   useTotalProductWishlistCount,
 // } from "@/hooks/useCartQuantity";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { components } from "@/types/schema.type";
 // import SidebarWishlist from "./SidebarWishlist";
 
@@ -30,6 +30,7 @@ interface HeaderThreeProps {
 
 const HeaderThree = ({ categories }: HeaderThreeProps) => {
   const pathName = usePathname();
+  const router = useRouter();
   const { setShowSidebar } = useGlobalContext();
   const [searchValue, setSearchValue] = useState("");
   const safeSetShowSidebar = setShowSidebar || (() => {});
@@ -43,6 +44,18 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
     return () => {
       window.removeEventListener("scroll", sticky);
     };
+
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const q = (searchValue || "").trim();
+    if (pathName && pathName.startsWith("/category")) {
+      const params = new URLSearchParams();
+      if (q) params.set("search", q);
+      router.push(params.toString() ? `${pathName}?${params.toString()}` : `${pathName}`);
+    } else {
+      router.push(q ? `/?search=${encodeURIComponent(q)}` : "/");
+    }
+  };
   });
 
   const sticky = () => {
@@ -70,6 +83,18 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
     //   //   })
     //   //   .catch((e) => console.log(e));
     // }
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const q = (searchValue || "").trim();
+    if (pathName && pathName.startsWith("/category")) {
+      const params = new URLSearchParams();
+      if (q) params.set("search", q);
+      router.push(params.toString() ? `${pathName}?${params.toString()}` : `${pathName}`);
+    } else {
+      router.push(q ? `/?search=${encodeURIComponent(q)}` : "/");
+    }
   };
 
   // Sticky Menu Area End
@@ -237,14 +262,14 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
                       </div>
                     </div>
                     <div className="bd-header__filterbar">
-                      <form className="bd-filter__input" action="#">
+                      <form className="bd-filter__input" onSubmit={handleSearchSubmit}>
                         <input
                           type="text"
                           placeholder={"Search products..."}
                           value={searchValue}
                           onChange={handleInputChange}
                         />
-                        <button>
+                        <button type="submit">
                           <i className="flaticon-magnifiying-glass"></i>
                         </button>
                       </form>
