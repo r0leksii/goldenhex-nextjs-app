@@ -139,9 +139,6 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
                   ) : (
                     <span className="out-of-stock">Out of Stock</span>
                   )}
-                  <span className="ms-2">
-                    ({item.currentStock ?? 0})
-                  </span>
                 </div>
               </div>
             </div>

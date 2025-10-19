@@ -116,13 +116,15 @@ export async function getProducts(
     const offsetInRemote = startIndexGlobal % REMOTE_PAGE_SIZE;
 
     const hasSearch = typeof search === "string" && search.trim().length > 0;
-    if (hasSearch) {
+    if (false && hasSearch) {
       const params: Record<string, any> = {
         Search: search,
         Page: safePage,
         Limit: safeLimit,
         Archived: false,
         SellOnWeb: true,
+        SortingField: "Id",
+        SortingType: "Descending",
       };
       if (categoryId && Number.isFinite(categoryId)) params.CategoryId = categoryId;
       const catalogueUrl = buildApiUrl("catalogue/Products", params);
@@ -166,6 +168,8 @@ export async function getProducts(
             .filter((p): p is ProductType => p != null);
         }
       }
+      // Ensure newest on top (best-effort by numeric id)
+      products.sort((a, b) => (parseInt(b._id, 10) || 0) - (parseInt(a._id, 10) || 0));
       const totalPagesRemote = Number((resp as any)?.Metadata?.TotalPages) || 1;
       return { products, totalPages: Math.max(1, totalPagesRemote), currentPage: safePage };
     }
@@ -230,6 +234,11 @@ export async function getProducts(
         return transformToProductType(wp as any, stockInfo);
       })
       .filter((p): p is ProductType => p != null);
+
+    // If searching, show newest first by numeric id
+    if (hasSearch) {
+      products.sort((a, b) => (parseInt(b._id, 10) || 0) - (parseInt(a._id, 10) || 0));
+    }
 
     let totalPagesLocal = 1;
     try {
