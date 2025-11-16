@@ -162,6 +162,14 @@ export async function getProducts(
               return transformToProductType(full as any, { currentStock: 0, minStock: 0 });
             })
             .filter((p): p is ProductType => p != null);
+
+    debugLog("[getProducts] final products", {
+      search,
+      count: products.length,
+      firstId: products[0]?._id,
+      safePage,
+      safeLimit,
+    });
         } catch {
           products = items
             .map((it) => transformToProductType(it, { currentStock: 0, minStock: 0 }))
@@ -182,14 +190,38 @@ export async function getProducts(
     );
     const webProducts = Array.isArray(webProductsData) ? webProductsData : [];
 
+    if (hasSearch) {
+      const term = String(search).toLowerCase();
+      const barcodeHits = webProducts
+        .filter((wp: any) =>
+          String(wp?.Barcode ?? "")
+            .toLowerCase()
+            .includes(term)
+        )
+        .map((wp: any) => ({
+          id: wp?.Id,
+          name: wp?.Name,
+          barcode: wp?.Barcode,
+        }));
+      debugLog("[getProducts] barcode hits in WebProducts page", {
+        search,
+        term,
+        totalInPage: webProducts.length,
+        barcodeHits,
+      });
+    }
+
     // Filter helper
     const applyFilters = (items: WebProductType[]) =>
       items.filter((wp) => {
         const matchCategory = categoryId ? (wp as any)?.CategoryId === categoryId : true;
         const matchSearch = search
-          ? String((wp as any)?.Name ?? "")
-              .toLowerCase()
-              .includes(String(search).toLowerCase())
+          ? (() => {
+              const term = String(search).toLowerCase();
+              const name = String((wp as any)?.Name ?? "").toLowerCase();
+              const barcode = String((wp as any)?.Barcode ?? "").toLowerCase();
+              return name.includes(term) || barcode.includes(term);
+            })()
           : true;
         return matchCategory && matchSearch;
       });

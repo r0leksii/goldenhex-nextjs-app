@@ -294,7 +294,7 @@ const HeaderThree = ({ categories }: HeaderThreeProps) => {
                           <br />
                           Sunday: 10:00am - 5:00pm
                         </span>
-                        <Link href="tel:=19199462649"> +1 (919) 946-2649</Link>
+                        <Link href="tel:+19199462649"> +1 (919) 946-2649</Link>
                       </div>
                     </div>
                   </div>

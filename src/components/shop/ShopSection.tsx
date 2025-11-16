@@ -34,11 +34,7 @@ const ShopSection = ({
   const filtered = Array.isArray(products)
     ? products.filter((p) => {
         const byCategory = categoryId ? p.categoryId === categoryId : true;
-        if (!byCategory) return false;
-        const q = (search || "").trim().toLowerCase();
-        if (!q) return true;
-        const hay = `${p.title || ""} ${p.description || ""}`.toLowerCase();
-        return hay.includes(q);
+        return byCategory;
       })
     : [];
 
