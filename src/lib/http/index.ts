@@ -41,25 +41,7 @@ export function getDefaultHeaders(extra?: HeadersInit): HeadersInit {
   return extra ? { ...(base as any), ...(extra as any) } : base;
 }
 
-export function debugLog(...args: any[]) {
-  if (process.env.NEXT_PUBLIC_DEBUG_API === "true") {
-    const sink = (globalThis as any).__DEBUG_SINK__;
-    if (typeof sink === "function") {
-      try {
-        sink(...args);
-        return;
-      } catch {}
-    }
-    try {
-      // Fallback to console when no sink is registered
-      if (typeof console !== "undefined" && typeof (console as any).debug === "function") {
-        (console as any).debug(...args);
-      } else if (typeof console !== "undefined" && typeof (console as any).log === "function") {
-        (console as any).log(...args);
-      }
-    } catch {}
-  }
-}
+export function debugLog(..._args: any[]) {}
 
 export function withCacheTtl(ttlSeconds: number) {
   return { cacheTtlSeconds: ttlSeconds } as const;

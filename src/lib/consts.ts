@@ -9,4 +9,4 @@ const parsedLimit = envProductsPerPage
   : Number.NaN;
 
 export const DEFAULT_LIMIT =
-  Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : 12;
+  Number.isFinite(parsedLimit) && parsedLimit > 0 ? parsedLimit : 24;

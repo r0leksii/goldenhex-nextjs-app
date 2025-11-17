@@ -1,6 +1,6 @@
 export const runtime = "edge";
 import ShopMain from "@/components/shop/ShopMain";
-import { getProducts } from "@/lib/actions/product.actions";
+import { getCatalogueProducts } from "@/lib/actions/product.actions";
 import { DEFAULT_PAGE, DEFAULT_LIMIT } from "@/lib/consts";
 interface HomePageProps {
   searchParams: Promise<{
@@ -33,11 +33,11 @@ const Home = async ({ searchParams }: HomePageProps) => {
 
 
   // Fetch initial products based on URL parameters
-  let products: Awaited<ReturnType<typeof getProducts>>["products"] = [];
+  let products: Awaited<ReturnType<typeof getCatalogueProducts>>["products"] = [];
   let totalPages = 1;
   let currentPage = page;
   try {
-    const result = await getProducts(page, limit, categoryId, search);
+    const result = await getCatalogueProducts(page, limit, categoryId ?? undefined, search);
     products = result.products;
     totalPages = result.totalPages;
     currentPage = result.currentPage;

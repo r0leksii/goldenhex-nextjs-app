@@ -14,6 +14,15 @@ interface CategoryItemProps {
   onClose?: () => void;
 }
 
+const formatTopCategoryName = (name?: string | null) => {
+  return (name || "").toUpperCase();
+};
+
+const formatChildCategoryName = (name?: string | null) => {
+  const value = (name || "").toLowerCase();
+  return value.charAt(0).toUpperCase() + value.slice(1);
+};
+
 const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
   const [openGroup, setOpenGroup] = useState<number | null>(null);
   const [openSub, setOpenSub] = useState<string | null>(null);
@@ -59,7 +68,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                       aria-expanded={groupIsOpen}
                       onClick={() => toggleGroup(i)}
                     >
-                      <span className="label text-capitalize">{category.Name}</span>
+                      <span className="label">{formatTopCategoryName(category.Name)}</span>
                       <FontAwesomeIcon
                         icon={faChevronRight}
                         className={`chev ${groupIsOpen ? "rot" : ""}`}
@@ -67,11 +76,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                     </button>
                   ) : (
                     <Link
-                      className="item-link text-capitalize p-3 d-flex align-items-center justify-content-between"
+                      className="item-link p-3 d-flex align-items-center justify-content-between"
                       href={`/category/${createSlug(category.Name || "")}`}
                       onClick={handleNavigate}
                     >
-                      <span className="label">{category.Name}</span>
+                      <span className="label">{formatTopCategoryName(category.Name)}</span>
                     </Link>
                   )}
                 </div>
@@ -96,7 +105,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                                 aria-expanded={subIsOpen}
                                 onClick={() => toggleSub(i, j)}
                               >
-                                <span className="label text-capitalize">{subCategory.Name}</span>
+                                <span className="label">{formatChildCategoryName(subCategory.Name)}</span>
                                 <FontAwesomeIcon
                                   icon={faChevronRight}
                                   className={`chev ${subIsOpen ? "rot" : ""}`}
@@ -104,11 +113,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                               </button>
                             ) : (
                               <Link
-                                className="item-link text-capitalize p-3 d-flex align-items-center justify-content-between"
+                                className="item-link p-3 d-flex align-items-center justify-content-between"
                                 href={`/category/${createSlug(category.Name || "")}/${createSlug(subCategory.Name || "")}`}
                                 onClick={handleNavigate}
                               >
-                                <span className="label">{subCategory.Name}</span>
+                                <span className="label">{formatChildCategoryName(subCategory.Name)}</span>
                               </Link>
                             )}
                           </div>
@@ -118,11 +127,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ categories, onClose }) => {
                               {subCategory.Children!.map((thirdLevel, k) => (
                                 <div key={thirdLevel.Id ?? k} className="leaf">
                                   <Link
-                                    className="item-link text-capitalize p-3 d-block"
+                                    className="item-link p-3 d-block"
                                     href={`/category/${createSlug(category.Name || "")}/${createSlug(subCategory.Name || "")}/${createSlug(thirdLevel.Name || "")}`}
                                     onClick={handleNavigate}
                                   >
-                                    {thirdLevel.Name}
+                                    {formatChildCategoryName(thirdLevel.Name)}
                                   </Link>
                                 </div>
                               ))}

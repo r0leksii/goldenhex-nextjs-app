@@ -1,7 +1,7 @@
 export const runtime = "edge";
 
 import ShopMain from "@/components/shop/ShopMain";
-import { getProducts } from "@/lib/actions/product.actions";
+import { getCatalogueProducts } from "@/lib/actions/product.actions";
 import { getCategoryBySlugPath } from "@/lib/actions/category.actions";
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/lib/consts";
 import { parseNumericParam } from "@/utils/parseNumericParam";
@@ -32,7 +32,7 @@ const CategorySlugPage = async ({ params, searchParams }: CategorySlugPageProps)
 
   const categoryId = Number(category.Id);
 
-  const { products, totalPages, currentPage } = await getProducts(
+  const { products, totalPages, currentPage } = await getCatalogueProducts(
     page,
     limit,
     categoryId,

@@ -2,24 +2,29 @@
 
 import { components } from "@/types/schema.type";
 import { createSlug } from "@/utils";
-import { buildApiUrl, getDefaultHeaders, debugLog, withCacheTtl, fetchData } from "@/lib/http";
+import { buildApiUrl, getDefaultHeaders, fetchData } from "@/lib/http";
 
 type CategoryType = components["schemas"]["Category"];
+type CategoryPagedResponse = {
+  Data?: CategoryType[] | null;
+};
 
 const headers = getDefaultHeaders();
 
 export async function getCategories(): Promise<CategoryType[]> {
   try {
     const url = buildApiUrl("Category");
-    debugLog("[getCategories] url", url);
-    const data = await fetchData<any>(url, {
+    const data = await fetchData<CategoryType[] | CategoryPagedResponse>(url, {
       method: "GET",
       headers,
-      ...withCacheTtl(1800),
     });
-    if (Array.isArray(data)) return data as CategoryType[];
-    const items = Array.isArray(data?.Data) ? (data.Data as CategoryType[]) : [];
-    return items;
+    let items: CategoryType[] = [];
+    if (Array.isArray(data)) {
+      items = data;
+    } else if (Array.isArray(data?.Data)) {
+      items = data.Data as CategoryType[];
+    }
+    return items.sort((a, b) => (a.Name || "").localeCompare(b.Name || ""));
   } catch (error) {
     throw new Error(
       error instanceof Error ? error.message : "Unknown error fetching categories",
@@ -59,7 +64,6 @@ export async function getCategoryBySlugPath(
   slugs: string[]
 ): Promise<CategoryType | null> {
   const normalized = (slugs || []).map((s) => createSlug(s));
-  debugLog("[getCategoryBySlugPath] normalized slugs", normalized);
   if (normalized.length === 0) return null;
   const categories = await getCategories();
   return resolveCategoryBySlugs(categories, normalized);
