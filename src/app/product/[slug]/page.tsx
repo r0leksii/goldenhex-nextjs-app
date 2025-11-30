@@ -5,9 +5,9 @@ import { getProductById } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 function extractIdFromSlug(slug: string): string | null {

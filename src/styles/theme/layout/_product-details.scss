@@ -65,6 +65,52 @@
 		margin-bottom: 20px;
 	}
 }
+
+// Goldenhex shop details overrides
+.bd__shop-details-inner {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	@media (min-width: 992px) {
+		gap: 1.5rem;
+	}
+}
+
+.shop-details__back {
+	border: 0;
+	padding: 0;
+	background: transparent;
+	color: var(--clr-text-3);
+	font-size: 0.875rem;
+	font-weight: var(--bd-fw-medium);
+	cursor: pointer;
+
+	i {
+		font-size: 0.875rem;
+	}
+
+	&:hover {
+		color: var(--clr-common-heading);
+		text-decoration: underline;
+	}
+}
+
+.shop-details-info {
+	display: flex;
+	flex-direction: column;
+	row-gap: 1.75rem;
+
+	.shop-details__title {
+		font-size: 2rem;
+		line-height: 1.25;
+	}
+
+	.bd-product__meta-label,
+	.bd-product__availability-label {
+		font-weight: 700;
+	}
+}
 .bd__product-details-menu-1 {
 	ul {
 		li {

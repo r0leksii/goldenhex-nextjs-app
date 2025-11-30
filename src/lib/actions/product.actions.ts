@@ -5,6 +5,7 @@ import { components as stockComponents } from "@/types/stock/stock.type";
 import { ProductType } from "@/types/product/product.type";
 import { DEFAULT_PAGE, DEFAULT_LIMIT, WEBSITE_MIN_STOCK_DELTA } from "@/lib/consts";
 import { fetchData, buildApiUrl, getDefaultHeaders, withCacheTtl } from "@/lib/http";
+import { getCategories } from "./category.actions";
 
 type WebProductType = components["schemas"]["WebProduct"];
 type ProductRawType = components["schemas"]["Product"];
@@ -15,6 +16,20 @@ type ProductCount = components["schemas"]["ProductCount"];
 type ProductGrid = components["schemas"]["IProductGrid"];
 type ProductGridPagedResponse = components["schemas"]["IProductGridPagedResponse"];
 type ProductImageDetails = components["schemas"]["ProductImageDetails"];
+type CategoryType = components["schemas"]["Category"];
+
+function findCategoryById(
+  categories: CategoryType[] | undefined,
+  id: number | null | undefined
+): CategoryType | null {
+  if (!categories || id == null) return null;
+  for (const cat of categories) {
+    if (cat.Id === id) return cat;
+    const child = findCategoryById(cat.Children ?? undefined, id);
+    if (child) return child;
+  }
+  return null;
+}
 
 type InventoryProductStock = stockComponents["schemas"]["InventoryProductStock"];
 type InventoryProductStockPagedResponse =
@@ -60,7 +75,8 @@ function extractImageUrls(source: ProductWithImages | null | undefined): {
  */
 function transformToProductType(
   source: ProductSource | null | undefined,
-  stockInfo: { currentStock: number; minStock: number }
+  stockInfo: { currentStock: number; minStock: number },
+  categoryNameOverride?: string | null
 ): ProductType | null {
   if (!source || source.Id == null) {
     return null;
@@ -83,7 +99,11 @@ function transformToProductType(
 
   const description = source.Description ?? "";
   const categoryName =
-    source.CategoryId != null ? String(source.CategoryId) : "Unknown Category";
+    (typeof categoryNameOverride === "string" && categoryNameOverride.trim().length > 0)
+      ? categoryNameOverride
+      : source.CategoryId != null
+      ? String(source.CategoryId)
+      : "Unknown Category";
   const productDescription = source.ProductDetails?.DetailedDescription ?? "";
 
   return {
@@ -470,7 +490,23 @@ export async function getProductById(id: string): Promise<ProductType | null> {
       ...withCacheTtl(300),
     });
 
-    const finalProductData = transformToProductType(product, { currentStock: 0, minStock: 0 });
+    let categoryNameOverride: string | undefined;
+    try {
+      if (typeof product?.CategoryId === "number") {
+        const categories = await getCategories();
+        const match = findCategoryById(categories, product.CategoryId);
+        if (match?.Name) {
+          categoryNameOverride = match.Name;
+        }
+      }
+    } catch {
+    }
+
+    const finalProductData = transformToProductType(
+      product,
+      { currentStock: 0, minStock: 0 },
+      categoryNameOverride
+    );
     if (!finalProductData) return null;
     return finalProductData;
   } catch (error) {
