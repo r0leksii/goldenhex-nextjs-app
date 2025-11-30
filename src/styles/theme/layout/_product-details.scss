@@ -54,9 +54,14 @@
 	overflow: hidden;
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 	margin: 0;
+	width: 100%;
 	
 	> [class*="col-"] {
-		padding: 0;
+		padding: 0 !important;
+	}
+	
+	@media (max-width: 991px) {
+		border-radius: 12px;
 	}
 }
 
@@ -69,9 +74,10 @@
 	justify-content: center;
 	min-height: 400px;
 	
-	@media (max-width: 767px) {
-		padding: 24px;
-		min-height: 300px;
+	@media (max-width: 991px) {
+		padding: 16px;
+		min-height: auto;
+		width: 100%;
 	}
 }
 
@@ -79,9 +85,14 @@
 	width: 100%;
 	max-width: 450px;
 	
-	img {
+	@media (max-width: 991px) {
+		max-width: none;
 		width: 100%;
-		height: auto;
+	}
+	
+	img {
+		width: 100% !important;
+		height: auto !important;
 		object-fit: contain;
 		border-radius: 8px;
 	}

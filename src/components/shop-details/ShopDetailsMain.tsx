@@ -50,7 +50,7 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
           {/* Product Card */}
           <div className="row g-0">
             {/* Product Image */}
-            <div className="col-lg-6">
+            <div className="col-12 col-lg-6">
               <div className="product-details__thumb-inner">
                 {product.imageURLs?.[0] ? (
                   <div className="bd-product__details-large-img">
@@ -78,7 +78,7 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
             </div>
 
             {/* Product Info */}
-            <div className="col-lg-6">
+            <div className="col-12 col-lg-6">
               <div className="shop-details-info">
                 {/* Title */}
                 <h1 className="shop-details__title">
