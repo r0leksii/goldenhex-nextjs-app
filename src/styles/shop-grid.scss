@@ -77,10 +77,50 @@
   .bd-product__price { margin-top: 2px; }
 
   /* Availability badge */
-  .bd-product__availability .out-of-stock {
-    display: inline-block;
+  .bd-product__meta {
     margin-top: 6px;
-    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+  }
+
+  .bd-product__meta-row {
+    display: flex;
+    align-items: baseline;
+    column-gap: 4px;
+    font-size: 13px;
     color: var(--clr-text-3);
+  }
+
+  .bd-product__meta-label {
+    font-weight: var(--bd-fw-medium);
+    color: var(--clr-common-heading);
+  }
+
+  .bd-product__meta-value {
+    color: var(--clr-text-3);
+  }
+
+  .bd-product__availability {
+    display: flex;
+    align-items: baseline;
+    column-gap: 4px;
+    font-size: 13px;
+    color: var(--clr-text-3);
+  }
+
+  .bd-product__availability-label {
+    font-weight: var(--bd-fw-medium);
+    color: var(--clr-common-heading);
+  }
+
+  .bd-product__availability .bd-product__stock-count {
+    color: var(--clr-text-3);
+  }
+
+  .bd-product__availability .out-of-stock {
+    font-size: 13px;
+    font-weight: var(--bd-fw-medium);
+    color: var(--clr-theme-5);
   }
 }

@@ -5,6 +5,7 @@ export interface ProductType {
   price: number;
   img: string;
   title: string;
+  sku?: string;
   quantity: number;
   tags: string[];
   imageURLs: string[];

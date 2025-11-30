@@ -78,11 +78,6 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
   const getStock = (product: ProductType): number => {
     return product.currentStock ?? 0;
   };
-
-  const getProductDescription = (product: any): string => {
-    return product.productDescription;
-  };
-
   const availableProducts = Array.isArray(products)
     ? products.filter(
         (item) => (item.currentStock ?? 0) > (item.minStock ?? 0)
@@ -102,6 +97,7 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
         const href = `/product/${slug}-${item._id}`;
         const description = getDescription(item);
         const stock = getStock(item);
+        const countryOfOrigin = item.sku?.trim();
         const isAvailable = (item.currentStock ?? 0) > (item.minStock ?? 0);
 
         return (
@@ -132,8 +128,31 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
                     ${price.toFixed(2)}
                   </span>
                 </div>
-                <div className="bd-product__description">
-                  <p>From: {getProductDescription(item)}</p>
+                <div className="bd-product__meta">
+                  {countryOfOrigin && (
+                    <div className="bd-product__meta-row">
+                      <span className="bd-product__meta-label">Origin:</span>
+                      <span className="bd-product__meta-value">
+                        {countryOfOrigin}
+                      </span>
+                    </div>
+                  )}
+                  <div className="bd-product__availability">
+                    {isAvailable ? (
+                      <>
+                        <span className="bd-product__availability-label">
+                          In stock ·
+                        </span>
+                        <span className="bd-product__stock-count">
+                          {item.currentStock ?? 0} units
+                        </span>
+                      </>
+                    ) : (
+                      <span className="bd-product__availability-label out-of-stock">
+                        Out of stock
+                      </span>
+                    )}
+                  </div>
                 </div>
                 {/* {getDescription(item) && (
                         <div className="bd-product__description">
@@ -143,18 +162,6 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
                           </p>
                         </div>
                       )} */}
-                <div className="bd-product__availability">
-                  {isAvailable ? (
-                    <>
-                      <span>In Stock</span>
-                      <span className="bd-product__stock-count">
-                        {item.currentStock ?? 0} items available
-                      </span>
-                    </>
-                  ) : (
-                    <span className="out-of-stock">Out of Stock</span>
-                  )}
-                </div>
               </div>
             </div>
           </div>
@@ -165,3 +172,4 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
 };
 
 export default GridViewProduct;
+
