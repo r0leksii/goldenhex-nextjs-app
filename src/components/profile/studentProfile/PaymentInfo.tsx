@@ -4,6 +4,7 @@ import useGlobalContext from "@/hooks/use-context";
 import { PaymentInfoType } from "@/interFace/interFace";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { formatProductTitle } from "@/utils";
 
 const PaymentInfo = () => {
   const { user, header } = useGlobalContext();
@@ -72,7 +73,7 @@ const PaymentInfo = () => {
                             >
                               <span className="list_item_text">
                                 {" "}
-                                {itm.productName}{" "}
+                                {formatProductTitle(itm.productName || "")}{" "}
                               </span>
                               <span className="list_item_text">
                                 {" "}

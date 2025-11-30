@@ -7,6 +7,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
+import { formatProductTitle } from "@/utils";
 const OrderHistory = () => {
   const { user, header, setDynamicId, setOpenOrderTrack } = useGlobalContext();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfoType[]>([]);
@@ -164,7 +165,9 @@ const OrderHistory = () => {
                                               <Link
                                                 href={`/product/${itm._id}`}
                                               >
-                                                {itm.productName}
+                                                {formatProductTitle(
+                                                  itm.productName || ""
+                                                )}
                                               </Link>
                                             </td>
 

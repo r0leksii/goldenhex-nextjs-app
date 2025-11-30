@@ -4,6 +4,7 @@ import { CartProductType } from "@/interFace/interFace";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { formatProductTitle } from "@/utils";
 
 interface CartState {
   cartProducts: CartProductType[];
@@ -37,9 +38,9 @@ export const cartSlice = createSlice({
           orderDate: orderDate, // Include the formatted date as "orderDate"
         };
         state.cartProducts.push(tempProduct);
+        const displayName = formatProductTitle(payload.productName || "");
         const capitalizedproductNameName =
-          payload.productName.charAt(0).toUpperCase() +
-          payload.productName.slice(1);
+          displayName.charAt(0).toUpperCase() + displayName.slice(1);
         toast.success(`${capitalizedproductNameName} added to cart`);
       }
     },

@@ -10,6 +10,7 @@ import { CartProductType } from "@/interFace/interFace";
 import GetRatting from "@/hooks/GetRatting";
 // import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import ShopPreloader from "@/preloaders/ShopPreloader";
+import { formatProductTitle } from "@/utils";
 const BrowseProductSlider = () => {
   const { setOpenModal, openModal, setModalId } = useGlobalContext();
   const dispatch = useDispatch();
@@ -245,7 +246,7 @@ const BrowseProductSlider = () => {
                                     <div className="bd-teanding__content">
                                       <h4 className="bd-product__title">
                                         <Link href={`/product/${item?._id}`}>
-                                          {item?.productName}
+                                          {formatProductTitle(item?.productName || "")}
                                         </Link>
                                       </h4>
                                       <div className="bd-product__price">
@@ -408,7 +409,7 @@ const BrowseProductSlider = () => {
                                 <div className="bd-teanding__content">
                                   <h4 className="bd-product__title">
                                     <Link href={`/product/${item?._id}`}>
-                                      {item?.productName}
+                                      {formatProductTitle(item?.productName || "")}
                                     </Link>
                                   </h4>
                                   <div className="bd-product__price">

@@ -6,6 +6,7 @@ import Link from "next/link";
 import CustomDateFormatter from "@/hooks/CustomDateFormatter ";
 import { getClass, getLineActiveClass } from "@/hooks/condition-class";
 import DeliveredDateHook from "@/hooks/DelivariedDateHook";
+import { formatProductTitle } from "@/utils";
 
 const TrackOrderMain = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -224,7 +225,7 @@ const TrackOrderMain = () => {
                                                 <Link
                                                   href={`/product/${itm._id}`}
                                                 >
-                                                  {itm.productName}
+                                                  {formatProductTitle(itm.productName || "")}
                                                 </Link>
                                               </td>
 

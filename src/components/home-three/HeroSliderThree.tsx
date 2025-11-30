@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
 import { offerProductType } from "@/interFace/api-interFace";
 import HeroSliderPreloader from "@/preloaders/HeroSliderPreloader";
+import { formatProductTitle } from "@/utils";
 
 interface productsType {
   product: offerProductType[];
@@ -49,7 +50,7 @@ const HeroSliderThree = ({ product }: productsType) => {
                         <div className="bd-product__banner-inner  product__content-4">
                           <div className="bd-product__banner-content">
                             <h2 data-animation="fadeInLeft" data-delay="1.5s">
-                              {item.productName}
+                              {formatProductTitle(item.productName || "")}
                             </h2>
                             <p data-animation="fadeInLeft" data-delay="1.5s">
                               {item.productDetails.slice(0, 50)} <br />{" "}

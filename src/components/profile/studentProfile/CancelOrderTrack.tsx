@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { CanceOrderDataType } from "@/interFace/api-interFace";
 import Image from "next/image";
 import Link from "next/link";
+import { formatProductTitle } from "@/utils";
 const CancelOrderTrack = () => {
   const { user, header, setDynamicId } = useGlobalContext();
   const [cancelOrderData, setCancelOrderData] = useState<CanceOrderDataType[]>(
@@ -72,7 +73,9 @@ const CancelOrderTrack = () => {
                                   </td>
                                   <td className="product-name">
                                     <Link href="">
-                                      {item?.orderProduct?.productName}
+                                      {formatProductTitle(
+                                        item?.orderProduct?.productName || ""
+                                      )}
                                     </Link>
                                   </td>
 

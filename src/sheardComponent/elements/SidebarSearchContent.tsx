@@ -10,6 +10,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { formatProductTitle } from "@/utils";
 
 const SidebarSearchContent = () => {
   const [openSearchBox, setOpenSearchBox] = useState(false);
@@ -125,7 +126,7 @@ const SidebarSearchContent = () => {
                           onClick={() => safeSetShowSidebar(false)}
                           href={`/product/${item._id}`}
                         >
-                          {item.productName}
+                          {formatProductTitle(item.productName || "")}
                         </Link>
                       </div>
                     </div>

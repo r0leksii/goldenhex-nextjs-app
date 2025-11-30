@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { ProductType } from "@/types/product/product.type";
-import { createSlug } from "@/utils";
+import { createSlug, formatProductTitle } from "@/utils";
 import { useDispatch } from "react-redux";
 import { upsertStocks } from "@/redux/slices/webStockSlice";
 
@@ -83,13 +83,19 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
     return product.productDescription;
   };
 
-  if (!products || products.length === 0) {
+  const availableProducts = Array.isArray(products)
+    ? products.filter(
+        (item) => (item.currentStock ?? 0) > (item.minStock ?? 0)
+      )
+    : [];
+
+  if (!availableProducts.length) {
     return <div>No products to display</div>;
   }
 
   return (
     <>
-      {products.map((item) => {
+      {availableProducts.map((item) => {
         // Debug the first item to see what's available
         const price = getPrice(item);
         const slug = createSlug(item.title);
@@ -105,7 +111,9 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
                 <Link href={href} className="ratio ratio-1x1 d-block">
                   <Image
                     src={getImageUrl(item)}
-                    alt={item?.title || "Product image"}
+                    alt={
+                      formatProductTitle(item?.title || "") || "Product image"
+                    }
                     width={500}
                     height={500}
                     className="object-fit-contain"
@@ -115,7 +123,9 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
               </div>
               <div className="bd-teanding__content">
                 <h4 className="bd-product__title">
-                  <Link href={href}>{item?.title || "Unnamed Product"}</Link>
+                  <Link href={href}>
+                    {formatProductTitle(item?.title || "") || "Unnamed Product"}
+                  </Link>
                 </h4>
                 <div className="bd-product__price">
                   <span className="bd-product__new-price">

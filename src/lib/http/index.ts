@@ -1,6 +1,8 @@
 // Centralized HTTP and API utilities
 
-export const API_BASE_URL = (process.env.NEXT_PUBLIC_EPOS_URL || "").replace(/\/+$/, "");
+export const API_BASE_URL = (
+  process.env.NEXT_PUBLIC_EPOS_URL || "https://api.eposnowhq.com/api/v4"
+).replace(/\/+$/, "");
 
 export type QueryParamValue =
   | string

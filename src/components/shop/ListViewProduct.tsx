@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { formatProductTitle } from "@/utils";
 
 interface ListViewProductProps {
   products: CartProductType[];
@@ -77,7 +78,7 @@ const ListViewProduct: React.FC<ListViewProductProps> = ({
                       <div className="bd-product__content mb-10">
                         <h4 className="bd-product__title">
                           <Link href={`/product/${item?._id}`}>
-                            {item?.productName}
+                            {formatProductTitle(item?.productName || "")}
                           </Link>
                         </h4>
                         <div className="bd-product__price">

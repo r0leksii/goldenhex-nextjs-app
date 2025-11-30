@@ -4,6 +4,7 @@ import { ProductType } from "@/interFace/api-interFace";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { formatProductTitle } from "@/utils";
 
 const SidebarTopratedProduct = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -60,7 +61,7 @@ const SidebarTopratedProduct = () => {
                       <div className="bd-populer__info">
                         <h4 className="bd-product__title">
                           <Link href={`/product/${item._id}`}>
-                            {item.productName}
+                            {formatProductTitle(item.productName || "")}
                           </Link>
                         </h4>
                         <div className="bd-product__price">

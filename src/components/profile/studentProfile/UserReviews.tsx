@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { error } from "console";
+import { formatProductTitle } from "@/utils";
 
 interface FormData {
   review: string;
@@ -139,7 +140,7 @@ const UserReviews = () => {
                   {" "}
                   <Link href={`/product/${item?.productId}`}>
                     {item?.productName
-                      ? item?.productName
+                      ? formatProductTitle(item.productName)
                       : "Product Name Not Set"}
                   </Link>{" "}
                 </h5>

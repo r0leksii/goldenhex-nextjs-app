@@ -11,6 +11,7 @@ import masterCard from "../../../public/assets/img/icon/mastercard.png";
 import papyle from "../../../public/assets/img/icon/paypal.png";
 import visa from "../../../public/assets/img/icon/visa.png";
 import { ProductType } from "@/types/product/product.type";
+import { formatProductTitle } from "@/utils";
 // no external UI libs
 
 const ProductModal = () => {
@@ -234,7 +235,7 @@ const ProductModal = () => {
                     </div>
                     <div className="col-md-6">
                       <div className="modal-product-info modal-product__details-content">
-                        <h3>{product?.title}</h3>
+                        <h3>{formatProductTitle(product?.title || "")}</h3>
                         <div className="product-price">
                           <span>
                             $

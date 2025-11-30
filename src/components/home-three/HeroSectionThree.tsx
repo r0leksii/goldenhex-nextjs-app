@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import HeroSliderThree from "./HeroSliderThree";
 import BannerPreloader from "@/preloaders/BannerPreloader";
+import { formatProductTitle } from "@/utils";
 
 const HeroSectionThree = () => {
   const [product, setproduct] = useState<offerProductType[]>([]);
@@ -33,7 +34,7 @@ const HeroSectionThree = () => {
                           <div className="bd-product__banner-content banner-oil product__content-3">
                             <h3 className="bd-product__title">
                               <Link href={`/product/${item.productId}`}>
-                                {item.productName}
+                                {formatProductTitle(item.productName || "")}
                               </Link>
                             </h3>
                             <div className="text-[white] product__banner-price">

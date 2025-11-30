@@ -11,6 +11,7 @@ import ProductModal from "../shop/ProductModal";
 import useGlobalContext from "@/hooks/use-context";
 // import { wishlist_product } from "@/redux/slices/wishlistSlice";
 import GetRatting from "@/hooks/GetRatting";
+import { formatProductTitle } from "@/utils";
 
 const RelatedProduct = ({ category, productID }: any) => {
   const { setOpenModal, openModal, setModalId } = useGlobalContext();
@@ -189,7 +190,7 @@ const RelatedProduct = ({ category, productID }: any) => {
                               <div className="bd-teanding__content">
                                 <h4 className="bd-product__title">
                                   <Link href={`/product/${item._id}`}>
-                                    {item.productName}
+                                    {formatProductTitle(item.productName || "")}
                                   </Link>
                                 </h4>
                                 <div className="bd-product__price">

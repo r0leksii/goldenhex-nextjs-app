@@ -10,6 +10,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { formatProductTitle } from "@/utils";
 
 const HeaderOneSearchBar = () => {
   const [openSearchBox, setOpenSearchBox] = useState(false);
@@ -124,7 +125,7 @@ const HeaderOneSearchBar = () => {
                               <div className="col-lg-10">
                                 <div className="single_product">
                                   <Link href={`/product/${item._id}`}>
-                                    {item.productName}
+                                    {formatProductTitle(item.productName || "")}
                                   </Link>
                                 </div>
                               </div>

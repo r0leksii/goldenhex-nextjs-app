@@ -6,6 +6,7 @@ import Breadcrumb from "../common/breadcrumb/Breadcrumb";
 import Image from "next/image";
 import { ProductType } from "@/types/product/product.type";
 import { useSelector } from "react-redux";
+import { formatProductTitle } from "@/utils";
 
 interface ShopDetailsMainProps {
   product: ProductType;
@@ -32,7 +33,7 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
                         <div className="bd-product__details-large-img">
                           <Image
                             src={product.imageURLs[0]}
-                            alt={product.title}
+                            alt={formatProductTitle(product.title)}
                             priority
                             width={577}
                             height={577}
@@ -47,7 +48,7 @@ const ShopDetailsMain = ({ product }: ShopDetailsMainProps) => {
                   </div>
                   <div className="col-md-6">
                     <div className="modal-product-info shop-details-info">
-                      <h3>{product.title}</h3>
+                      <h3>{formatProductTitle(product.title)}</h3>
                       <div className="product-price">
                         <span>${product.price}</span>
                       </div>
