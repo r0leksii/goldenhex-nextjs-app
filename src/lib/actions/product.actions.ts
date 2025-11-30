@@ -3,7 +3,7 @@
 import { components } from "@/types/schema.type";
 import { components as stockComponents } from "@/types/stock/stock.type";
 import { ProductType } from "@/types/product/product.type";
-import { DEFAULT_PAGE, DEFAULT_LIMIT } from "@/lib/consts";
+import { DEFAULT_PAGE, DEFAULT_LIMIT, WEBSITE_MIN_STOCK_DELTA } from "@/lib/consts";
 import { fetchData, buildApiUrl, getDefaultHeaders, withCacheTtl } from "@/lib/http";
 
 type WebProductType = components["schemas"]["WebProduct"];
@@ -233,7 +233,7 @@ export async function getProducts(
 
         const stockInfo = {
           currentStock: websiteStock,
-          minStock: 3,
+          minStock: WEBSITE_MIN_STOCK_DELTA,
         };
 
         const product = transformToProductType(wp, stockInfo);
@@ -244,7 +244,9 @@ export async function getProducts(
 
     // Hide out-of-stock products from the listing.
     // A product is shown only when websiteStock > 3.
-    const visibleEntries = productsAll.filter((entry) => entry.websiteStock > 3);
+    const visibleEntries = productsAll.filter(
+      (entry) => entry.websiteStock > WEBSITE_MIN_STOCK_DELTA
+    );
 
     const totalProducts = visibleEntries.length;
     const totalPages = Math.max(1, Math.ceil(totalProducts / safeLimit));
@@ -327,7 +329,6 @@ export async function getCatalogueProducts(
     }
 
     const items = Array.isArray(data?.Data) ? data.Data : [];
-    const WEBSITE_MIN_STOCK_DELTA = 3;
 
     // For each catalogue product, fetch per-product stock from /Inventory/{productId}
     const stockByProductId: Record<

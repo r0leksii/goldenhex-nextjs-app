@@ -98,7 +98,7 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
       {availableProducts.map((item) => {
         // Debug the first item to see what's available
         const price = getPrice(item);
-        const slug = createSlug(item.title);
+        const slug = createSlug(formatProductTitle(item.title));
         const href = `/product/${slug}-${item._id}`;
         const description = getDescription(item);
         const stock = getStock(item);
