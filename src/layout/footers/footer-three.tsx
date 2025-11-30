@@ -7,69 +7,58 @@ const year = new Date().getFullYear();
 
 const FooterThree = () => {
   return (
-    <footer>
-      <div className="bd-footer__area grey-bg pt-100 pb-60">
-        <div className="bd-footer__style-2">
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-12">
-                <div className="bd-footer__widget text-center mb-40">
-                  <div className="bd-footer__logo">
-                    <Link href="/">
-                      <Image
-                        src={footerlogo}
-                        alt="footer-logo"
-                        width={220}
-                        height={84}
-                      />
-                    </Link>
-                  </div>
-                </div>
-                <div className="bd-footer__widget text-center mb-40">
-                  <div className="bd-footer__link">
-                    <div className="bd-footer__link-row">
-                      <Link href="/about">About Our Company</Link>
-                      <Link href="/about">Awards Winnings</Link>
-                      <Link href="#">Flash Offers</Link>
-                    </div>
-                  </div>
-                </div>
-                <div className="bd-footer__widget text-center mb-40">
-                  <div className="bd-footer__social">
-                    <Link
-                      href="https://www.facebook.com/GoldenHex/"
-                      target="_blank"
-                    >
-                      <i className="fab fa-facebook-f"></i>
-                    </Link>
+    <footer className="bd-footer-three">
+      <div className="bd-footer__main">
+        <div className="container">
+          <div className="bd-footer__content">
+            {/* Logo */}
+            <div className="bd-footer__logo">
+              <Link href="/">
+                <Image
+                  src={footerlogo}
+                  alt="GoldenHex Logo"
+                  width={180}
+                  height={68}
+                  priority
+                />
+              </Link>
+            </div>
 
-                    <Link
-                      href="https://www.instagram.com/goldenhexfoods/"
-                      target="_blank"
-                      title="Instagram"
-                    >
-                      <i className="fab fa-instagram"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+            {/* Navigation */}
+            <nav className="bd-footer__nav">
+              <Link href="/about">About Us</Link>
+              <Link href="/shop">Shop</Link>
+              <Link href="/contact">Contact</Link>
+              <Link href="/privacy-policy">Privacy Policy</Link>
+            </nav>
+
+            {/* Social Icons */}
+            <div className="bd-footer__social">
+              <Link
+                href="https://www.facebook.com/GoldenHex/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                <i className="fab fa-facebook-f"></i>
+              </Link>
+              <Link
+                href="https://www.instagram.com/goldenhexfoods/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <i className="fab fa-instagram"></i>
+              </Link>
             </div>
           </div>
         </div>
       </div>
-      <div className="bd-sub__fotter">
+
+      {/* Copyright Bar */}
+      <div className="bd-footer__copyright-bar">
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-12">
-              <div className="bd-footer__copyright text-center">
-                <div className="bd-footer__copyright-row">
-                  <span>All Rights Reserved</span>
-                  <span className="sep">|</span>
-                  <span>Copyrighted by ©{year} GoldenHex</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <p>© {year} GoldenHex. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

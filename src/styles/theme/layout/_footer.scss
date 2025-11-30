@@ -1,74 +1,144 @@
-/* Footer theme overrides for better visibility */
+/* =============================================
+   Footer Three - Modern Centered Design
+   ============================================= */
 
-.bd-footer__area {
-  /* Trim excessive vertical whitespace from utility classes */
-  &.pt-100 { padding-top: 64px; }
-  &.pb-60 { padding-bottom: 40px; }
+.bd-footer-three {
+  background: linear-gradient(180deg, #f8f6f3 0%, #f1ede7 100%);
 }
 
-/* Centered style footer (used by FooterThree) */
-.bd-footer__style-2 {
-  .bd-footer__logo {
-    margin-bottom: 20px;
+.bd-footer__main {
+  padding: 60px 0 40px;
+}
+
+.bd-footer__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Logo */
+.bd-footer-three .bd-footer__logo {
+  a {
+    display: block;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+  
+  img {
+    height: auto;
+    width: auto;
+    max-height: 70px;
+  }
+}
+
+/* Navigation */
+.bd-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 32px;
+  
+  a {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4a4a4a;
+    text-decoration: none;
+    padding: 4px 0;
+    position: relative;
+    transition: color 0.2s ease;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--clr-theme-1, #e8a439);
+      transition: width 0.25s ease;
+    }
+    
+    &:hover {
+      color: var(--clr-theme-1, #e8a439);
+      
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* Social Icons */
+.bd-footer-three .bd-footer__social {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
+  
+  a {
     display: flex;
-    justify-content: center;
-    img {
-      max-height: 90px; /* allow bigger logo */
-      width: auto;
-      height: auto;
-    }
-  }
-
-  .bd-footer__link {
-    .bd-footer__link-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 16px 36px; /* a bit tighter than 25/50 */
-
-      a {
-        font-size: 16px;
-        font-weight: 600;
-        text-transform: none; /* keep labels readable */
-        letter-spacing: .02em;
-        color: var(--clr-common-heading);
-      }
-    }
-  }
-
-  .bd-footer__social {
-    gap: 12px;
-    a {
-      height: 44px;
-      width: 44px;
-      border-color: var(--clr-border-4);
-      color: var(--clr-common-heading);
-      background: var(--clr-common-white);
-
-      /* Remove faint decorative lines */
-      &::before, &::after { display: none; }
-
-      &:hover {
-        background: var(--clr-theme-1);
-        color: var(--clr-common-white);
-        border-color: var(--clr-theme-1);
-      }
-    }
-  }
-}
-
-/* Copyright row: improve spacing and readability */
-.bd-footer__copyright {
-  .bd-footer__copyright-row {
-    display: inline-flex;
-    gap: 10px;
     align-items: center;
-    .sep { opacity: .6; }
-    span { color: var(--clr-common-body-text); }
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #e0dcd6;
+    color: #5a5a5a;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    
+    &:hover {
+      background: var(--clr-theme-1, #e8a439);
+      border-color: var(--clr-theme-1, #e8a439);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(232, 164, 57, 0.3);
+    }
   }
 }
 
-/* Grey area background should be slightly stronger for contrast on very light screens */
-.grey-bg { background: var(--clr-bg-grey-2); }
+/* Copyright Bar */
+.bd-footer__copyright-bar {
+  background: #e8e4dd;
+  padding: 16px 0;
+  
+  p {
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+    color: #6b6b6b;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .bd-footer__main {
+    padding: 40px 0 30px;
+  }
+  
+  .bd-footer__content {
+    gap: 20px;
+  }
+  
+  .bd-footer__nav {
+    gap: 10px 20px;
+    
+    a {
+      font-size: 14px;
+    }
+  }
+  
+  .bd-footer-three .bd-footer__social a {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+}
 
