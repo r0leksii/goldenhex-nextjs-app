@@ -1,10 +1,7 @@
-
-
-
 @use '../utils' as *;
 
 /*----------------------------------------*/
-/* 07. Offcanvas css start
+/* 07. Offcanvas css start - Modern Design
 /*----------------------------------------*/
 
 // sidebar
@@ -12,6 +9,11 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    padding: 24px;
+    
+    @media (max-width: 375px) {
+        padding: 20px 16px;
+    }
 }
 
 .modals-content {
@@ -22,7 +24,6 @@
 
 .offcanvas{
     &__area{
-
         @media #{$xs}{
             width: 290px;
         }
@@ -49,45 +50,61 @@
             border-radius: 0;
         }
     }
+    
     &__wrapper{
         position: relative;
         padding: 0px;
-        @media #{$xs}{
-           padding: 0px;
-        }
     }
+    
     &__content{
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 0;
     }
+    
     &__close{
         &-btn{
-            display: inline-block;
-            font-size: 16px;
-            height: 50px;
-            width: 50px;
-            line-height: 50px;
-            background: var(--clr-theme-1);
-            color: var(--clr-common-white);
-            @include border-radius(50%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            height: 44px;
+            width: 44px;
+            background: #f5f5f5;
+            color: #333;
+            border: none;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            
             i {
-                color: var(--clr-common-white);
+                color: #333;
             }
+            
             &:hover{
-                background: var(--clr-common-heading);
+                background: var(--clr-theme-1);
+                i {
+                    color: #fff;
+                }
             }
         }
     }
+    
     &__top{
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         gap: 16px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--clr-border-18);
+        padding-bottom: 24px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #f0f0f0;
+        
+        .offcanvas__logo img {
+            max-height: 50px;
+            width: auto;
+        }
     }
+    
     &__color{
         margin-bottom: 40px;
         & h5{
@@ -112,54 +129,86 @@
             }
         }
     }
+    
     &__search{
         position: relative;
+        margin-bottom: 24px;
+        
         & input{
             width: 100%;
-            height: 40px;
-            line-height: 40px;
-            padding-right: 20px;
-            background: transparent;
-            border: none;
+            height: 48px;
+            line-height: 48px;
+            padding: 0 48px 0 16px;
+            background: #f8f9fa;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
             outline: none;
-            border-bottom: 1px solid var(--clr-border-18);
-            font-size: 14px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            
             &::placeholder{
-                color: var(--bd-text-1);
+                color: #999;
             }
+            
             &:focus{
-                border-color: var(--clr-common-heading);
+                border-color: var(--clr-theme-1);
+                background: #fff;
+                box-shadow: 0 0 0 3px rgba(232, 164, 57, 0.1);
             }
         }
+        
         & button{
             position: absolute;
             top: 50%;
-            right: 0;
-            @include transform(translateY(-50%));
-            font-size: 14px;
-            color: var(--bd-text-1);
+            right: 14px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #666;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            
+            &:hover {
+                color: var(--clr-theme-1);
+            }
         }
     }
+    
     &__text{
         & p{
             margin-bottom: 25px;
         }
     }
+    
     &__contact{
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid #f0f0f0;
+        
         & h4{
-            font-size: 22px;
-            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
         }
+        
         & ul{
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            
             & li{
-                &:not(:last-child){
-                    margin-bottom: 20px;
-                }
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                
                 &:hover{
-                    & i{
+                    & .offcanvas__contact-icon i{
                         background: var(--clr-theme-1);
-                        color: var(--clr-common-white);
+                        color: #fff;
                         border-color: var(--clr-theme-1);
                     }
                     & a{
@@ -168,24 +217,36 @@
                 }
             }
         }
+        
         &-icon{
+            flex-shrink: 0;
+            
             & i{
-                display: inline-block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 width: 40px;
                 height: 40px;
-                line-height: 40px;
-                text-align: center;
-                border: 1px solid var(--clr-border-18);
-                @include border-radius(7px);
+                background: #f8f9fa;
+                border: 1px solid #e8e8e8;
+                border-radius: 10px;
+                font-size: 14px;
+                color: #555;
+                transition: all 0.2s ease;
             }
         }
+        
         &-text{
             & a{
-                font-size: 16px;
+                font-size: 14px;
                 font-weight: 500;
+                color: #333;
+                transition: color 0.2s ease;
+                word-break: break-word;
             }
         }
     }
+    
     &__wallet{
         &-btn{
             display: inline-block;
@@ -219,6 +280,7 @@
             }
         }
     }
+    
     &__map{
         & iframe{
             width: 100%;
@@ -226,30 +288,39 @@
             border: none;
         }
     }
+    
     &__social{
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid #f0f0f0;
+        
         & ul{
+            display: flex;
+            gap: 10px;
+            
             & li{
-                display: inline-block;
-                &:not(:last-child){
-                    margin-right: 5px;
-                }
                 & a{
-                    display: inline-block;
-                    width: 40px;
-                    height: 40px;
-                    line-height: 42px;
-                    text-align: center;
-                    background: var(--clr-border-4);
-                    color: var(--clr-theme-1);
-                    @include border-radius(5px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 44px;
+                    height: 44px;
+                    background: #f8f9fa;
+                    color: #555;
+                    border-radius: 50%;
+                    font-size: 16px;
+                    transition: all 0.2s ease;
+                    
                     &:hover{
                         background: var(--clr-theme-1);
-                        color: var(--clr-common-white);
+                        color: #fff;
+                        transform: translateY(-2px);
                     }
                 }
             }
         }
     }
+    
     &__notification{
         &-icon{
             & a{
