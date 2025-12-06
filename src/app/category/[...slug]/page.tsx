@@ -8,7 +8,7 @@ import { parseNumericParam } from "@/utils/parseNumericParam";
 import { notFound } from "next/navigation";
 
 interface CategorySlugPageProps {
-  params: { slug: string[] };
+  params: Promise<{ slug: string[] }>;
   searchParams: Promise<{
     page?: number | string;
     limit?: number | string;
@@ -17,7 +17,7 @@ interface CategorySlugPageProps {
 }
 
 const CategorySlugPage = async ({ params, searchParams }: CategorySlugPageProps) => {
-  const { slug = [] } = params;
+  const { slug = [] } = await params;
   const sp = await searchParams;
 
   const page = parseNumericParam(sp?.page, DEFAULT_PAGE);
