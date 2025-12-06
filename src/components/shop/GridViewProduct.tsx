@@ -78,19 +78,15 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
   const getStock = (product: ProductType): number => {
     return product.currentStock ?? 0;
   };
-  const availableProducts = Array.isArray(products)
-    ? products.filter(
-        (item) => (item.currentStock ?? 0) > (item.minStock ?? 0)
-      )
-    : [];
+  const displayProducts = Array.isArray(products) ? products : [];
 
-  if (!availableProducts.length) {
+  if (!displayProducts.length) {
     return <div>No products to display</div>;
   }
 
   return (
     <>
-      {availableProducts.map((item) => {
+      {displayProducts.map((item) => {
         // Debug the first item to see what's available
         const price = getPrice(item);
         const slug = createSlug(formatProductTitle(item.title));
@@ -148,7 +144,7 @@ const GridViewProduct = ({ products }: GridViewProductProps) => {
                         </span>
                       </>
                     ) : (
-                      <span className="bd-product__availability-label out-of-stock">
+                      <span className="bd-product__availability-label out-of-stock" style={{ color: '#dc3545' }}>
                         Out of stock
                       </span>
                     )}
