@@ -374,7 +374,7 @@ export async function getCatalogueProducts(
             {
               method: "GET",
               headers,
-              ...withCacheTtl(60),
+              ...withCacheTtl(300),
             }
           );
 
